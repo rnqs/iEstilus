@@ -1,0 +1,139 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700&display=swap');
+
+
+:root {
+  --main-color: #F6A821;
+  --main-bg-color: #2A2D35;
+  --main-text-color: #EEEEEE;
+  --input-bg-color: #3B3D46;
+  --input-text-color: #C9C9C9;
+  --sucess-color: #29E85E;
+  --alert-color: #E8B329;
+  --err-color: #E82929;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-width: 100%;
+}
+
+body,
+input,
+button {
+  font-family: 'Montserrat', Arial, Helvetica, sans-serif;
+  font-size: 14px;
+}
+
+button,
+input,
+optgroup,
+select,
+textarea {
+  font-family: inherit;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+}
+
+button,
+input {
+  overflow: visible;
+}
+
+::placeholder {
+  color: #C9C9C9;
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: #C9C9C9;
+}
+
+::-ms-input-placeholder {
+  color: #C9C9C9;
+}
+
+button,
+select {
+  text-transform: none;
+}
+
+button,
+[type="button"],
+[type="reset"],
+[type="submit"] {
+  -webkit-appearance: button;
+}
+
+main {
+  width: 100;
+  height: 100vh;
+
+  background-image: url(./assets/background.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
+  background-size: cover;
+}
+
+/* Transitions */
+
+.slide-left-enter {
+  position: absolute;
+  left: 100vw;
+  transition: all 2s;
+}
+
+.slide-left-enter-active {
+  left: 0;
+  transition: all 2s;
+}
+
+.slide-left-exit {
+  width: calc(100vw + 5px) !important;
+  /* Important to reduce animation aliasing */
+
+  position: absolute;
+  left: 0;
+  overflow: hidden;
+  transition: all 2s;
+}
+
+.slide-left-exit-active {
+  left: -100vw;
+  transition: all 2s;
+}
+
+.slide-right-enter {
+  position: absolute;
+  right: 100vw;
+  transition: all 2s;
+}
+
+.slide-right-enter-active {
+  right: 0;
+  transition: all 2s;
+}
+
+.slide-right-exit {
+  width: calc(100vw + 5px) !important;
+  /* Important to reduce animation aliasing */
+
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  transition: all 2s;
+}
+
+.slide-right-exit-active {
+  right: -100vw;
+  transition: all 2s;
+}

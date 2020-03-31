@@ -1,0 +1,153 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+section.login {
+    width: 100vw;
+    height: 100vh;
+
+    /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
+}
+
+section.login .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    background: var(--main-bg-color);
+}
+
+@media screen and (max-width: 1300px) {
+    section.login .content {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    section.login .content {
+        width: 50vw;
+        height: 100vh;
+
+        -webkit-clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+        clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+    }
+}
+
+section.login .content .title-container h1 {
+    color: var(--main-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 59px;
+    letter-spacing: -0.03em;
+}
+
+section.login .content .input-container h3 {
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.03em;
+}
+
+section.login .content .svg-container,
+section.login .content .input-container,
+section.login .content .submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section.login .content .svg-container img {
+    height: 15vh;
+}
+
+@media screen and (max-height: 750px) {
+    section.login .content .svg-container img {
+        display: none;
+    }
+}
+
+section.login .content .input-container input {
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+    padding: 0 25px;
+    margin-bottom: 25px;
+
+    background: var(--input-bg-color);
+    border-width: 0;
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.login .content .input-container input:focus {
+    padding: 0 22px;
+
+    border: 3px solid var(--main-color);
+    box-sizing: border-box;
+
+    transition-duration: 200ms
+}
+
+section.login .content .input-container button.google-login {
+    display: flex;
+    align-items: flex-end;
+    height: 50px;
+    padding: 0 18px;
+    margin-top: 25px;
+
+    cursor: pointer;
+    background: #FFFFFF;
+    border: 3px solid #FFFFFF;
+    border-radius: 9px;
+
+    color: rgba(0, 0, 0, 0.75);
+    font-family: Roboto;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 17.0935px;
+    line-height: 20px;
+}
+
+section.login .content .input-container button.google-login img {
+    margin-right: 24px;
+}
+
+section.login .content .submit-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--main-color);
+    border-radius: 9px;
+
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.login .content .submit-container button:hover {
+    background: var(--main-color);
+
+    transition-duration: 200ms;
+}
