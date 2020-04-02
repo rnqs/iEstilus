@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 
-import iEstilusLogo from "../../assets/logo.svg";
+import Header from "../../components/Header";
 
 export default function Home() {
   const [navigating, setNavigating] = useState(true);
@@ -29,20 +29,16 @@ export default function Home() {
   return (
     <section className="home">
       <div className="content">
-        <nav>
-          <img src={iEstilusLogo} alt="iEstilus Logo" />
-
-          <div className="links-container">
-            <span className="link">Baixe o app</span>
-            <span onClick={() => navigateTo("/login")} className="link">
-              Faça Login
-            </span>
-
-            <button onClick={() => navigateTo("/cadastro")}>
-              Cadastre seu salão
-            </button>
-          </div>
-        </nav>
+        <Header
+          links={[
+            { text: "Baixe o app", onClick: () => {} },
+            { text: "Faça Login", onClick: () => navigateTo("/login") }
+          ]}
+          button={{
+            text: "Cadastre seu salão",
+            onClick: () => navigateTo("/cadastro")
+          }}
+        />
       </div>
     </section>
   );
