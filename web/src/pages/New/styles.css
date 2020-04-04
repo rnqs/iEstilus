@@ -1,0 +1,218 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+section.new {
+    width: 100vw;
+    height: 100vh;
+
+    /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
+}
+
+section.new .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+
+    background: var(--main-bg-color);
+}
+
+@media screen and (max-width: 1300px) {
+    section.new .content {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    section.new .content {
+        width: 50vw;
+        height: 100vh;
+
+        -webkit-clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+        clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+    }
+}
+
+section.new .content .title-container h1 {
+    color: var(--main-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 59px;
+    letter-spacing: -0.03em;
+}
+
+section.new .content .input-container h3 {
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.03em;
+}
+
+section.new .content .input-container,
+section.new .content .submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section.new .content .input-container input.input,
+section.new .content .input-container textarea,
+section.new .content .input-container .image-container {
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+    padding: 0 25px;
+    margin-bottom: 25px;
+
+    background: var(--input-bg-color);
+    border-width: 0;
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.new .content .input-container input.input:focus,
+section.new .content .input-container textarea:focus {
+    border: 3px solid var(--main-color);
+
+    transition-duration: 200ms
+}
+
+section.new .content .input-container input.input:focus {
+    padding: 0 22px;
+    box-sizing: border-box;
+}
+
+section.new .content .input-container textarea {
+    height: 100px;
+    padding: 13px 22px;
+
+    resize: none;
+}
+
+section.new .content .input-container textarea:focus {
+    padding: 10px 19px;
+
+    transition-duration: 200ms
+}
+
+section.new .content .input-container .image-container {
+    display: flex;
+    height: 100px;
+    padding: 0;
+}
+
+section.new .content .input-container .image-container .image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 100px;
+
+
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-width: 0;
+    border-radius: 9px 0 0 9px;
+}
+
+section.new .content .input-container .image-container .side p {
+    width: 220px;
+    margin: 11px 25px 0 25px;
+
+    color: var(--main-text-color);
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.03em;
+}
+
+section.new .content .input-container .image-container .side input.upload-photo {
+    display: none;
+}
+
+section.new .content .input-container .image-container .side label {
+    display: block;
+    width: 220px;
+    height: 35px;
+    margin: 11px 25px;
+
+    color: #EEEEEE;
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+    text-align: center;
+
+    cursor: pointer;
+    border: 3px solid #F6A821;
+    border-radius: 9px;
+
+    transition-duration: 200ms;
+}
+
+section.new .content .input-container .phone-input {
+    height: 75px;
+}
+
+section.new .content .input-container .phone-input span {
+    display: block;
+    width: 70px;
+    height: 16px;
+    position: relative;
+    top: -70px;
+    left: 305px;
+
+    color: #C9C9C9;
+    font-weight: 600;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.03em;
+}
+
+section.new .content .input-container .phone-input .switch {
+    position: relative !important;
+    top: -67px;
+    left: 320px;
+}
+
+section.new .content .submit-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--main-color);
+    border-radius: 9px;
+
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.new .content .submit-container button:hover,
+section.new .content .input-container .image-container label:hover {
+    background: var(--main-color);
+
+    transition-duration: 200ms;
+}

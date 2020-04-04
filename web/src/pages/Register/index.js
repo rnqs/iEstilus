@@ -29,15 +29,15 @@ export default function Register() {
     firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(
-        function(authData) {
+        function (authData) {
           authData.user.sendEmailVerification();
           redirect();
         },
-        function(error) {
-          alert("Erro no envio do email de confirmacao.");
+        function (error) {
+          alert("Erro no envio do email de confirmação.");
         }
       )
-      .catch(function(error) {
+      .catch(function (error) {
         var errorCode = error.code;
         var errorMessage = error.message;
         if (errorCode === "auth/weak-password") {
@@ -49,21 +49,20 @@ export default function Register() {
       });
   };
 
-  const firebaseLoginWhithGoogle = () => {
+  const firebaseLoginWithGoogle = () => {
     firebaseAuth
       .signInWithPopup(provider)
-      .then(function(result) {
+      .then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const token = result.credential.accessToken;
         // The signed-in user info.
         const user = result.user;
 
-        alert(user.displayName);
-
         console.log(token);
         console.log(user);
+        redirect();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -90,29 +89,29 @@ export default function Register() {
             className="email"
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             className="password"
             placeholder="Senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <input
             type="password"
             className={vPass === false ? "password pass-err" : "password"}
             placeholder="Confirme a Senha"
-            onChange={e =>
+            onChange={(e) =>
               e.target.value === password ? setVPass(true) : setVPass(false)
             }
           />
           <h3>ou</h3>
           <button
             className="google-register"
-            onClick={() => firebaseLoginWhithGoogle()}
+            onClick={() => firebaseLoginWithGoogle()}
           >
-            <img src={superGSvg} alt="Googlev Logo" />
+            <img src={superGSvg} alt="Google Logo" />
             Continuar com o Google
           </button>
         </div>

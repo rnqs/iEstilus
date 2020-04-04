@@ -24,10 +24,10 @@ export default function Login() {
 
   const provider = new firebase.auth.GoogleAuthProvider();
 
-  const firebasesignInWithEmailAndPassword = (email, password) => {
+  const firebaseSignInWithEmailAndPassword = (email, password) => {
     firebaseAuth
       .signInWithEmailAndPassword(email, password)
-      .catch(function(error) {
+      .catch(function (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
 
@@ -35,22 +35,20 @@ export default function Login() {
       });
   };
 
-  const firebaseLoginWhithGoogle = () => {
+  const firebaseLoginWithGoogle = () => {
     firebaseAuth
       .signInWithPopup(provider)
-      .then(function(result) {
+      .then(function (result) {
         // This gives you a Google Access Token. You can use it to access the Google API.
         const token = result.credential.accessToken;
         // The signed-in user info.
         const user = result.user;
 
-        alert(user.displayName);
-
         console.log(token);
         console.log(user);
         redirect();
       })
-      .catch(function(error) {
+      .catch(function (error) {
         // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -77,19 +75,19 @@ export default function Login() {
             className="email"
             placeholder="Email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <input
             type="password"
             className="password"
             placeholder="Senha"
             value={password}
-            onChange={e => setPassword(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
           />
           <h3>ou</h3>
           <button
             className="google-login"
-            onClick={() => firebaseLoginWhithGoogle()}
+            onClick={() => firebaseLoginWithGoogle()}
           >
             <img src={superGSvg} alt="Google Logo" />
             Continuar com o Google
@@ -98,7 +96,7 @@ export default function Login() {
         <div className="submit-container">
           <button
             onClick={() => {
-              firebasesignInWithEmailAndPassword(email, password);
+              firebaseSignInWithEmailAndPassword(email, password);
             }}
           >
             Entrar

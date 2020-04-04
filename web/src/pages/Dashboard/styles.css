@@ -1,0 +1,74 @@
+section.dashboard {
+    width: 100vw;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: row-reverse;
+
+    /* filter: drop-shadow(-60px 0px 60px rgba(0, 0, 0, 0.5)); */
+}
+
+section.dashboard .content {
+    display: flex;
+    flex-direction: column;
+
+    background: var(--main-bg-color);
+}
+
+@media screen and (max-width: 1300px) {
+    section.dashboard .content {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    section.dashboard .content {
+        width: 67vw;
+        height: 100vh;
+
+        -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
+    }
+}
+
+section.dashboard .content h1 {
+    margin: 20px 0;
+
+    color: var(--main-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 44px;
+    letter-spacing: -0.03em;
+}
+
+section.dashboard .content .new-establishment {
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+}
+
+section.dashboard .content .new-establishment button {
+    width: 100%;
+    max-width: 540px;
+    margin-top: 40px;
+    height: 150px;
+
+    cursor: pointer;
+    background: transparent;
+    border: 3px dashed #F6A821;
+    border-radius: 10px;
+}
+
+section.dashboard .content .new-establishment button p {
+    margin-bottom: 15px;
+
+    color: var(--main-text-color);
+    font-weight: 600;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+}

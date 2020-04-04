@@ -8,6 +8,8 @@ export default function Home() {
   const [navigating, setNavigating] = useState(true);
 
   useEffect(() => {
+    document.title = "iEstilus";
+
     setTimeout(() => {
       setNavigating(false);
     }, 2000);

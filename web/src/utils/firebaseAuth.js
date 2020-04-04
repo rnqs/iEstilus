@@ -15,6 +15,6 @@ const firebaseApp = firebase.initializeApp(config);
 
 const firebaseAuth = firebaseApp.auth();
 
-firebaseAuth.languageCode = 'pt';
+firebaseAuth.languageCode = "pt";
 
 export default firebaseAuth;
