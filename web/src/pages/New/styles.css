@@ -1,6 +1,7 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
 section.new {
+    display: block !important;
     width: 100vw;
     height: 100vh;
 
@@ -132,7 +133,7 @@ section.new .content .input-container .image-container .side p {
     margin: 11px 25px 0 25px;
 
     color: var(--main-text-color);
-    font-weight: 600;
+    font-weight: 500;
     font-size: 13px;
     line-height: 16px;
     letter-spacing: -0.03em;
@@ -149,7 +150,7 @@ section.new .content .input-container .image-container .side label {
     margin: 11px 25px;
 
     color: #EEEEEE;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 14px;
     line-height: 29px;
     letter-spacing: -0.03em;
@@ -175,7 +176,7 @@ section.new .content .input-container .phone-input span {
     left: 305px;
 
     color: #C9C9C9;
-    font-weight: 600;
+    font-weight: 500;
     font-size: 13px;
     line-height: 16px;
     letter-spacing: -0.03em;
@@ -215,4 +216,76 @@ section.new .content .input-container .image-container label:hover {
     background: var(--main-color);
 
     transition-duration: 200ms;
+}
+
+section.new .content .input-container .services-input {
+    width: 95vw;
+    max-width: 400px;
+    height: 200px;
+    padding: 0 8px;
+
+    background: var(--input-bg-color);
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.new .content .input-container .services-input span {
+    display: block;
+    margin: 13px 17px;
+}
+
+section.new .content .input-container .services-input .services-container {
+    max-height: 142px;
+
+    overflow-y: scroll;
+}
+
+section.new .content .input-container .services-input .services-container .add-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+section.new .content .input-container .services-input .services-container .add-button svg {
+    cursor: pointer;
+}
+
+section.new .content .input-container .services-input .services-container .service {
+    display: flex;
+    justify-content: space-between;
+    height: 35px;
+    margin-bottom: 5px;
+    padding: 0 20px;
+
+    background: var(--below-bg-color);
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.03em;
+}
+
+section.new .content .input-container .services-input .services-container .service input {
+    flex: 1;
+
+    background: transparent;
+    border: none;
+
+    color: var(--input-text-color);
+}
+
+section.new .content .input-container .services-input .services-container .service input.price {
+    max-width: 80px;
+
+    text-align: end;
 }

@@ -89,11 +89,17 @@ main {
 .slide-left-enter {
   position: absolute;
   left: 100vw;
+
+  overflow: hidden;
+
   transition: all 2s;
 }
 
 .slide-left-enter-active {
   left: 0;
+
+  overflow: hidden;
+
   transition: all 2s;
 }
 
@@ -103,23 +109,34 @@ main {
 
   position: absolute;
   left: 0;
+
   overflow: hidden;
+
   transition: all 2s;
 }
 
 .slide-left-exit-active {
   left: -100vw;
+
+  overflow: hidden;
+
   transition: all 2s;
 }
 
 .slide-right-enter {
   position: absolute;
   right: 100vw;
+
+  overflow: hidden;
+
   transition: all 2s;
 }
 
 .slide-right-enter-active {
   right: 0;
+
+  overflow: hidden;
+
   transition: all 2s;
 }
 
@@ -129,11 +146,16 @@ main {
 
   position: absolute;
   right: 0;
+
   overflow: hidden;
+
   transition: all 2s;
 }
 
 .slide-right-exit-active {
   right: -100vw;
+
+  overflow: hidden;
+
   transition: all 2s;
 }

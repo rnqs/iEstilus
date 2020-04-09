@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import Switch from "react-switch";
 import InputMask from "react-input-mask";
+import { FiImage, FiPlus } from "react-icons/fi";
+import { useDropzone } from "react-dropzone";
 
-import { FiImage } from "react-icons/fi";
+import DropModal from "../../components/DropModal";
+
 import "./styles.css";
 
 export default function New() {
@@ -14,7 +17,7 @@ export default function New() {
   const [phone, setPhone] = useState("");
   const [whatsAppAvailable, setWhatsAppAvailable] = useState(true);
   const [address, setAddress] = useState("");
-  const [services, setServices] = useState([{ name: "", price: 0 }]);
+  const [services, setServices] = useState([{ name: "Paulo", price: 0 }]);
 
   useEffect(() => {
     document.title = "iEstilus | Novo Salão";
@@ -37,7 +40,7 @@ export default function New() {
     setNavigating(true);
   }
 
-  function previewImage(file) {
+  function previewImageAndSetPhoto(file) {
     const fileReader = new FileReader();
     fileReader.readAsDataURL(file);
 
@@ -46,129 +49,177 @@ export default function New() {
     };
   }
 
+  const onDrop = useCallback((acceptedFiles) => {
+    previewImageAndSetPhoto(acceptedFiles[0]);
+  }, []);
+  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const ServiceInput = ({ services, serviceIndex }) => {
+    const [servicesState, setServicesState] = useState(services);
+
+    useEffect(() => {
+      setServicesState(services);
+    }, [services]);
+
+    return (
+      <div className="service">
+        <input
+          type="text"
+          className="name"
+          placeholder="Nome do serviço"
+          value={servicesState[serviceIndex].name}
+          onChange={(e) =>
+            setServicesState(
+              servicesState.map((service, index) =>
+                index === serviceIndex
+                  ? { ...service, name: e.target.value }
+                  : service
+              )
+            )
+          }
+        />
+        <InputMask
+          className="price"
+          placeholder="Preço"
+          mask="R$ 99,99"
+          maskChar={null}
+          value={servicesState[serviceIndex].price}
+          onChange={(e) =>
+            setServicesState(
+              servicesState.map((service, index) =>
+                index === serviceIndex
+                  ? { ...service, price: e.target.value }
+                  : service
+              )
+            )
+          }
+        />
+      </div>
+    );
+  };
+
   return (
-    <section className="new">
-      <div className="content">
-        <div className="title-container">
-          <h1>Novo salão</h1>
-        </div>
-        <div className="input-container">
-          <input
-            type="text"
-            className="input"
-            placeholder="Nome do salão"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-          <textarea
-            placeholder="Breve descrição"
-            maxLength={120}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          ></textarea>
-          <div className="image-container">
-            <div
-              className="image-preview"
-              style={
-                photo === ""
-                  ? { background: "var(--below-bg-color)" }
-                  : { background: `url("${photo}")` }
-              }
-            >
-              <FiImage
-                style={
-                  photo === "" ? { display: "block" } : { display: "none" }
-                }
-                size="40px"
-                color="var(--input-text-color)"
-              />
-            </div>
-            <div className="side">
-              <p>
-                Araste aqui uma foto do salão ou selecione um arquivo abaixo
-              </p>
-              <label for="upload-photo">Selecione um arquivo</label>
-              <input
-                type="file"
-                className="upload-photo"
-                id="upload-photo"
-                accept="image/png, image/jpeg"
-                onChange={(e) => previewImage(e.target.files[0])}
-              />
-            </div>
+    <div {...getRootProps()}>
+      <section className="new" {...getInputProps()}>
+        <div className="content">
+          <div className="title-container">
+            <h1>Novo salão</h1>
           </div>
-          <div className="phone-input">
-            <InputMask
+          <div className="input-container">
+            <input
+              type="text"
               className="input"
-              placeholder="Telefone de atendimento"
-              mask={
-                phone.length >= 19
-                  ? "+55 (99) 99999-9999"
-                  : "+55 (99) 9999-99999"
-              }
-              maskChar={null}
-              value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              placeholder="Nome do salão"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
             />
-            <span>WhatsApp</span>
-            <Switch
-              checked={whatsAppAvailable}
-              onChange={() => setWhatsAppAvailable(!whatsAppAvailable)}
-              onColor="#9E783A"
-              onHandleColor="#F6A821"
-              handleDiameter={18}
-              uncheckedIcon={false}
-              checkedIcon={false}
-              activeBoxShadow="0px 0px 0px 10px rgba(35, 38, 45, 0.5)"
-              height={10}
-              width={25}
-              className="switch"
-              id="material-switch"
-            />
-          </div>
-          <input
-            type="text"
-            className="input"
-            placeholder="Endereço"
-            value={address}
-            onChange={(e) => setAddress(e.target.value)}
-          />
-          <div className="services-input">
-            <span>Serviços</span>
-            <div className="service-container">
-              <div className="service">
-                <input
-                  type="text"
-                  placeholder="Nome do serviço"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                />
-                {console.log(services)}
-                <InputMask
-                  placeholder="Preço"
-                  mask="R$ 99,99"
-                  value={services[0].price}
-                  onChange={(e) =>
-                    setServices([
-                      ...services.pop,
-                      (services[0].price = e.target.value),
-                    ])
+            <textarea
+              placeholder="Breve descrição"
+              maxLength={120}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            ></textarea>
+            <div className="image-container">
+              <div
+                className="image-preview"
+                style={
+                  photo === ""
+                    ? { background: "var(--below-bg-color)" }
+                    : { background: `url("${photo}")` }
+                }
+              >
+                <FiImage
+                  style={
+                    photo === "" ? { display: "block" } : { display: "none" }
                   }
+                  size="40px"
+                  color="var(--input-text-color)"
+                />
+              </div>
+              <div className="side">
+                <p>
+                  Araste aqui uma foto do salão ou selecione um arquivo abaixo
+                </p>
+                <label for="upload-photo">Selecione um arquivo</label>
+                <input
+                  type="file"
+                  className="upload-photo"
+                  id="upload-photo"
+                  accept="image/png, image/jpeg"
+                  onChange={(e) => previewImageAndSetPhoto(e.target.files[0])}
                 />
               </div>
             </div>
+            <div className="phone-input">
+              <InputMask
+                className="input"
+                placeholder="Telefone de atendimento"
+                mask={
+                  phone.length >= 19
+                    ? "+55 (99) 99999-9999"
+                    : "+55 (99) 9999-99999"
+                }
+                maskChar={null}
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+              />
+              <span>WhatsApp</span>
+              <Switch
+                checked={whatsAppAvailable}
+                onChange={() => setWhatsAppAvailable(!whatsAppAvailable)}
+                onColor="#9E783A"
+                onHandleColor="#F6A821"
+                handleDiameter={18}
+                uncheckedIcon={false}
+                checkedIcon={false}
+                activeBoxShadow="0px 0px 0px 10px rgba(35, 38, 45, 0.5)"
+                height={10}
+                width={25}
+                className="switch"
+                id="material-switch"
+              />
+            </div>
+            <input
+              type="text"
+              className="input"
+              placeholder="Endereço"
+              value={address}
+              onChange={(e) => setAddress(e.target.value)}
+            />
+            <div className="services-input">
+              <span>Serviços</span>
+              <div className="services-container">
+                {services.map((service, index) => (
+                  <ServiceInput
+                    key={index.toString()}
+                    services={{ ...services }}
+                    serviceIndex={index}
+                  />
+                ))}
+                <div className="add-button">
+                  <FiPlus
+                    size="45px"
+                    color="var(--below-bg-color)"
+                    onClick={() =>
+                      setServices([services, { name: "Paulo", price: 0 }])
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="submit-container">
+            <button
+              onClick={() => {
+                navigateTo("/gerenciar");
+              }}
+            >
+              Cadastrar
+            </button>
           </div>
         </div>
-        <div className="submit-container">
-          <button
-            onClick={() => {
-              navigateTo("/gerenciar");
-            }}
-          >
-            Entrar
-          </button>
-        </div>
-      </div>
-    </section>
+        <DropModal display={isDragActive} />
+      </section>
+    </div>
   );
 }
