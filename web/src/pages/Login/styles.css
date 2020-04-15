@@ -123,6 +123,20 @@ section.login .content .input-container button.google-login img {
     margin-right: 24px;
 }
 
+section.login .content .input-container span {
+    color: var(--main-color);
+    margin-top: 25px;
+    cursor: pointer;
+
+    transition-duration: 200ms;
+}
+
+section.login .content .input-container span:hover {
+    text-decoration: underline;
+
+    transition-duration: 200ms;
+}
+
 section.login .content .submit-container button {
     display: flex;
     align-items: center;

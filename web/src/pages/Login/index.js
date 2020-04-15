@@ -27,6 +27,9 @@ export default function Login() {
   const firebaseSignInWithEmailAndPassword = (email, password) => {
     firebaseAuth
       .signInWithEmailAndPassword(email, password)
+      .then(function (result) {
+        redirect();
+      })
       .catch(function (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -39,13 +42,6 @@ export default function Login() {
     firebaseAuth
       .signInWithPopup(provider)
       .then(function (result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const token = result.credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
-
-        console.log(token);
-        console.log(user);
         redirect();
       })
       .catch(function (error) {
@@ -57,6 +53,26 @@ export default function Login() {
         // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
         console.error(errorCode, errorMessage, email, credential);
+      });
+  };
+
+  const firebaseForgetPassword = () => {
+    if (!email) {
+      setEmail(prompt("Qual o email da sua conta?", "Email"));
+      if (!email) {
+        alert("Algo deu errado\nTente novamente");
+        return;
+      }
+    }
+    firebaseAuth
+      .sendPasswordResetEmail(email)
+      .then(function () {
+        alert(
+          "Email de recuperação enviado com sucesso\nVerifeque tambem na caixa de spans"
+        );
+      })
+      .catch(function (error) {
+        alert("Algo deu errado\nTente novamente");
       });
   };
 
@@ -92,6 +108,9 @@ export default function Login() {
             <img src={superGSvg} alt="Google Logo" />
             Continuar com o Google
           </button>
+          <span onClick={() => firebaseForgetPassword()}>
+            Esqueci minha senha
+          </span>
         </div>
         <div className="submit-container">
           <button
