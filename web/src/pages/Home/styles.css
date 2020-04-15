@@ -1,6 +1,6 @@
 section.home {
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 
     display: flex;
     flex-direction: row-reverse;
@@ -11,6 +11,7 @@ section.home {
 section.home .content {
     display: flex;
     flex-direction: column;
+    min-height: 200vh;
 
     background: var(--main-bg-color);
 }
@@ -30,4 +31,40 @@ section.home .content {
         -webkit-clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
         clip-path: polygon(0 0, 100% 0, 100% 100%, 8% 100%);
     }
+}
+
+section.home .content h1 {
+    color: var(--main-text-color);
+    font-size: 2rem;
+    text-align: center;
+
+    margin: 15vh 25px;
+    margin-bottom: 0;
+}
+
+section.home .content h2 {
+    color: var(--input-text-color);
+    font-size: 1.2rem;
+    text-align: center;
+
+    margin: 2vh 10px;
+    margin-bottom: 20vh;
+}
+
+section.home .content h1 span,
+section.home .content h2 span {
+    cursor: pointer;
+
+    transition: ease-in-out 200ms;
+}
+
+section.home .content h1 span:hover,
+section.home .content h2 span:hover {
+    color: var(--main-color);
+
+    transition: ease-in-out 200ms;
+}
+
+.light {
+    font-weight: 500;
 }

@@ -21,7 +21,7 @@ export default function Home() {
     if (!navigating) {
       history.push({
         pathname,
-        state: { transition: "slide-left", duration: 2000 }
+        state: { transition: "slide-left", duration: 2000 },
       });
     }
 
@@ -34,13 +34,25 @@ export default function Home() {
         <Header
           links={[
             { text: "Baixe o app", onClick: () => {} },
-            { text: "Faça Login", onClick: () => navigateTo("/login") }
+            { text: "Faça Login", onClick: () => navigateTo("/login") },
           ]}
           button={{
             text: "Cadastre seu salão",
-            onClick: () => navigateTo("/cadastro")
+            onClick: () => navigateTo("/cadastro"),
           }}
         />
+
+        <h1>
+          Facilite a busca e agendamento para seu salão,{" "}
+          <span onClick={() => navigateTo("/cadastro")}>
+            cadastre hoje mesmo e receba novos clientes.
+          </span>
+        </h1>
+        <h2>
+          Está buscando pelo serviço perfeito?{" "}
+          <span>Baixe já o app para seu celular.</span>
+        </h2>
+        <h1 className="light">Como funciona?</h1>
       </div>
     </section>
   );
