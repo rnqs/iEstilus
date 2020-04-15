@@ -74,8 +74,8 @@ button,
 }
 
 main {
-  width: 100;
-  height: 100vh;
+  width: 100vw;
+  min-height: 100vh;
 
   background-image: url(./assets/background.png);
   background-repeat: no-repeat;
@@ -89,6 +89,7 @@ main {
 .slide-left-enter {
   position: absolute;
   left: 100vw;
+  height: 100vh;
 
   overflow: hidden;
 
@@ -97,6 +98,7 @@ main {
 
 .slide-left-enter-active {
   left: 0;
+  height: 100vh;
 
   overflow: hidden;
 
@@ -106,6 +108,7 @@ main {
 .slide-left-exit {
   width: calc(100vw + 5px) !important;
   /* Important to reduce animation aliasing */
+  height: 100vh;
 
   position: absolute;
   left: 0;
@@ -117,6 +120,7 @@ main {
 
 .slide-left-exit-active {
   left: -100vw;
+  height: 100vh;
 
   overflow: hidden;
 
@@ -126,6 +130,7 @@ main {
 .slide-right-enter {
   position: absolute;
   right: 100vw;
+  height: 100vh;
 
   overflow: hidden;
 
@@ -134,6 +139,7 @@ main {
 
 .slide-right-enter-active {
   right: 0;
+  height: 100vh;
 
   overflow: hidden;
 
@@ -143,6 +149,7 @@ main {
 .slide-right-exit {
   width: calc(100vw + 5px) !important;
   /* Important to reduce animation aliasing */
+  height: 100vh;
 
   position: absolute;
   right: 0;
@@ -154,6 +161,7 @@ main {
 
 .slide-right-exit-active {
   right: -100vw;
+  height: 100vh;
 
   overflow: hidden;
 

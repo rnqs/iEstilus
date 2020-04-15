@@ -17,7 +17,7 @@ export default function New() {
   const [phone, setPhone] = useState("");
   const [whatsAppAvailable, setWhatsAppAvailable] = useState(true);
   const [address, setAddress] = useState("");
-  const [services, setServices] = useState([{ name: "Paulo", price: 0 }]);
+  const [services, setServices] = useState([{ name: "", price: "" }]);
 
   useEffect(() => {
     document.title = "iEstilus | Novo Salão";
@@ -53,50 +53,6 @@ export default function New() {
     previewImageAndSetPhoto(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
-  const ServiceInput = ({ services, serviceIndex }) => {
-    const [servicesState, setServicesState] = useState(services);
-
-    useEffect(() => {
-      setServicesState(services);
-    }, [services]);
-
-    return (
-      <div className="service">
-        <input
-          type="text"
-          className="name"
-          placeholder="Nome do serviço"
-          value={servicesState[serviceIndex].name}
-          onChange={(e) =>
-            setServicesState(
-              servicesState.map((service, index) =>
-                index === serviceIndex
-                  ? { ...service, name: e.target.value }
-                  : service
-              )
-            )
-          }
-        />
-        <InputMask
-          className="price"
-          placeholder="Preço"
-          mask="R$ 99,99"
-          maskChar={null}
-          value={servicesState[serviceIndex].price}
-          onChange={(e) =>
-            setServicesState(
-              servicesState.map((service, index) =>
-                index === serviceIndex
-                  ? { ...service, price: e.target.value }
-                  : service
-              )
-            )
-          }
-        />
-      </div>
-    );
-  };
 
   return (
     <div {...getRootProps()}>
@@ -189,19 +145,53 @@ export default function New() {
             <div className="services-input">
               <span>Serviços</span>
               <div className="services-container">
-                {services.map((service, index) => (
-                  <ServiceInput
-                    key={index.toString()}
-                    services={{ ...services }}
-                    serviceIndex={index}
-                  />
+                {services.map((service, serviceIndex) => (
+                  <div className="service" key={serviceIndex}>
+                    <input
+                      type="text"
+                      className="name"
+                      placeholder="Nome do serviço"
+                      value={services[serviceIndex].name}
+                      onChange={(e) =>
+                        setServices(
+                          services.map((service, index) =>
+                            index === serviceIndex
+                              ? { ...service, name: e.target.value }
+                              : service
+                          )
+                        )
+                      }
+                    />
+                    <InputMask
+                      className="price"
+                      placeholder="Preço"
+                      mask={
+                        services[serviceIndex].price.length >= 8
+                          ? services[serviceIndex].price.length >= 9
+                            ? "R$ 999,99"
+                            : "R$ 99,999"
+                          : "R$ 9,999"
+                      }
+                      maskChar={null}
+                      value={services[serviceIndex].price}
+                      onChange={(e) =>
+                        setServices(
+                          services.map((service, index) =>
+                            index === serviceIndex
+                              ? { ...service, price: e.target.value }
+                              : service
+                          )
+                        )
+                      }
+                    />
+                  </div>
                 ))}
                 <div className="add-button">
                   <FiPlus
                     size="45px"
                     color="var(--below-bg-color)"
                     onClick={() =>
-                      setServices([services, { name: "Paulo", price: 0 }])
+                      setServices([...services, { name: "", price: "" }])
                     }
                   />
                 </div>

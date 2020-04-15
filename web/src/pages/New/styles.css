@@ -3,7 +3,7 @@
 section.new {
     display: block !important;
     width: 100vw;
-    height: 100vh;
+    height: 100%;
 
     /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
 }
@@ -12,6 +12,7 @@ section.new .content {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    min-height: 880px;
 
     background: var(--main-bg-color);
 }
@@ -280,7 +281,7 @@ section.new .content .input-container .services-input .services-container .servi
 
     background: transparent;
     border: none;
-
+    line-height: 1;
     color: var(--input-text-color);
 }
 
