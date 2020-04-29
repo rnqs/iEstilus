@@ -3,16 +3,19 @@
 		<url>
 			<loc>https://iestilus.com</loc>
 			<lastmod>2020-04-15T19:17:41+00:00</lastmod>
+			<priority>1.0</priority>
 		</url>
 
 		<url>
 			<loc>https://iestilus.com/login</loc>
 			<lastmod>2020-04-15T19:17:41+00:00</lastmod>
+			<priority>0.5</priority>
 		</url>
 
 		<url>
 			<loc>https://iestilus.com/cadastro</loc>
 			<lastmod>2020-04-15T19:17:41+00:00</lastmod>
+			<priority>0.5</priority>
 		</url>
 
 	</urlset>
