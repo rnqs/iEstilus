@@ -1,13 +1,10 @@
 {
   "expo": {
-    "name": "Blank Template",
-    "slug": "iEstilus",
-    "privacy": "public",
-    "sdkVersion": "36.0.0",
+    "name": "iEstilus",
+    "slug": "mobile-expo",
     "platforms": [
       "ios",
-      "android",
-      "web"
+      "android"
     ],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -15,7 +12,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#2D3038"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
