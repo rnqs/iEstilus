@@ -1,14 +1,18 @@
 const { Router } = require('express');
-const multer = require('multer');
-const uploadConfig = require('./configs/upload-firebase');
-
-const EstablishmentController = require('./controllers/EstablishmentController');
 
 const routes = Router();
-const upload = multer(uploadConfig);
 
-routes.get('/list', EstablishmentController.index);
-routes.post('/store', upload.single('thumbnail'), EstablishmentController.store);
-routes.post('/login', EstablishmentController.login);
+const ManagerController = require('./controllers/ManagerController');
+const EstablishmentController = require('./controllers/EstablishmentController');
+const ManagerEstablishmentController = require('./controllers/ManagerEstablishmentController')
+
+routes.get('/', EstablishmentController.index);
+
+routes.post('/managers', ManagerController.create);
+
+routes.get('/managers/:firebaseUid/establishments', ManagerEstablishmentController.index);
+routes.post('/managers/:firebaseUid/establishments', ManagerEstablishmentController.create);
+routes.put('/managers/:firebaseUid/establishments/:establishmentId', ManagerEstablishmentController.edit);
+routes.delete('/managers/:firebaseUid/establishments/:establishmentId', ManagerEstablishmentController.delete);
 
 module.exports = routes;

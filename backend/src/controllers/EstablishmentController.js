@@ -1,56 +1,24 @@
-const Establishment = require('../models/Establishment');
+const connection = require("../database/connection");
 
 module.exports = {
     async index(req, res) {
-        const perPage = 15;
-        const page = Math.max(0, req.query.page);
+        const {
+            page = 1
+        } = req.query;
 
-        const establishments = await Establishment.find().limit(perPage).skip(perPage * page);
+        const [count] = await connection("establishment").count();
+
+        const establishments = await connection("establishment")
+            .join("service", "service.establishment_id", "=", "establishment._id")
+            .limit(5)
+            .offset((page - 1) * 5)
+            .select([
+                "establishment.*",
+                "service.*"
+            ]);
+
+        res.header("X-Total-count", count["count(*)"]);
 
         return res.json(establishments);
-    },
-
-    async store(req, res) {
-        const {
-            name,
-            services,
-            address,
-            thumbnail_URL,
-            description,
-            rating,
-            phone,
-            whatsappAvailable,
-            email,
-            password
-        } = req.body;
-
-        const establishment = await Establishment.create({
-            name,
-            services,
-            address,
-            thumbnail_URL,
-            description,
-            rating,
-            phone,
-            whatsappAvailable,
-            email,
-            password
-        })
-
-        return res.json(establishment);
-    },
-
-    async login(req, res) {
-        const { email, password } = req.body;
-
-        await Establishment.findOne({ email }, function (err, user) {
-            if (err) throw err;
-
-            // test a matching password
-            this.comparePassword(password, function (err, isMatch) {
-                if (err) throw err;
-                console.log(password, isMatch);
-            });
-        });
     }
-}
+};
