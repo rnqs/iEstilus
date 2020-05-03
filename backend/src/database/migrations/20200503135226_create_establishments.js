@@ -1,8 +1,11 @@
-exports.up = (knex) => {
-  return knex.schema.createTable("establishment", (table) => {
+exports.up = (knex) =>
+  knex.schema.createTable("establishments", (table) => {
     table.increments("_id").primary();
-    table.foreign("firebase_uid").references("manager.firebase_uid");
-    table.string("firebase_uid", 28).notNullable();
+    table
+      .string("firebase_uid", 28)
+      .references("managers.firebase_uid")
+      .notNullable()
+      .onDelete("CASCADE");
     table.string("name", 20).notNullable();
     table.string("description", 120).notNullable();
     table.string("photo_url").notNullable();
@@ -11,8 +14,5 @@ exports.up = (knex) => {
     table.string("address").notNullable();
     table.specificType("coordinate", "POINT").notNullable();
   });
-};
 
-exports.down = (knex) => {
-  return knex.schema.dropTable("establishment");
-};
+exports.down = (knex) => knex.schema.dropTable("establishments");
