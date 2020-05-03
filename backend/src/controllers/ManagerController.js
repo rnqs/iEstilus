@@ -1,13 +1,13 @@
 const connection = require("../database/connection");
 
 module.exports = {
-    async create(req, res) {
-        const { firebaseUid } = req.body;
+  async create(req, res) {
+    const { uid } = req.headers;
 
-        const manager = await connection("manager").insert({
-            firebase_uid: firebaseUid
-        });
+    const manager = await connection("managers").insert({
+      firebase_uid: uid,
+    });
 
-        return res.json(manager);
-    }
+    return res.status(201).json(manager);
+  },
 };

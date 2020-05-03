@@ -1,18 +1,32 @@
-const { Router } = require('express');
+const { Router } = require("express");
 
 const routes = Router();
 
-const ManagerController = require('./controllers/ManagerController');
-const EstablishmentController = require('./controllers/EstablishmentController');
-const ManagerEstablishmentController = require('./controllers/ManagerEstablishmentController')
+const verifyToken = require("./authentication/firebaseAuthentication");
 
-routes.get('/', EstablishmentController.index);
+const ManagerController = require("./controllers/ManagerController");
+const EstablishmentController = require("./controllers/EstablishmentController");
+const ServiceController = require("./controllers/ServiceController");
 
-routes.post('/managers', ManagerController.create);
+routes
+  .post("/managers", verifyToken, ManagerController.create)
 
-routes.get('/managers/:firebaseUid/establishments', ManagerEstablishmentController.index);
-routes.post('/managers/:firebaseUid/establishments', ManagerEstablishmentController.create);
-routes.put('/managers/:firebaseUid/establishments/:establishmentId', ManagerEstablishmentController.edit);
-routes.delete('/managers/:firebaseUid/establishments/:establishmentId', ManagerEstablishmentController.delete);
+  .get("/establishments", EstablishmentController.index)
+  .post("/establishments", verifyToken, EstablishmentController.create)
+  .put(
+    "/establishments/:establishmentId",
+    verifyToken,
+    EstablishmentController.edit
+  )
+  .delete(
+    "/establishments/:establishmentId",
+    verifyToken,
+    EstablishmentController.delete
+  )
+
+  .get("/services", ServiceController.index)
+  .post("/services", verifyToken, ServiceController.create)
+  .put("/services/:serviceId", verifyToken, ServiceController.edit)
+  .delete("/services/:serviceId", verifyToken, ServiceController.delete);
 
 module.exports = routes;
