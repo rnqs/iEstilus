@@ -6,7 +6,7 @@ exports.up = (knex) =>
       .references("managers.firebase_uid")
       .notNullable()
       .onDelete("CASCADE");
-    table.string("name", 20).notNullable();
+    table.string("name", 36).notNullable();
     table.string("description", 120).notNullable();
     table.string("photo_url").notNullable();
     table.string("phone_number", 13).notNullable();
