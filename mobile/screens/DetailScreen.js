@@ -3,8 +3,10 @@ import {
   View,
   Text,
   Image,
+  Linking,
   StatusBar,
   Dimensions,
+  Platform,
   ScrollView,
   StyleSheet,
   TouchableHighlight,
@@ -31,7 +33,7 @@ import {
 import { useMemoOne } from "use-memo-one";
 import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { SharedElement } from "react-navigation-shared-element";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialIcons, Feather } from "@expo/vector-icons";
 
 import {
   backgroundColor,
@@ -43,7 +45,14 @@ import {
 } from "../constants/colors";
 
 const DetailScreen = ({ navigation, route }) => {
-  const { id, name, imageUri } = route.params.establishment;
+  const {
+    id,
+    name,
+    description,
+    address,
+    coordinate,
+    imageUri,
+  } = route.params.establishment;
   const [finalPrice, setFinalPrice] = useState(0);
   const [buttonVisible, setButtonVisible] = useState(false);
   const [services, setServices] = useState(
@@ -131,15 +140,42 @@ const DetailScreen = ({ navigation, route }) => {
               />
             </SharedElement>
             <View style={styles.contentContainer}>
-              <TouchableOpacity
-                style={styles.buttonClose}
-                onPress={() => {
-                  navigation.navigate("List");
-                }}
-              >
-                <MaterialIcons name="close" size={32} color={textColor} />
-              </TouchableOpacity>
-              <Text style={styles.name}>{name}</Text>
+              <View style={styles.contentTop}>
+                <Text style={styles.name}>{name}</Text>
+                <TouchableOpacity
+                  style={styles.buttonClose}
+                  onPress={() => {
+                    navigation.navigate("List");
+                  }}
+                >
+                  <MaterialIcons name="close" size={32} color={textColor} />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.contentBottom}>
+                <Text style={styles.description}>{description}</Text>
+                <View style={styles.containerIcons}>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => {
+                      Linking.openURL("tel:+123456789");
+                    }}
+                  >
+                    <Feather name="phone" size={28} color={textColor} />
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.buttonClose}
+                    onPress={() => {
+                      Linking.openURL(
+                        Platform.OS === "android"
+                          ? `http://www.google.com/maps/place/${address}/@${coordinate.x},${coordinate.y},10z`
+                          : `http://maps.apple.com/?q=${address}&sll=${coordinate.x},${coordinate.y}&z=10`
+                      );
+                    }}
+                  >
+                    <Feather name="map-pin" size={28} color={textColor} />
+                  </TouchableOpacity>
+                </View>
+              </View>
             </View>
           </View>
           <View style={styles.servicesContainer}>
@@ -223,19 +259,43 @@ const styles = StyleSheet.create({
     position: "absolute",
     width,
     height: height / 2.11,
+    zIndex: -1,
   },
   contentContainer: {
+    top: 0,
     height: height / 2.11,
+    justifyContent: "space-between",
+    zIndex: 2,
+  },
+  contentTop: {
+    marginTop: 35,
     flexDirection: "row",
-    alignItems: "flex-end",
   },
   buttonClose: {
-    position: "absolute",
-    marginLeft: 10,
-    top: 30,
+    marginRight: 16,
+  },
+  contentBottom: {
+    height: 100,
+    flexDirection: "row",
+    alignItems: "flex-end",
+    justifyContent: "space-between",
+    marginBottom: 16,
+  },
+  description: {
+    maxWidth: width - 44,
+    paddingLeft: 16,
+    alignSelf: "center",
+    fontFamily: "Montserrat-SemiBold",
+    color: textColor,
+    fontSize: 16,
+  },
+  containerIcons: {
+    height: 90,
+    justifyContent: "space-around",
   },
   servicesContainer: {
     flex: 1,
+    zIndex: 2,
   },
   name: {
     flex: 1,

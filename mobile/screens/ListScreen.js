@@ -21,6 +21,13 @@ const establishments = [
   {
     id: "1",
     name: "Barbearia do Seu Jorge",
+    description:
+      "Lorem ipsum dolor sit amet, nsectetur adipiscing elit. Suspendisse et lentesque nibh. Cras tempus lectus. 1 ",
+    coordinate: {
+      x: -3.8709,
+      y: -8.6001,
+    },
+    address: "Brazil",
     imageUri:
       "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polishperfect.co%2Fwp-content%2Fuploads%2F2016%2F09%2Fblow-dry-bar-del-mar-chairs-counter-853427.jpg&f=1&nofb=1",
     services: [
@@ -38,6 +45,8 @@ const establishments = [
   {
     id: "2",
     name: "Barbearia do Seu Jorge",
+    description:
+      "Lorem ipsum dolor sit amet, nsectetur adipiscing elit. Suspendisse et lentesque nibh. Cras tempus lectus. ",
     imageUri:
       "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.polishperfect.co%2Fwp-content%2Fuploads%2F2016%2F09%2Fblow-dry-bar-del-mar-chairs-counter-853427.jpg&f=1&nofb=1",
   },
