@@ -68,9 +68,10 @@ section.new .content .input-container .image-container {
     height: 50px;
     padding: 0 25px;
     margin-bottom: 25px;
+    box-sizing: border-box;
 
     background: var(--input-bg-color);
-    border-width: 0;
+    border: 3px solid var(--input-bg-color);
     border-radius: 10px;
 
     color: var(--input-text-color);
@@ -90,26 +91,16 @@ section.new .content .input-container textarea:focus {
     transition-duration: 200ms
 }
 
-section.new .content .input-container input.input:focus {
-    padding: 0 22px;
-    box-sizing: border-box;
-}
-
 section.new .content .input-container textarea {
     height: 100px;
-    padding: 13px 22px;
+    padding: 13px 25px;
 
     resize: none;
 }
 
-section.new .content .input-container textarea:focus {
-    padding: 10px 19px;
-
-    transition-duration: 200ms
-}
-
 section.new .content .input-container .image-container {
     display: flex;
+    border: none;
     height: 100px;
     padding: 0;
 }
@@ -240,7 +231,7 @@ section.new .content .input-container .services-input {
 
 section.new .content .input-container .services-input span {
     display: block;
-    margin: 13px 17px;
+    margin: 13px 20px;
 }
 
 section.new .content .input-container .services-input .services-container {
@@ -262,11 +253,13 @@ section.new .content .input-container .services-input .services-container .add-b
 section.new .content .input-container .services-input .services-container .service {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     height: 35px;
     margin-bottom: 5px;
     padding: 0 20px;
 
     background: var(--below-bg-color);
+    border: 3px solid var(--below-bg-color);
     border-radius: 10px;
 
     color: var(--input-text-color);
@@ -274,6 +267,14 @@ section.new .content .input-container .services-input .services-container .servi
     font-weight: 500;
     font-size: 14px;
     letter-spacing: -0.03em;
+
+    transition-duration: 200ms
+}
+
+section.new .content .input-container .services-input .services-container .error {
+    border: 3px solid var(--err-color);
+
+    transition-duration: 200ms
 }
 
 section.new .content .input-container .services-input .services-container .service input {

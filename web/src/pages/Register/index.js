@@ -114,6 +114,7 @@ export default function Register() {
             <img src={superGSvg} alt="Google Logo" />
             Continuar com o Google
           </button>
+          <span onClick={() => history.push("/")}>Já tenho conta</span>
         </div>
         <div className="submit-container">
           <button

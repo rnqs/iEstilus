@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import Switch from "react-switch";
 import InputMask from "react-input-mask";
-import { FiImage, FiPlus } from "react-icons/fi";
+import { FiImage, FiPlus, FiX } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
 
 import DropModal from "../../components/DropModal";
@@ -53,6 +53,17 @@ export default function New() {
     previewImageAndSetPhoto(acceptedFiles[0]);
   }, []);
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
+
+  const getIndexOfUnfilledFields = (arrayOfObjects) => {
+    return arrayOfObjects
+      .map(
+        (object, objectIndex) =>
+          Object.values(object)
+            .map((value) => (value === "" ? objectIndex : null))
+            .filter((item) => item !== null)[0]
+      )
+      .filter((index) => index !== undefined);
+  };
 
   return (
     <div {...getRootProps()}>
@@ -152,15 +163,20 @@ export default function New() {
                       className="name"
                       placeholder="Nome do serviço"
                       value={services[serviceIndex].name}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        if (e.target.value && services[serviceIndex].price) {
+                          document
+                            .querySelectorAll("div.service")
+                            [serviceIndex].classList.remove("error");
+                        }
                         setServices(
                           services.map((service, index) =>
                             index === serviceIndex
                               ? { ...service, name: e.target.value }
                               : service
                           )
-                        )
-                      }
+                        );
+                      }}
                     />
                     <InputMask
                       className="price"
@@ -174,25 +190,65 @@ export default function New() {
                       }
                       maskChar={null}
                       value={services[serviceIndex].price}
-                      onChange={(e) =>
+                      onChange={(e) => {
+                        if (
+                          e.target.value !== "R$ " &&
+                          services[serviceIndex].name
+                        ) {
+                          document
+                            .querySelectorAll("div.service")
+                            [serviceIndex].classList.remove("error");
+                        }
                         setServices(
                           services.map((service, index) =>
                             index === serviceIndex
                               ? { ...service, price: e.target.value }
                               : service
                           )
-                        )
-                      }
+                        );
+                      }}
                     />
+                    {services.length > 1 && (
+                      <FiX
+                        size="20px"
+                        style={{
+                          marginLeft: 10,
+                          cursor: "pointer",
+                        }}
+                        color="var(--bg-color)"
+                        onClick={() => {
+                          document
+                            .querySelectorAll("div.service")
+                            [serviceIndex].classList.remove("error");
+                          setServices(
+                            services.filter(
+                              (item, index) => item && index !== serviceIndex
+                            )
+                          );
+                        }}
+                      />
+                    )}
                   </div>
                 ))}
                 <div className="add-button">
                   <FiPlus
                     size="45px"
                     color="var(--below-bg-color)"
-                    onClick={() =>
-                      setServices([...services, { name: "", price: "" }])
-                    }
+                    onClick={() => {
+                      let indexOfUnfilledFields = getIndexOfUnfilledFields(
+                        services
+                      );
+                      if (indexOfUnfilledFields.length === 0) {
+                        setServices([...services, { name: "", price: "" }]);
+                      } else {
+                        let serviceDivs = document.querySelectorAll(
+                          "div.service"
+                        );
+                        indexOfUnfilledFields.map((index) => {
+                          serviceDivs[index].classList.add("error");
+                        });
+                      }
+                    }}
                   />
                 </div>
               </div>

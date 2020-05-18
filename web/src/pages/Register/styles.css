@@ -51,6 +51,20 @@ section.register .content .input-container h3 {
     letter-spacing: -0.03em;
 }
 
+section.register .content .input-container span {
+    color: var(--main-color);
+    margin-top: 25px;
+    cursor: pointer;
+
+    transition-duration: 200ms;
+}
+
+section.register .content .input-container span:hover {
+    text-decoration: underline;
+
+    transition-duration: 200ms;
+}
+
 section.register .content .svg-container,
 section.register .content .input-container,
 section.register .content .submit-container {
@@ -75,9 +89,10 @@ section.register .content .input-container input {
     height: 50px;
     padding: 0 25px;
     margin-bottom: 25px;
+    box-sizing: border-box;
 
     background: var(--input-bg-color);
-    border-width: 0;
+    border: 3px solid var(--input-bg-color);
     border-radius: 10px;
 
     color: var(--input-text-color);
@@ -91,27 +106,21 @@ section.register .content .input-container input {
 }
 
 section.register .content .input-container input:focus {
-    padding: 0 22px;
-
     border: 3px solid var(--main-color);
-    box-sizing: border-box;
 
     transition-duration: 200ms
 }
 
 section.register .content .input-container input.pass-err,
 section.register .content .input-container input.pass-err:focus {
-    padding: 0 22px;
-
     border: 3px solid var(--err-color);
-    box-sizing: border-box;
 
     transition-duration: 200ms
 }
 
 section.register .content .input-container button.google-register {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     height: 50px;
     padding: 0 18px;
     margin-top: 25px;

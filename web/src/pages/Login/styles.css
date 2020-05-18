@@ -75,9 +75,10 @@ section.login .content .input-container input {
     height: 50px;
     padding: 0 25px;
     margin-bottom: 25px;
+    box-sizing: border-box;
 
     background: var(--input-bg-color);
-    border-width: 0;
+    border: 3px solid var(--input-bg-color);
     border-radius: 10px;
 
     color: var(--input-text-color);
@@ -91,17 +92,14 @@ section.login .content .input-container input {
 }
 
 section.login .content .input-container input:focus {
-    padding: 0 22px;
-
     border: 3px solid var(--main-color);
-    box-sizing: border-box;
 
     transition-duration: 200ms
 }
 
 section.login .content .input-container button.google-login {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     height: 50px;
     padding: 0 18px;
     margin-top: 25px;
