@@ -3,7 +3,9 @@ import { useHistory } from "react-router-dom";
 import firebase from "firebase";
 import "./styles.css";
 
-import firebaseAuth from "../../utils/firebaseAuth.js";
+import api from "../../services/api";
+
+import firebaseAuth from "../../utils/firebaseAuth";
 
 import superGSvg from "../../assets/super-g.svg";
 import registerSvg from "../../assets/login-register.svg";
@@ -21,17 +23,27 @@ export default function Register() {
 
   let history = useHistory();
 
-  function redirect() {
-    history.push("/gerenciar");
-  }
+  const createUserOnApi = async (jwt) => {
+    try {
+      await api.post("/managers", {}, { headers: { authentication: jwt } });
+
+      redirect();
+    } catch (error) {
+      alert("Erro ao comunicar com o servidor.");
+    }
+  };
+
+  const redirect = () => history.push("/gerenciar");
 
   const firebaseCreateUserWithEmailAndPassword = (email, password) => {
     firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(
-        function (authData) {
+        async (authData) => {
           authData.user.sendEmailVerification();
-          redirect();
+          const idToken = await authData.user.getIdToken();
+
+          createUserOnApi(idToken);
         },
         function (error) {
           alert("Erro no envio do email de confirmação.");
@@ -41,7 +53,7 @@ export default function Register() {
         var errorCode = error.code;
         var errorMessage = error.message;
         if (errorCode === "auth/weak-password") {
-          alert("The password is too weak.");
+          alert("A senha é muito fácil.");
         } else {
           alert(errorMessage);
         }
@@ -52,15 +64,10 @@ export default function Register() {
   const firebaseLoginWithGoogle = () => {
     firebaseAuth
       .signInWithPopup(provider)
-      .then(function (result) {
-        // This gives you a Google Access Token. You can use it to access the Google API.
-        const token = result.credential.accessToken;
-        // The signed-in user info.
-        const user = result.user;
+      .then(async (result) => {
+        const idToken = await result.user.getIdToken();
 
-        console.log(token);
-        console.log(user);
-        redirect();
+        createUserOnApi(idToken);
       })
       .catch(function (error) {
         // Handle Errors here.

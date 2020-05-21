@@ -3,7 +3,8 @@ import { useHistory } from "react-router-dom";
 import firebase from "firebase";
 import "./styles.css";
 
-import firebaseAuth from "../../utils/firebaseAuth.js";
+import api from "../../services/api";
+import firebaseAuth from "../../utils/firebaseAuth";
 
 import superGSvg from "../../assets/super-g.svg";
 import loginSvg from "../../assets/login-register.svg";
@@ -18,9 +19,7 @@ export default function Login() {
 
   let history = useHistory();
 
-  function redirect() {
-    history.push("/gerenciar");
-  }
+  const redirect = () => history.push("/gerenciar");
 
   const provider = new firebase.auth.GoogleAuthProvider();
 
@@ -32,17 +31,22 @@ export default function Login() {
       })
       .catch(function (error) {
         const errorCode = error.code;
-        const errorMessage = error.message;
 
-        alert(`Erro ${errorCode}:\n${errorMessage}`);
+        document.querySelector("input.password").classList.add("error");
+
+        if (errorCode !== "auth/wrong-password") {
+          document.querySelector("input.email").classList.add("error");
+        }
       });
   };
 
   const firebaseLoginWithGoogle = () => {
     firebaseAuth
       .signInWithPopup(provider)
-      .then(function (result) {
-        redirect();
+      .then(async (result) => {
+        const idToken = await result.user.getIdToken();
+
+        createUserOnApi(idToken);
       })
       .catch(function (error) {
         // Handle Errors here.
@@ -54,6 +58,16 @@ export default function Login() {
         const credential = error.credential;
         console.error(errorCode, errorMessage, email, credential);
       });
+  };
+
+  const createUserOnApi = async (jwt) => {
+    try {
+      await api.post("/managers", {}, { headers: { authentication: jwt } });
+
+      redirect();
+    } catch (error) {
+      alert("Erro ao comunicar com o servidor.");
+    }
   };
 
   const firebaseForgetPassword = () => {
@@ -91,14 +105,20 @@ export default function Login() {
             className="email"
             placeholder="Email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              e.target.classList.remove("error");
+              setEmail(e.target.value);
+            }}
           />
           <input
             type="password"
             className="password"
             placeholder="Senha"
             value={password}
-            onChange={(e) => setPassword(e.target.value)}
+            onChange={(e) => {
+              e.target.classList.remove("error");
+              setPassword(e.target.value);
+            }}
           />
           <h3>ou</h3>
           <button

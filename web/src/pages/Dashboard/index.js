@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { FiPlus } from "react-icons/fi";
+import { FiPlus, FiImage } from "react-icons/fi";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 
@@ -10,6 +10,10 @@ import Header from "../../components/Header";
 export default function Home() {
   const [navigating, setNavigating] = useState(true);
   const [greetings, setGreetings] = useState("");
+  const [establishments, setEstablishments] = useState([]);
+
+  const photoUrl =
+    "https://firebasestorage.googleapis.com/v0/b/tcc-f-18eb7.appspot.com/o/establishments%2F1589925016673-imagem.jpeg?alt=media&token=a6521274-869e-473a-9700-e9c88bcdd1f7";
 
   useEffect(() => {
     document.title = "iEstilus | Gerenciar";
@@ -30,7 +34,6 @@ export default function Home() {
     setTimeout(() => {
       setNavigating(false);
     }, 2000);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [navigating, greetings]);
 
   let history = useHistory();
@@ -39,7 +42,7 @@ export default function Home() {
     if (!navigating) {
       history.push({
         pathname,
-        state: { transition: "slide-left", duration: 2000 }
+        state: { transition: "slide-left", duration: 2000 },
       });
     }
 
@@ -52,10 +55,10 @@ export default function Home() {
       .then(
         history.push({
           pathname: "/login",
-          state: { transition: "slide-left", duration: 2000 }
+          state: { transition: "slide-left", duration: 2000 },
         })
       )
-      .catch(function(error) {
+      .catch(function (error) {
         const errorCode = error.code;
         const errorMessage = error.message;
 
@@ -70,11 +73,70 @@ export default function Home() {
           links={[{ text: "Fazer logout", onClick: () => logOut() }]}
           button={{
             text: "Baixar o app",
-            onClick: () => navigateTo("/cadastro")
+            onClick: () => navigateTo("/cadastro"),
           }}
         />
 
         <h1>{greetings}, seus salões estão listados abaixo</h1>
+
+        <div className="list-establishments-container">
+          <div className="establishment-container">
+            <div className="image-container">
+              <div
+                className="image"
+                style={
+                  photoUrl === ""
+                    ? { background: "var(--below-bg-color)" }
+                    : { background: `url("${photoUrl}")` }
+                }
+              >
+                <FiImage
+                  style={
+                    photoUrl === "" ? { display: "block" } : { display: "none" }
+                  }
+                  size="40px"
+                  color="var(--input-text-color)"
+                />
+              </div>
+            </div>
+            <div className="info-container">
+              <span className="title">Barbearia do Seu Jorge</span>
+              <p className="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna ali.
+              </p>
+              <button>Alterar</button>
+            </div>
+          </div>
+          <div className="establishment-container">
+            <div className="image-container">
+              <div
+                className="image"
+                style={
+                  photoUrl === ""
+                    ? { background: "var(--below-bg-color)" }
+                    : { background: `url("${photoUrl}")` }
+                }
+              >
+                <FiImage
+                  style={
+                    photoUrl === "" ? { display: "block" } : { display: "none" }
+                  }
+                  size="40px"
+                  color="var(--input-text-color)"
+                />
+              </div>
+            </div>
+            <div className="info-container">
+              <span className="title">Barbearia do Seu Jorge</span>
+              <p className="description">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+                eiusmod tempor incididunt ut labore et dolore magna ali.
+              </p>
+              <button>Alterar</button>
+            </div>
+          </div>
+        </div>
 
         <div className="new-establishment">
           <button

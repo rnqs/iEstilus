@@ -97,6 +97,13 @@ section.login .content .input-container input:focus {
     transition-duration: 200ms
 }
 
+section.login .content .input-container input.error,
+section.login .content .input-container input.error:focus {
+    border: 3px solid var(--err-color);
+
+    transition-duration: 200ms
+}
+
 section.login .content .input-container button.google-login {
     display: flex;
     align-items: center;

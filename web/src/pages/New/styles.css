@@ -131,7 +131,7 @@ section.new .content .input-container .image-container .side p {
     letter-spacing: -0.03em;
 }
 
-section.new .content .input-container .image-container .side input.upload-photo {
+section.new .content .input-container input.upload-photo {
     display: none;
 }
 
@@ -156,6 +156,7 @@ section.new .content .input-container .image-container .side label {
 }
 
 section.new .content .input-container .phone-input {
+    position: relative;
     height: 75px;
 }
 
@@ -163,9 +164,11 @@ section.new .content .input-container .phone-input span {
     display: block;
     width: 70px;
     height: 16px;
-    position: relative;
-    top: -70px;
-    left: 305px;
+    position: absolute !important;
+    top: 5px;
+    right: 17px;
+
+    cursor: pointer;
 
     color: #C9C9C9;
     font-weight: 500;
@@ -175,9 +178,26 @@ section.new .content .input-container .phone-input span {
 }
 
 section.new .content .input-container .phone-input .switch {
-    position: relative !important;
-    top: -67px;
-    left: 320px;
+    position: absolute !important;
+    top: 23px;
+    right: 40px;
+}
+
+section.new .content .input-container .address-input {
+    position: relative;
+}
+
+section.new .content .input-container .address-input input {
+    padding-right: 65px;
+}
+
+section.new .content .input-container .address-input .pinIcon {
+    position: absolute !important;
+    right: 0;
+    margin: 13px 25px;
+
+    cursor: pointer;
+    color: var(--input-text-color);
 }
 
 section.new .content .submit-container button {
@@ -271,8 +291,19 @@ section.new .content .input-container .services-input .services-container .servi
     transition-duration: 200ms
 }
 
-section.new .content .input-container .services-input .services-container .error {
+section.new .content .input-container .services-input .services-container .error,
+section.new .content .input-container .image-container .side label.error,
+section.new .content .input-container .address-input .error,
+section.new .content .input-container input.error,
+section.new .content .input-container .error {
     border: 3px solid var(--err-color);
+
+    transition-duration: 200ms
+}
+
+section.new .content .input-container .image-container .side label.error:hover {
+    border: 3px solid var(--main-color);
+    background-color: var(--main-color);
 
     transition-duration: 200ms
 }

@@ -2,8 +2,13 @@ import React, { useState, useEffect, useCallback } from "react";
 import { useHistory } from "react-router-dom";
 import Switch from "react-switch";
 import InputMask from "react-input-mask";
-import { FiImage, FiPlus, FiX } from "react-icons/fi";
+import { FiImage, FiPlus, FiX, FiCheckSquare, FiMapPin } from "react-icons/fi";
 import { useDropzone } from "react-dropzone";
+
+import api from "../../services/api";
+import { bingMapsApi, apiKey } from "../../services/bingMapsApi";
+import firebaseStorage from "../../utils/firebaseStorage";
+import firebaseAuth from "../../utils/firebaseAuth";
 
 import DropModal from "../../components/DropModal";
 
@@ -13,11 +18,14 @@ export default function New() {
   const [navigating, setNavigating] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [photoUrl, setPhotoUrl] = useState("");
   const [phone, setPhone] = useState("");
   const [whatsAppAvailable, setWhatsAppAvailable] = useState(true);
   const [address, setAddress] = useState("");
+  const [latitude, setLatitude] = useState("");
+  const [longitude, setLongitude] = useState("");
   const [services, setServices] = useState([{ name: "", price: "" }]);
+  const [inputError, setInputError] = useState(false);
 
   useEffect(() => {
     document.title = "iEstilus | Novo Salão";
@@ -40,18 +48,27 @@ export default function New() {
     setNavigating(true);
   }
 
-  function previewImageAndSetPhoto(file) {
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
+  const uploadToFirebase = (file, path, callback) => {
+    const fileName = `${new Date().getTime()}-${file.name}`;
 
-    fileReader.onload = function (e) {
-      setPhoto(e.target.result);
-    };
-  }
+    const storageRef = firebaseStorage.ref();
 
-  const onDrop = useCallback((acceptedFiles) => {
-    previewImageAndSetPhoto(acceptedFiles[0]);
-  }, []);
+    const uploadTask = storageRef.child(path + fileName).put(file);
+
+    uploadTask.on("state_changed", () => {
+      uploadTask.snapshot.ref.getDownloadURL().then(callback);
+    });
+  };
+
+  const onDrop = useCallback(
+    (droppedFiles) => {
+      photoUrl ||
+        uploadToFirebase(droppedFiles[0], "establishments/", (photoUrl) => {
+          setPhotoUrl(photoUrl);
+        });
+    },
+    [photoUrl]
+  );
   const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
 
   const getIndexOfUnfilledFields = (arrayOfObjects) => {
@@ -65,6 +82,121 @@ export default function New() {
       .filter((index) => index !== undefined);
   };
 
+  const getCurrentLocation = () => {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+
+        setLatitude(latitude);
+        setLongitude(longitude);
+
+        const response = await bingMapsApi.get(`/${latitude},${longitude}`, {
+          params: {
+            includeEntityTypes: "Address",
+            key: apiKey,
+          },
+        });
+
+        setAddress(
+          response.data.resourceSets[0].resources[0].address.formattedAddress
+        );
+      },
+      (err) => {
+        console.log(err);
+      },
+      {
+        timeout: 30000,
+      }
+    );
+  };
+
+  const addInputError = (id) => {
+    document.querySelector("#" + id).classList.add("error");
+    setInputError(true);
+  };
+
+  const removeInputError = (id) => {
+    document.querySelector("#" + id).classList.remove("error");
+    setInputError(false);
+  };
+
+  const verifyAddressAndGetLatitudeAndLongitude = async () => {
+    try {
+      if (address) {
+        const response = await bingMapsApi.get(`/`, {
+          params: {
+            addressLine: address,
+            maxResults: 1,
+            key: apiKey,
+          },
+        });
+
+        const results = response.data.resourceSets[0].resources;
+
+        if (results.length === 0) {
+          addInputError("address");
+        } else {
+          setAddress(results[0].address.formattedAddress);
+          setLatitude(results[0].point.coordinates[0]);
+          setLongitude(results[0].point.coordinates[1]);
+          setInputError(false);
+        }
+      } else {
+        addInputError("address");
+      }
+    } catch (error) {
+      addInputError("address");
+    }
+  };
+
+  const handleSubmit = async () => {
+    await verifyAddressAndGetLatitudeAndLongitude();
+    if (!name) addInputError("name");
+    if (!description) addInputError("description");
+    if (phone.length < 18) addInputError("phone");
+    if (!photoUrl) addInputError("image");
+    let indexOfUnfilledFields = getIndexOfUnfilledFields(services);
+    if (indexOfUnfilledFields.length > 0) {
+      let serviceDivs = document.querySelectorAll("div.service");
+      setInputError(true);
+      indexOfUnfilledFields.map((index) =>
+        serviceDivs[index].classList.add("error")
+      );
+    }
+
+    if (!inputError) {
+      const idToken = await firebaseAuth.currentUser.getIdToken();
+
+      try {
+        const response = await api.post(
+          "/establishments",
+          {
+            name,
+            description,
+            photo_url: photoUrl,
+            phone_number: phone.replace(/\D/gim, ""),
+            whatsapp_available: whatsAppAvailable ? 1 : 0,
+            address,
+            coordinate: {
+              latitude,
+              longitude,
+            },
+          },
+          {
+            headers: {
+              authentication: idToken,
+            },
+          }
+        );
+        alert(response);
+      } catch (error) {
+        alert(error);
+      }
+    }
+
+    //navigateTo("/gerenciar")
+  };
+
   return (
     <div {...getRootProps()}>
       <section className="new" {...getInputProps()}>
@@ -76,28 +208,36 @@ export default function New() {
             <input
               type="text"
               className="input"
+              id="name"
               placeholder="Nome do salão"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => {
+                removeInputError("name");
+                setName(e.target.value);
+              }}
             />
             <textarea
               placeholder="Breve descrição"
+              id="description"
               maxLength={120}
               value={description}
-              onChange={(e) => setDescription(e.target.value)}
+              onChange={(e) => {
+                removeInputError("description");
+                setDescription(e.target.value);
+              }}
             ></textarea>
             <div className="image-container">
               <div
                 className="image-preview"
                 style={
-                  photo === ""
+                  photoUrl === ""
                     ? { background: "var(--below-bg-color)" }
-                    : { background: `url("${photo}")` }
+                    : { background: `url("${photoUrl}")` }
                 }
               >
                 <FiImage
                   style={
-                    photo === "" ? { display: "block" } : { display: "none" }
+                    photoUrl === "" ? { display: "block" } : { display: "none" }
                   }
                   size="40px"
                   color="var(--input-text-color)"
@@ -107,30 +247,52 @@ export default function New() {
                 <p>
                   Araste aqui uma foto do salão ou selecione um arquivo abaixo
                 </p>
-                <label for="upload-photo">Selecione um arquivo</label>
+                <label for="upload-photo" id="image">
+                  Selecione um arquivo
+                </label>
                 <input
                   type="file"
                   className="upload-photo"
                   id="upload-photo"
                   accept="image/png, image/jpeg"
-                  onChange={(e) => previewImageAndSetPhoto(e.target.files[0])}
+                  onChange={(e) => {
+                    removeInputError("image");
+                    uploadToFirebase(
+                      e.target.files[0],
+                      "establishments/",
+                      (photoUrl) => {
+                        setPhotoUrl(photoUrl);
+                      }
+                    );
+                  }}
                 />
               </div>
             </div>
             <div className="phone-input">
               <InputMask
                 className="input"
+                id="phone"
                 placeholder="Telefone de atendimento"
                 mask={
                   phone.length >= 19
-                    ? "+55 (99) 99999-9999"
-                    : "+55 (99) 9999-99999"
+                    ? "+99 (99) 99999-9999"
+                    : "+99 (99) 9999-99999"
                 }
                 maskChar={null}
                 value={phone}
-                onChange={(e) => setPhone(e.target.value)}
+                onFocus={() => phone || setPhone("55")}
+                onBlur={() => phone === "55" && setPhone("")}
+                onChange={(e) => {
+                  if (phone.length > 16) {
+                    setInputError(false);
+                    e.target.classList.remove("error");
+                  }
+                  setPhone(e.target.value);
+                }}
               />
-              <span>WhatsApp</span>
+              <label for="material-switch">
+                <span>WhatsApp</span>
+              </label>
               <Switch
                 checked={whatsAppAvailable}
                 onChange={() => setWhatsAppAvailable(!whatsAppAvailable)}
@@ -146,13 +308,27 @@ export default function New() {
                 id="material-switch"
               />
             </div>
-            <input
-              type="text"
-              className="input"
-              placeholder="Endereço"
-              value={address}
-              onChange={(e) => setAddress(e.target.value)}
-            />
+            <div className="address-input">
+              <input
+                type="text"
+                className="input"
+                id="address"
+                placeholder="Endereço"
+                value={address}
+                onChange={(e) => {
+                  removeInputError("address");
+                  setAddress(e.target.value);
+                }}
+              />
+              <FiMapPin
+                size="24px"
+                className="pinIcon"
+                onClick={() => {
+                  removeInputError("address");
+                  getCurrentLocation();
+                }}
+              />
+            </div>
             <div className="services-input">
               <span>Serviços</span>
               <div className="services-container">
@@ -165,6 +341,7 @@ export default function New() {
                       value={services[serviceIndex].name}
                       onChange={(e) => {
                         if (e.target.value && services[serviceIndex].price) {
+                          setInputError(false);
                           document
                             .querySelectorAll("div.service")
                             [serviceIndex].classList.remove("error");
@@ -195,6 +372,7 @@ export default function New() {
                           e.target.value !== "R$ " &&
                           services[serviceIndex].name
                         ) {
+                          setInputError(false);
                           document
                             .querySelectorAll("div.service")
                             [serviceIndex].classList.remove("error");
@@ -208,6 +386,52 @@ export default function New() {
                         );
                       }}
                     />
+                    <label for="upload-service-photo">
+                      {services[serviceIndex].photoUrl ? (
+                        <FiCheckSquare
+                          size="20px"
+                          style={{
+                            marginTop: 6.5,
+                            marginLeft: 10,
+                            cursor: "pointer",
+                          }}
+                          color="var(--bg-color)"
+                        />
+                      ) : (
+                        <FiImage
+                          size="20px"
+                          style={{
+                            marginTop: 6.5,
+                            marginLeft: 10,
+                            cursor: "pointer",
+                          }}
+                          color="var(--bg-color)"
+                        />
+                      )}
+                    </label>
+                    <input
+                      type="file"
+                      className="upload-photo"
+                      id="upload-service-photo"
+                      accept="image/png, image/jpeg"
+                      onChange={(e) => {
+                        uploadToFirebase(
+                          e.target.files[0],
+                          "services/",
+                          (photoUrl) =>
+                            setServices(
+                              services.map((service, index) =>
+                                index === serviceIndex
+                                  ? {
+                                      ...service,
+                                      photoUrl,
+                                    }
+                                  : service
+                              )
+                            )
+                        );
+                      }}
+                    />
                     {services.length > 1 && (
                       <FiX
                         size="20px"
@@ -217,6 +441,7 @@ export default function New() {
                         }}
                         color="var(--bg-color)"
                         onClick={() => {
+                          setInputError(false);
                           document
                             .querySelectorAll("div.service")
                             [serviceIndex].classList.remove("error");
@@ -244,6 +469,7 @@ export default function New() {
                         let serviceDivs = document.querySelectorAll(
                           "div.service"
                         );
+                        setInputError(true);
                         indexOfUnfilledFields.map((index) => {
                           serviceDivs[index].classList.add("error");
                         });
@@ -255,13 +481,7 @@ export default function New() {
             </div>
           </div>
           <div className="submit-container">
-            <button
-              onClick={() => {
-                navigateTo("/gerenciar");
-              }}
-            >
-              Cadastrar
-            </button>
+            <button onClick={() => handleSubmit()}>Enviar</button>
           </div>
         </div>
         <DropModal display={isDragActive} />
