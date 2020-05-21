@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FiPlus, FiImage } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
+import SkeletonLoader from "tiny-skeleton-loader-react";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 
+import getFirebaseUserStatus from "../../utils/getFirebaseUserStatus.js";
 import firebaseAuth from "../../utils/firebaseAuth.js";
+import api from "../../services/api";
 
 import Header from "../../components/Header";
 
@@ -11,9 +14,7 @@ export default function Home() {
   const [navigating, setNavigating] = useState(true);
   const [greetings, setGreetings] = useState("");
   const [establishments, setEstablishments] = useState([]);
-
-  const photoUrl =
-    "https://firebasestorage.googleapis.com/v0/b/tcc-f-18eb7.appspot.com/o/establishments%2F1589925016673-imagem.jpeg?alt=media&token=a6521274-869e-473a-9700-e9c88bcdd1f7";
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     document.title = "iEstilus | Gerenciar";
@@ -31,14 +32,26 @@ export default function Home() {
       }
     }
 
+    fetchUserEstablishmentsData();
+
     setTimeout(() => {
       setNavigating(false);
     }, 2000);
-  }, [navigating, greetings]);
+  }, []);
 
   let history = useHistory();
 
-  function navigateTo(pathname) {
+  const fetchUserEstablishmentsData = async () => {
+    const uid = await getFirebaseUserStatus();
+
+    const response = await api.get("/establishments", { params: { uid } });
+
+    setLoadingData(false);
+
+    setEstablishments(response.data);
+  };
+
+  const navigateTo = (pathname) => {
     if (!navigating) {
       history.push({
         pathname,
@@ -47,9 +60,9 @@ export default function Home() {
     }
 
     setNavigating(true);
-  }
+  };
 
-  function logOut() {
+  const logOut = () => {
     firebaseAuth
       .signOut()
       .then(
@@ -64,7 +77,7 @@ export default function Home() {
 
         alert(`Erro ${errorCode}:\n${errorMessage}`);
       });
-  }
+  };
 
   return (
     <section className="dashboard">
@@ -80,62 +93,29 @@ export default function Home() {
         <h1>{greetings}, seus salões estão listados abaixo</h1>
 
         <div className="list-establishments-container">
-          <div className="establishment-container">
-            <div className="image-container">
-              <div
-                className="image"
-                style={
-                  photoUrl === ""
-                    ? { background: "var(--below-bg-color)" }
-                    : { background: `url("${photoUrl}")` }
-                }
-              >
-                <FiImage
-                  style={
-                    photoUrl === "" ? { display: "block" } : { display: "none" }
-                  }
-                  size="40px"
-                  color="var(--input-text-color)"
-                />
+          {loadingData && (
+            <SkeletonLoader
+              width="calc(100% - 40px)"
+              background="var(--input-bg-color)"
+              height={150}
+              style={{ margin: 20, maxWidth: 540, borderRadius: 10 }}
+            />
+          )}
+          {establishments.map((establishment) => (
+            <div className="establishment-container" key={establishment._id}>
+              <div className="image-container">
+                <div
+                  className="image"
+                  style={{ background: `url("${establishment.photo_url}")` }}
+                ></div>
+              </div>
+              <div className="info-container">
+                <span className="title">{establishment.name}</span>
+                <p className="description">{establishment.description}</p>
+                <button>Alterar</button>
               </div>
             </div>
-            <div className="info-container">
-              <span className="title">Barbearia do Seu Jorge</span>
-              <p className="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna ali.
-              </p>
-              <button>Alterar</button>
-            </div>
-          </div>
-          <div className="establishment-container">
-            <div className="image-container">
-              <div
-                className="image"
-                style={
-                  photoUrl === ""
-                    ? { background: "var(--below-bg-color)" }
-                    : { background: `url("${photoUrl}")` }
-                }
-              >
-                <FiImage
-                  style={
-                    photoUrl === "" ? { display: "block" } : { display: "none" }
-                  }
-                  size="40px"
-                  color="var(--input-text-color)"
-                />
-              </div>
-            </div>
-            <div className="info-container">
-              <span className="title">Barbearia do Seu Jorge</span>
-              <p className="description">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-                eiusmod tempor incididunt ut labore et dolore magna ali.
-              </p>
-              <button>Alterar</button>
-            </div>
-          </div>
+          ))}
         </div>
 
         <div className="new-establishment">

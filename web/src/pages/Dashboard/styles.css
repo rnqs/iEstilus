@@ -54,7 +54,15 @@ section.dashboard .content .list-establishments-container {
     align-items: center;
 }
 
+section.dashboard .content .list-establishments-container .loading-indicator {
+    width: calc(100% - 40px);
+    max-width: 540px;
+    min-height: 150px;
+    margin: 20px;
+}
+
 section.dashboard .content .establishment-container {
+    width: calc(100% - 40px);
     max-width: 540px;
     min-height: 150px;
     margin: 20px;
@@ -118,6 +126,8 @@ section.dashboard .content .establishment-container .info-container p.descriptio
 }
 
 section.dashboard .content .establishment-container .info-container button {
+    opacity: 0;
+
     display: flex;
     align-items: center;
     justify-content: center;
@@ -174,4 +184,14 @@ section.dashboard .content .new-establishment button p {
     font-size: 20px;
     line-height: 24px;
     letter-spacing: -0.03em;
+}
+
+/* Change the SkeletonLoader animation colors and speed */
+
+.styles_skeleton__2Mj1U::before {
+    background-image: linear-gradient(90deg,
+            rgba(255, 255, 255, 0),
+            rgba(201, 201, 201, 0.10),
+            rgba(255, 255, 255, 0));
+    animation: styles_skeleton-progress__o4fxe 1s ease-in-out infinite;
 }

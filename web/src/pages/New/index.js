@@ -188,13 +188,11 @@ export default function New() {
             },
           }
         );
-        alert(response);
+        response && navigateTo("/gerenciar");
       } catch (error) {
         alert(error);
       }
     }
-
-    //navigateTo("/gerenciar")
   };
 
   return (
