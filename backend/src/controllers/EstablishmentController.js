@@ -2,11 +2,17 @@ const connection = require("../database/connection");
 
 module.exports = {
   async index(req, res) {
+    if (req.query.uid) {
+      const establishments = await connection("establishments")
+        .select()
+        .where({ firebase_uid: req.query.uid });
+
+      return res.json(establishments);
+    }
+
     const [count] = await connection("establishments").count();
 
-    const establishments = await connection("establishments").select([
-      "establishments.*",
-    ]);
+    const establishments = await connection("establishments").select();
 
     res.header("X-Total-count", count["count(*)"]);
 
@@ -26,7 +32,7 @@ module.exports = {
     const { uid } = req.headers;
 
     try {
-      const establishment = await connection("establishments").insert({
+      const [id] = await connection("establishments").insert({
         firebase_uid: uid,
         name,
         description,
@@ -39,7 +45,7 @@ module.exports = {
         ),
       });
 
-      return res.status(201).json(establishment);
+      return res.status(201).json({ id });
     } catch (error) {
       return res.status(500).json(error.message);
     }
