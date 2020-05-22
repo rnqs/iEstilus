@@ -1,0 +1,1 @@
+web: yarn knex migrate:latest && node src/index.js
