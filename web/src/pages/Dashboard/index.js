@@ -4,6 +4,7 @@ import SkeletonLoader from "tiny-skeleton-loader-react";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 
+import getFirebaseUserStatus from "../../utils/getFirebaseUserStatus";
 import firebaseAuth from "../../utils/firebaseAuth.js";
 import api from "../../services/api";
 
@@ -41,7 +42,7 @@ export default function Home() {
   let history = useHistory();
 
   const fetchUserEstablishmentsData = async () => {
-    const idToken = await firebaseAuth.currentUser.getIdToken();
+    const idToken = await getFirebaseUserStatus();
 
     const response = await api.get("/managers/establishments", {
       headers: { authentication: idToken },
