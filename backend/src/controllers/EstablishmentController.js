@@ -1,4 +1,5 @@
 const connection = require("../database/connection");
+const st = require("../database/postgis");
 
 module.exports = {
   async index(req, res) {
@@ -12,7 +13,17 @@ module.exports = {
 
     const [count] = await connection("establishments").count();
 
-    const establishments = await connection("establishments").select();
+    let establishments = await connection("establishments").select([
+      "establishments.*",
+      st.asGeoJSON("coordinate"),
+    ]);
+
+    establishments.forEach((establishment) => {
+      const { coordinates } = JSON.parse(establishment.coordinate);
+      establishment.coordinate = {};
+      establishment.coordinate.latitude = coordinates[1];
+      establishment.coordinate.longitude = coordinates[0];
+    });
 
     res.header("X-Total-count", count["count(*)"]);
 
@@ -32,7 +43,7 @@ module.exports = {
     const { uid } = req.headers;
 
     try {
-      const [id] = await connection("establishments").insert({
+      const establishment = await connection("establishments").insert({
         firebase_uid: uid,
         name,
         description,
@@ -40,12 +51,13 @@ module.exports = {
         phone_number,
         whatsapp_available,
         address,
-        coordinate: connection.raw(
-          `ST_PointFromText('POINT(${coordinate.latitude} ${coordinate.longitude})')`
+        coordinate: st.geomFromText(
+          `Point(${coordinate.longitude} ${coordinate.latitude})`,
+          4326
         ),
       });
 
-      return res.status(201).json({ id });
+      return res.status(201).json(establishment);
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -67,7 +79,7 @@ module.exports = {
     try {
       let establishment = await connection("establishments")
         .where("_id", establishmentId)
-        .select("establishments.*")
+        .select(["establishments.*", st.asGeoJSON("coordinate")])
         .first();
 
       if (establishment.firebase_uid !== uid) {
@@ -86,19 +98,26 @@ module.exports = {
             whatsapp_available || establishment.whatsapp_available,
           address: address || establishment.address,
           coordinate: coordinate
-            ? connection.raw(
-                `ST_PointFromText('POINT(${coordinate.latitude} ${coordinate.longitude})')`
+            ? st.geomFromText(
+                `Point(${coordinate.longitude} ${coordinate.latitude})`,
+                4326
               )
-            : connection.raw(
-                `ST_PointFromText('POINT(${establishment.coordinate.x} ${establishment.coordinate.y})')`
+            : st.geomFromText(
+                `Point(${establishment.coordinate.longitude} ${establishment.coordinate.latitude})`,
+                4326
               ),
         })
         .where("_id", establishmentId);
 
       establishment = await connection("establishments")
         .where("_id", establishmentId)
-        .select("establishments.*")
+        .select(["establishments.*", st.asGeoJSON("coordinate")])
         .first();
+
+      const { coordinates } = JSON.parse(establishment.coordinate);
+      establishment.coordinate = {};
+      establishment.coordinate.latitude = coordinates[1];
+      establishment.coordinate.longitude = coordinates[0];
 
       return res.status(200).json(establishment);
     } catch (error) {

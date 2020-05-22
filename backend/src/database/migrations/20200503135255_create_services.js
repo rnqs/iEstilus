@@ -9,7 +9,7 @@ exports.up = (knex) =>
       .onDelete("CASCADE");
     table.string("name", 20).notNullable();
     table.string("photo_url");
-    table.float("price", 5, 2).notNullable();
+    table.decimal("price", 5, 2).notNullable();
   });
 
 exports.down = (knex) => knex.schema.dropTable("services");
