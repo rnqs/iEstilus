@@ -1,9 +1,7 @@
-// Update with your config settings.
-
 module.exports = {
   development: {
     client: "pg",
-    connection: "postgres://renanarques:@localhost/iestilus",
+    connection: process.env.DATABASE_URL,
     useNullAsDefault: true,
     migrations: {
       directory: "./src/database/migrations",
@@ -12,7 +10,7 @@ module.exports = {
 
   staging: {
     client: "pg",
-    connection: "postgres://renanarques:@localhost/iestilus",
+    connection: process.env.DATABASE_URL,
     useNullAsDefault: true,
     migrations: {
       directory: "./src/database/migrations",
@@ -21,7 +19,7 @@ module.exports = {
 
   production: {
     client: "pg",
-    connection: "postgres://renanarques:@localhost/iestilus",
+    connection: process.env.DATABASE_URL,
     useNullAsDefault: true,
     migrations: {
       directory: "./src/database/migrations",
