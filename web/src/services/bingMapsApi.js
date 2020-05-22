@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const bingMapsApi = axios.create({
-  baseURL: "http://dev.virtualearth.net/REST/v1/Locations",
+  baseURL: "https://dev.virtualearth.net/REST/v1/Locations",
 });
 
 const apiKey =
