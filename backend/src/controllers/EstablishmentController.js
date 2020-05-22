@@ -41,9 +41,10 @@ module.exports = {
 
       establishments.forEach((establishment) => {
         const { coordinates } = JSON.parse(establishment.coordinate);
-        establishment.coordinate = {};
-        establishment.coordinate.latitude = coordinates[1];
-        establishment.coordinate.longitude = coordinates[0];
+        establishment.coordinate = {
+          latitude: coordinates[1],
+          longitude: coordinates[0],
+        };
       });
 
       res.header("X-Total-count", count);
@@ -67,21 +68,24 @@ module.exports = {
     const { uid } = req.headers;
 
     try {
-      const establishment = await connection("establishments").insert({
-        firebase_uid: uid,
-        name,
-        description,
-        photo_url,
-        phone_number,
-        whatsapp_available,
-        address,
-        coordinate: st.geomFromText(
-          `Point(${coordinate.longitude} ${coordinate.latitude})`,
-          4326
-        ),
-      });
+      const [id] = await connection("establishments").insert(
+        {
+          firebase_uid: uid,
+          name,
+          description,
+          photo_url,
+          phone_number,
+          whatsapp_available,
+          address,
+          coordinate: st.geomFromText(
+            `Point(${coordinate.longitude} ${coordinate.latitude})`,
+            4326
+          ),
+        },
+        "_id"
+      );
 
-      return res.status(201).json(establishment);
+      return res.status(201).json({ id });
     } catch (error) {
       return res.status(500).json(error.message);
     }
@@ -160,9 +164,7 @@ module.exports = {
         .first();
 
       if (establishment.firebase_uid !== uid) {
-        return res.status(401).json({
-          error: "Insufficient Permissions",
-        });
+        return res.status(401).json({ error: "Insufficient Permissions" });
       }
 
       await connection("establishments").where("_id", establishmentId).delete();
