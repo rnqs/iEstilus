@@ -1,16 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Switch from "react-switch";
 import InputMask from "react-input-mask";
 import { FiImage, FiPlus, FiX, FiCheckSquare, FiMapPin } from "react-icons/fi";
-import { useDropzone } from "react-dropzone";
 
 import api from "../../services/api";
 import { bingMapsApi, apiKey } from "../../services/bingMapsApi";
 import firebaseStorage from "../../utils/firebaseStorage";
 import firebaseAuth from "../../utils/firebaseAuth";
-
-import DropModal from "../../components/DropModal";
 
 import "./styles.css";
 
@@ -60,17 +57,6 @@ export default function New() {
     });
   };
 
-  const onDrop = useCallback(
-    (droppedFiles) => {
-      photoUrl ||
-        uploadToFirebase(droppedFiles[0], "establishments/", (photoUrl) => {
-          setPhotoUrl(photoUrl);
-        });
-    },
-    [photoUrl]
-  );
-  const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
-
   const getIndexOfUnfilledFields = (arrayOfObjects) => {
     return arrayOfObjects
       .map(
@@ -111,13 +97,13 @@ export default function New() {
   };
 
   const addInputError = (id) => {
-    document.querySelector("#" + id).classList.add("error");
     setInputError(true);
+    document.querySelector("#" + id).classList.add("error");
   };
 
   const removeInputError = (id) => {
-    document.querySelector("#" + id).classList.remove("error");
     setInputError(false);
+    document.querySelector("#" + id).classList.remove("error");
   };
 
   const verifyAddressAndGetLatitudeAndLongitude = async () => {
@@ -135,22 +121,25 @@ export default function New() {
 
         if (results.length === 0) {
           addInputError("address");
+          return false;
         } else {
           setAddress(results[0].address.formattedAddress);
           setLatitude(results[0].point.coordinates[0]);
           setLongitude(results[0].point.coordinates[1]);
           setInputError(false);
+          return true;
         }
       } else {
         addInputError("address");
+        return false;
       }
     } catch (error) {
       addInputError("address");
+      return false;
     }
   };
 
-  const handleSubmit = async () => {
-    await verifyAddressAndGetLatitudeAndLongitude();
+  const handleSubmit = async (idToken) => {
     if (!name) addInputError("name");
     if (!description) addInputError("description");
     if (phone.length < 18) addInputError("phone");
@@ -165,8 +154,6 @@ export default function New() {
     }
 
     if (!inputError) {
-      const idToken = await firebaseAuth.currentUser.getIdToken();
-
       try {
         const response = await api.post(
           "/establishments",
@@ -188,16 +175,33 @@ export default function New() {
             },
           }
         );
-        response && navigateTo("/gerenciar");
+
+        const establishmentId = response.data.id;
+
+        services.forEach(async (service) => {
+          await api.post(
+            `/establishments/${establishmentId}/services`,
+            {
+              name: service.name,
+              photo_url: service.photoUrl,
+              price: service.price.substr(3).replace(",", "."),
+            },
+            {
+              headers: {
+                authentication: idToken,
+              },
+            }
+          );
+        });
       } catch (error) {
-        alert(error);
+        console.error(error);
       }
     }
   };
 
   return (
-    <div {...getRootProps()}>
-      <section className="new" {...getInputProps()}>
+    <div>
+      <section className="new">
         <div className="content">
           <div className="title-container">
             <h1>Novo salão</h1>
@@ -242,9 +246,7 @@ export default function New() {
                 />
               </div>
               <div className="side">
-                <p>
-                  Araste aqui uma foto do salão ou selecione um arquivo abaixo
-                </p>
+                <p>Selecione um arquivo abaixo</p>
                 <label for="upload-photo" id="image">
                   Selecione um arquivo
                 </label>
@@ -331,7 +333,7 @@ export default function New() {
               <span>Serviços</span>
               <div className="services-container">
                 {services.map((service, serviceIndex) => (
-                  <div className="service" key={serviceIndex}>
+                  <div className="service" key={service}>
                     <input
                       type="text"
                       className="name"
@@ -384,7 +386,7 @@ export default function New() {
                         );
                       }}
                     />
-                    <label for="upload-service-photo">
+                    <label for={`upload-service-photo-${serviceIndex}`}>
                       {services[serviceIndex].photoUrl ? (
                         <FiCheckSquare
                           size="20px"
@@ -410,24 +412,26 @@ export default function New() {
                     <input
                       type="file"
                       className="upload-photo"
-                      id="upload-service-photo"
+                      id={`upload-service-photo-${serviceIndex}`}
                       accept="image/png, image/jpeg"
                       onChange={(e) => {
-                        uploadToFirebase(
-                          e.target.files[0],
-                          "services/",
-                          (photoUrl) =>
-                            setServices(
-                              services.map((service, index) =>
-                                index === serviceIndex
-                                  ? {
-                                      ...service,
-                                      photoUrl,
-                                    }
-                                  : service
+                        if (e.target.files[0]) {
+                          uploadToFirebase(
+                            e.target.files[0],
+                            "services/",
+                            (photoUrl) =>
+                              setServices(
+                                services.map((service, index) =>
+                                  index === serviceIndex
+                                    ? {
+                                        ...service,
+                                        photoUrl,
+                                      }
+                                    : service
+                                )
                               )
-                            )
-                        );
+                          );
+                        }
                       }}
                     />
                     {services.length > 1 && (
@@ -479,10 +483,19 @@ export default function New() {
             </div>
           </div>
           <div className="submit-container">
-            <button onClick={() => handleSubmit()}>Enviar</button>
+            <button
+              onClick={async () => {
+                const idToken = await firebaseAuth.currentUser.getIdToken();
+                const success = await verifyAddressAndGetLatitudeAndLongitude();
+                if (success) {
+                  await handleSubmit(idToken);
+                }
+              }}
+            >
+              Enviar
+            </button>
           </div>
         </div>
-        <DropModal display={isDragActive} />
       </section>
     </div>
   );

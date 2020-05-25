@@ -301,6 +301,12 @@ section.new .content .input-container .error {
     transition-duration: 200ms
 }
 
+section.new .content .input-container .image-container .side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
 section.new .content .input-container .image-container .side label.error:hover {
     border: 3px solid var(--main-color);
     background-color: var(--main-color);
