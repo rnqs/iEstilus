@@ -126,8 +126,6 @@ section.dashboard .content .establishment-container .info-container p.descriptio
 }
 
 section.dashboard .content .establishment-container .info-container button {
-    opacity: 0;
-
     display: flex;
     align-items: center;
     justify-content: center;

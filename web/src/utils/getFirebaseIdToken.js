@@ -1,6 +1,6 @@
 import firebaseAuth from "./firebaseAuth";
 
-const getFirebaseUserStatus = () => {
+const getFirebaseIdToken = () => {
   return new Promise((resolve, reject) => {
     firebaseAuth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -12,4 +12,4 @@ const getFirebaseUserStatus = () => {
   });
 };
 
-export default getFirebaseUserStatus;
+export default getFirebaseIdToken;

@@ -12,7 +12,7 @@ import firebaseStorage from "../../utils/firebaseStorage";
 import ConfirmationModal from "../../components/ConfirmationModal";
 import "./styles.css";
 
-export default function New() {
+export default function Edit() {
   const [navigating, setNavigating] = useState(true);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -28,16 +28,69 @@ export default function New() {
     confirmationModalVisibility,
     setConfirmationModalVisibility,
   ] = useState(false);
+  const [establishmentId, setEstablishmentId] = useState("");
 
   useEffect(() => {
-    document.title = "iEstilus | Novo Salão";
+    document.title = "iEstilus | Editar Salão";
 
     setTimeout(() => {
       setNavigating(false);
     }, 2000);
+
+    setEstablishmentId(
+      document.URL.replace(/^\D+/g, "").split("editar/")[1]?.replace("/", "")
+    );
+
+    if (establishmentId === "") {
+      navigateTo("/gerenciar");
+    } else {
+      fetchEstablishmentData();
+    }
+
+    // eslint-disable-next-line
   }, [navigating]);
 
   let history = useHistory();
+
+  const fetchEstablishmentData = async () => {
+    const idToken = await getFirebaseIdToken();
+    try {
+      const response = await api.get("/managers/establishments", {
+        headers: { authentication: idToken },
+        params: { id: establishmentId },
+      });
+
+      setName(response.data.name);
+      setDescription(response.data.description);
+      setPhotoUrl(response.data.photo_url);
+      setPhone(response.data.phone_number);
+      setWhatsAppAvailable(response.data.whatsapp_available);
+      setAddress(response.data.address);
+      setLatitude(response.data.coordinate.latitude);
+      setLongitude(response.data.coordinate.longitude);
+      setServices(response.data.services);
+    } catch (error) {
+      navigateTo("/gerenciar");
+    }
+  };
+
+  const deleteEstablishment = async () => {
+    const idToken = await getFirebaseIdToken();
+    if (
+      window.confirm(
+        `Você tem certeza que deseja excluir o salão "${name}" permanentemente?`
+      )
+    )
+      try {
+        await api.delete("/establishments/" + establishmentId, {
+          headers: { authentication: idToken },
+        });
+
+        navigateTo("/gerenciar");
+      } catch (error) {
+        navigateTo("/gerenciar");
+      }
+  };
 
   function navigateTo(pathname) {
     if (!navigating) {
@@ -212,10 +265,10 @@ export default function New() {
 
   return (
     <div>
-      <section className="new">
+      <section className="edit">
         <div className="content">
           <div className="title-container">
-            <h1>Novo salão</h1>
+            <h1>Editar salão</h1>
           </div>
           <div className="input-container">
             <input
@@ -285,7 +338,7 @@ export default function New() {
                 id="phone"
                 placeholder="Telefone de atendimento"
                 mask={
-                  phone.length >= 19
+                  phone?.length >= 19
                     ? "+99 (99) 99999-9999"
                     : "+99 (99) 9999-99999"
                 }
@@ -494,6 +547,7 @@ export default function New() {
             </div>
           </div>
           <div className="submit-container">
+            <button onClick={() => deleteEstablishment()}>Excluir Salão</button>
             <button
               onClick={async () => {
                 validateData();
@@ -536,6 +590,7 @@ export default function New() {
             value: services,
           },
         ]}
+        edit
       />
     </div>
   );

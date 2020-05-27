@@ -4,7 +4,7 @@ import SkeletonLoader from "tiny-skeleton-loader-react";
 import { useHistory } from "react-router-dom";
 import "./styles.css";
 
-import getFirebaseUserStatus from "../../utils/getFirebaseUserStatus";
+import getFirebaseIdToken from "../../utils/getFirebaseIdToken";
 import firebaseAuth from "../../utils/firebaseAuth.js";
 import api from "../../services/api";
 
@@ -42,7 +42,7 @@ export default function Home() {
   let history = useHistory();
 
   const fetchUserEstablishmentsData = async () => {
-    const idToken = await getFirebaseUserStatus();
+    const idToken = await getFirebaseIdToken();
 
     const response = await api.get("/managers/establishments", {
       headers: { authentication: idToken },
@@ -104,7 +104,11 @@ export default function Home() {
             />
           )}
           {establishments.map((establishment) => (
-            <div className="establishment-container" key={establishment._id}>
+            <div
+              className="establishment-container"
+              key={establishment._id}
+              onClick={() => navigateTo("/editar/" + establishment._id)}
+            >
               <div className="image-container">
                 <div
                   className="image"

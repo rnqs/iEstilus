@@ -7,6 +7,7 @@ import Register from "./pages/Register";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import New from "./pages/New";
+import Edit from "./pages/Edit";
 
 export default function Routes() {
   return (
@@ -14,12 +15,12 @@ export default function Routes() {
       <Route
         render={({ location }) => (
           <TransitionGroup
-            childFactory={child =>
+            childFactory={(child) =>
               React.cloneElement(child, {
                 classNames: location.state
                   ? location.state.transition
                   : "slide-right",
-                timeout: location.state ? location.state.duration : 2000
+                timeout: location.state ? location.state.duration : 2000,
               })
             }
           >
@@ -30,6 +31,7 @@ export default function Routes() {
                 <Route path="/login" component={Login} />
                 <Route path="/gerenciar" component={Dashboard} />
                 <Route path="/novo" component={New} />
+                <Route path="/editar" component={Edit} />
                 <Route render={() => <div>Not Found</div>} />
               </Switch>
             </CSSTransition>

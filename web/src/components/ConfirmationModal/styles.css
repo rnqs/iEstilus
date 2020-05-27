@@ -1,0 +1,143 @@
+.confirmation-modal {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    backdrop-filter: blur(2px);
+
+    transition: ease-in-out 100ms;
+}
+
+.confirmation-modal-hide {
+    display: none;
+
+    transition: ease-in-out 100ms;
+}
+
+.confirmation-modal section {
+    width: calc(100% - 40px);
+    height: calc(100% - 40px);
+    max-width: 600px;
+    max-height: 800px;
+    margin: 20px;
+    padding: 30px 20px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+
+    background: var(--input-bg-color);
+    border-radius: 9px;
+    box-shadow: 0px 0px 30px #00000075;
+}
+
+.confirmation-modal section .header h1 {
+    color: var(--main-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 28px;
+    line-height: 30px;
+    letter-spacing: -0.03em;
+}
+
+.confirmation-modal section .header h2 {
+    margin-top: 10px;
+
+    color: var(--input-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 22px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+}
+
+.confirmation-modal section div.info-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    margin: 30px 0;
+    overflow-y: scroll;
+    overflow-x: hide;
+
+    background: var(--below-bg-color);
+
+    border-radius: 9px;
+}
+
+.confirmation-modal section div.info-container .separator {
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: calc(100% - 15px);
+    height: 2px;
+    border-radius: 2px;
+
+    background: var(--input-bg-color);
+}
+
+.confirmation-modal section div.info-container div.list-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+}
+
+.confirmation-modal section div.info-container div.list-item span {
+    margin: 8px 15px;
+}
+
+.confirmation-modal section div.info-container div.list-item span:last-child {
+    text-align: right;
+}
+
+.confirmation-modal section div.info-container div.list-item img {
+    width: 100%;
+    max-width: 300px;
+    border-radius: 9px;
+}
+
+.confirmation-modal section div.buttons {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.confirmation-modal section div.buttons button {
+    margin: 15px;
+
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--main-color);
+    border-radius: 9px;
+
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+.confirmation-modal section div.buttons button:hover {
+    background: var(--main-color);
+
+    transition-duration: 200ms;
+}

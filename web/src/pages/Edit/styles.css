@@ -1,0 +1,340 @@
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+
+section.edit {
+    display: block !important;
+    width: 100vw;
+    height: 100%;
+
+    /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
+}
+
+section.edit .content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    min-height: 880px;
+
+    background: var(--main-bg-color);
+}
+
+@media screen and (max-width: 1300px) {
+    section.edit .content {
+        height: 100vh;
+        width: 100vw;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    section.edit .content {
+        width: 50vw;
+        height: 100vh;
+
+        -webkit-clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+        clip-path: polygon(0 0, 95% 0, 100% 100%, 0% 100%);
+    }
+}
+
+section.edit .content .title-container h1 {
+    color: var(--main-text-color);
+    text-align: center;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 48px;
+    line-height: 59px;
+    letter-spacing: -0.03em;
+}
+
+section.edit .content .input-container h3 {
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 18px;
+    line-height: 22px;
+    letter-spacing: -0.03em;
+}
+
+section.edit .content .input-container,
+section.edit .content .submit-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+section.edit .content .input-container input.input,
+section.edit .content .input-container textarea,
+section.edit .content .input-container .image-container {
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+    padding: 0 25px;
+    margin-bottom: 25px;
+    box-sizing: border-box;
+
+    background: var(--input-bg-color);
+    border: 3px solid var(--input-bg-color);
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.edit .content .input-container input.input:focus,
+section.edit .content .input-container textarea:focus {
+    border: 3px solid var(--main-color);
+
+    transition-duration: 200ms
+}
+
+section.edit .content .input-container textarea {
+    height: 100px;
+    padding: 13px 25px;
+
+    resize: none;
+}
+
+section.edit .content .input-container .image-container {
+    display: flex;
+    border: none;
+    height: 100px;
+    padding: 0;
+}
+
+section.edit .content .input-container .image-container .image-preview {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 130px;
+    height: 100px;
+
+
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
+    border-width: 0;
+    border-radius: 9px 0 0 9px;
+}
+
+section.edit .content .input-container .image-container .side p {
+    width: 220px;
+    margin: 11px 25px 0 25px;
+
+    color: var(--main-text-color);
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.03em;
+}
+
+section.edit .content .input-container input.upload-photo {
+    display: none;
+}
+
+section.edit .content .input-container .image-container .side label {
+    display: block;
+    width: 220px;
+    height: 35px;
+    margin: 11px 25px;
+
+    color: #EEEEEE;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+    text-align: center;
+
+    cursor: pointer;
+    border: 3px solid #F6A821;
+    border-radius: 9px;
+
+    transition-duration: 200ms;
+}
+
+section.edit .content .input-container .phone-input {
+    position: relative;
+    height: 75px;
+}
+
+section.edit .content .input-container .phone-input span {
+    display: block;
+    width: 70px;
+    height: 16px;
+    position: absolute !important;
+    top: 5px;
+    right: 17px;
+
+    cursor: pointer;
+
+    color: #C9C9C9;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 16px;
+    letter-spacing: -0.03em;
+}
+
+section.edit .content .input-container .phone-input .switch {
+    position: absolute !important;
+    top: 23px;
+    right: 40px;
+}
+
+section.edit .content .input-container .address-input {
+    position: relative;
+}
+
+section.edit .content .input-container .address-input input {
+    padding-right: 65px;
+}
+
+section.edit .content .input-container .address-input .pinIcon {
+    position: absolute !important;
+    right: 0;
+    margin: 13px 25px;
+
+    cursor: pointer;
+    color: var(--input-text-color);
+}
+
+section.edit .content .submit-container button:first-child {
+    margin-bottom: 15px;
+
+    border: 3px solid var(--err-color);
+}
+
+section.edit .content .submit-container button:first-child:hover {
+    background: var(--err-color)
+}
+
+section.edit .content .submit-container button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 95vw;
+    max-width: 400px;
+    height: 50px;
+
+    cursor: pointer;
+    background: transparent;
+    border: 3px solid var(--main-color);
+    border-radius: 9px;
+
+    color: var(--main-text-color);
+    font-style: normal;
+    font-weight: 600;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.edit .content .submit-container button:hover,
+section.edit .content .input-container .image-container label:hover {
+    background: var(--main-color);
+
+    transition-duration: 200ms;
+}
+
+section.edit .content .input-container .services-input {
+    width: 95vw;
+    max-width: 400px;
+    height: 200px;
+    padding: 0 8px;
+
+    background: var(--input-bg-color);
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms;
+}
+
+section.edit .content .input-container .services-input span {
+    display: block;
+    margin: 13px 20px;
+}
+
+section.edit .content .input-container .services-input .services-container {
+    max-height: 142px;
+
+    overflow-y: scroll;
+}
+
+section.edit .content .input-container .services-input .services-container .add-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+}
+
+section.edit .content .input-container .services-input .services-container .add-button svg {
+    cursor: pointer;
+}
+
+section.edit .content .input-container .services-input .services-container .service {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 35px;
+    margin-bottom: 5px;
+    padding: 0 20px;
+
+    background: var(--below-bg-color);
+    border: 3px solid var(--below-bg-color);
+    border-radius: 10px;
+
+    color: var(--input-text-color);
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms
+}
+
+section.edit .content .input-container .services-input .services-container .error,
+section.edit .content .input-container .image-container .side label.error,
+section.edit .content .input-container .address-input .error,
+section.edit .content .input-container input.error,
+section.edit .content .input-container .error {
+    border: 3px solid var(--err-color);
+
+    transition-duration: 200ms
+}
+
+section.edit .content .input-container .image-container .side {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+section.edit .content .input-container .image-container .side label.error:hover {
+    border: 3px solid var(--main-color);
+    background-color: var(--main-color);
+
+    transition-duration: 200ms
+}
+
+section.edit .content .input-container .services-input .services-container .service input {
+    flex: 1;
+
+    background: transparent;
+    border: none;
+    line-height: 1;
+    color: var(--input-text-color);
+}
+
+section.edit .content .input-container .services-input .services-container .service input.price {
+    max-width: 80px;
+
+    text-align: end;
+}
