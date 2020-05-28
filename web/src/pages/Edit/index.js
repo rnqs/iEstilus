@@ -37,9 +37,10 @@ export default function Edit() {
       setNavigating(false);
     }, 2000);
 
-    setEstablishmentId(
-      document.URL.replace(/^\D+/g, "").split("editar/")[1]?.replace("/", "")
-    );
+    setEstablishmentId(() => {
+      const urlNumbers = document.URL.replace(/^\D+/g, "").split("editar/");
+      return urlNumbers[urlNumbers.length - 1].replace("/", "");
+    });
 
     if (establishmentId === "") {
       navigateTo("/gerenciar");
