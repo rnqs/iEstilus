@@ -64,12 +64,22 @@ export default function Edit() {
       setName(response.data.name);
       setDescription(response.data.description);
       setPhotoUrl(response.data.photo_url);
-      setPhone(response.data.phone_number);
+      setPhone(
+        response.data.phone_number.replace(
+          /^(\d{2})(\d{2})(\d{4,5})(\d{4}).*/,
+          "+$1 ($2) $3-$4"
+        )
+      );
       setWhatsAppAvailable(response.data.whatsapp_available);
       setAddress(response.data.address);
       setLatitude(response.data.coordinate.latitude);
       setLongitude(response.data.coordinate.longitude);
-      setServices(response.data.services);
+      setServices(
+        response.data.services.map((service) => ({
+          ...service,
+          price: "R$ " + service.price.replace(".", ","),
+        }))
+      );
     } catch (error) {
       navigateTo("/gerenciar");
     }
@@ -551,9 +561,17 @@ export default function Edit() {
             <button onClick={() => deleteEstablishment()}>Excluir Salão</button>
             <button
               onClick={async () => {
-                validateData();
                 const success = await verifyAddressAndGetLatitudeAndLongitude();
-                if (success && !inputError) {
+                validateData();
+                let indexOfUnfilledFields = getIndexOfUnfilledFields(services);
+                if (
+                  success &&
+                  name &&
+                  description &&
+                  phone.length >= 18 &&
+                  photoUrl &&
+                  indexOfUnfilledFields.length === 0
+                ) {
                   setConfirmationModalVisibility(true);
                 }
               }}

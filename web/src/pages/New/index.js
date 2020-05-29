@@ -496,9 +496,17 @@ export default function New() {
           <div className="submit-container">
             <button
               onClick={async () => {
-                validateData();
                 const success = await verifyAddressAndGetLatitudeAndLongitude();
-                if (success && !inputError) {
+                validateData();
+                let indexOfUnfilledFields = getIndexOfUnfilledFields(services);
+                if (
+                  success &&
+                  name &&
+                  description &&
+                  phone.length >= 18 &&
+                  photoUrl &&
+                  indexOfUnfilledFields.length === 0
+                ) {
                   setConfirmationModalVisibility(true);
                 }
               }}
