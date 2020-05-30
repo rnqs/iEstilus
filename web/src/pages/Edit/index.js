@@ -23,6 +23,7 @@ export default function Edit() {
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
   const [services, setServices] = useState([{ name: "", price: "" }]);
+  const [originalServicesIds, setOriginalServicesIds] = useState([]);
   const [inputError, setInputError] = useState(false);
   const [
     confirmationModalVisibility,
@@ -79,6 +80,9 @@ export default function Edit() {
           ...service,
           price: "R$ " + service.price.replace(".", ","),
         }))
+      );
+      setOriginalServicesIds(
+        response.data.services.map((service) => service._id)
       );
     } catch (error) {
       navigateTo("/gerenciar");
@@ -227,14 +231,14 @@ export default function Edit() {
     const idToken = await getFirebaseIdToken();
     if (!inputError && idToken) {
       try {
-        const response = await api.post(
-          "/establishments",
+        await api.put(
+          `/establishments/${establishmentId}`,
           {
             name,
             description,
             photo_url: photoUrl,
             phone_number: phone.replace(/\D/gim, ""),
-            whatsapp_available: whatsAppAvailable ? 1 : 0,
+            whatsapp_available: whatsAppAvailable,
             address,
             coordinate: {
               latitude,
@@ -248,16 +252,46 @@ export default function Edit() {
           }
         );
 
-        const establishmentId = response.data.id;
+        let toDeleteServicesIds = originalServicesIds;
 
         services.forEach(async (service) => {
-          await api.post(
-            `/establishments/${establishmentId}/services`,
-            {
-              name: service.name,
-              photo_url: service.photoUrl,
-              price: service.price.substr(3).replace(",", "."),
-            },
+          if (service._id) {
+            toDeleteServicesIds = toDeleteServicesIds.filter(
+              (id) => id !== service._id
+            );
+            await api.put(
+              `/establishments/${establishmentId}/services/${service._id}`,
+              {
+                name: service.name,
+                photo_url: service.photoUrl,
+                price: service.price.substr(3).replace(",", "."),
+              },
+              {
+                headers: {
+                  authentication: idToken,
+                },
+              }
+            );
+          } else {
+            await api.post(
+              `/establishments/${establishmentId}/services`,
+              {
+                name: service.name,
+                photo_url: service.photoUrl,
+                price: service.price.substr(3).replace(",", "."),
+              },
+              {
+                headers: {
+                  authentication: idToken,
+                },
+              }
+            );
+          }
+        });
+
+        toDeleteServicesIds.forEach(async (serviceId) => {
+          await api.delete(
+            `/establishments/${establishmentId}/services/${serviceId}`,
             {
               headers: {
                 authentication: idToken,

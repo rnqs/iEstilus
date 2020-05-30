@@ -170,7 +170,7 @@ export default function New() {
             description,
             photo_url: photoUrl,
             phone_number: phone.replace(/\D/gim, ""),
-            whatsapp_available: whatsAppAvailable ? 1 : 0,
+            whatsapp_available: whatsAppAvailable,
             address,
             coordinate: {
               latitude,
