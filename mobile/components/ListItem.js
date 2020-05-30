@@ -23,7 +23,8 @@ const ListItem = ({ establishment }) => {
   const { navigate } = useNavigation();
   const isFocused = useIsFocused();
 
-  const { id, name, imageUri } = establishment;
+  const { id, name, photo_url } = establishment;
+
   const onPress = () => {
     setOpacity(0);
     navigate("Detail", { establishment });
@@ -39,7 +40,7 @@ const ListItem = ({ establishment }) => {
     <View style={styles.container}>
       <View style={styles.descriptionContainer}>
         <TouchableWithoutFeedback onPress={onPress}>
-          <View style={styles.contentContainer}>
+          <View style={[styles.contentContainer, { opacity }]}>
             <Text style={styles.name}>{name}</Text>
             <TouchableOpacity style={styles.button} onPress={onPress}>
               <Text style={styles.buttonText}>Serviços</Text>
@@ -50,7 +51,7 @@ const ListItem = ({ establishment }) => {
       <SharedElement id={id} style={styles.imageContainer}>
         <Image
           style={[styles.imageBackground, { opacity }]}
-          source={{ uri: imageUri }}
+          source={{ uri: photo_url }}
           resizeMode="cover"
         />
       </SharedElement>

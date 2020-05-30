@@ -6,11 +6,6 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "@use-expo/font";
 import { AppLoading } from "expo";
 
-if (Platform.OS === "android") {
-  require("intl");
-  require("intl/locale-data/jsonp/pt-BR");
-}
-
 import ListScreen from "./screens/ListScreen";
 import DetailScreen from "./screens/DetailScreen";
 import NewEstablishmentScreen from "./screens/NewEstablishmentScreen";

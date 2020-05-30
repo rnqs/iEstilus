@@ -21,7 +21,7 @@ const SearchBar = () => (
       placeholderTextColor={placeholderTextColor}
       style={styles.textInput}
     />
-    <TouchableOpacity style={styles.touchableOpacity}>
+    <TouchableOpacity style={[styles.touchableOpacity, { display: "none" }]}>
       <MaterialIcons name="menu" color={textInputTextColor} size={32} />
     </TouchableOpacity>
   </View>

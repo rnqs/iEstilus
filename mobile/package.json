@@ -12,6 +12,7 @@
     "@react-navigation/native": "^5.0.9",
     "@react-navigation/stack": "^5.1.1",
     "@use-expo/font": "^2.0.0",
+    "axios": "^0.19.2",
     "expo": "~37.0.3",
     "intl": "^1.2.5",
     "react": "~16.9.0",

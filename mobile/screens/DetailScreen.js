@@ -35,6 +35,8 @@ import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { SharedElement } from "react-navigation-shared-element";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 
+import api from "../services/api";
+
 import {
   backgroundColor,
   backgroundColorLighter,
@@ -51,13 +53,12 @@ const DetailScreen = ({ navigation, route }) => {
     description,
     address,
     coordinate,
-    imageUri,
+    photo_url,
+    phone_number,
   } = route.params.establishment;
   const [finalPrice, setFinalPrice] = useState(0);
   const [buttonVisible, setButtonVisible] = useState(false);
-  const [services, setServices] = useState(
-    route.params.establishment.services || []
-  );
+  const [services, setServices] = useState([]);
 
   const [
     translationX,
@@ -109,12 +110,32 @@ const DetailScreen = ({ navigation, route }) => {
   );
 
   useEffect(() => {
+    if (services.length === 0) {
+      fetchServicesData();
+    }
     if (finalPrice > 0) {
       setButtonVisible(true);
     } else {
       setButtonVisible(false);
     }
   }, [finalPrice]);
+
+  const fetchServicesData = async () => {
+    const response = await api.get(`/establishments/${id}/services`);
+
+    setServices(response.data);
+  };
+
+  const formatNumberToReal = (number) => {
+    let numberParts = String(number).split(".");
+    let start = numberParts[0];
+    let end = numberParts.length > 1 ? "," + numberParts[1] : "";
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(start)) {
+      start = start.replace(rgx, "$1" + "," + "$2");
+    }
+    return "R$ " + start + end;
+  };
 
   return (
     <View style={styles.container}>
@@ -123,19 +144,19 @@ const DetailScreen = ({ navigation, route }) => {
         backgroundColor={backgroundColor + "75"}
         translucent={true}
       />
-      <PanGestureHandler {...gestureHandler}>
-        <Animated.View
-          style={{
-            flex: 1,
-            transform: [{ translateX }, { translateY }, { scale }],
-            backgroundColor,
-          }}
-        >
-          <View style={styles.header}>
+      <Animated.View
+        style={{
+          flex: 1,
+          transform: [{ translateX }, { translateY }, { scale }],
+          backgroundColor,
+        }}
+      >
+        <PanGestureHandler {...gestureHandler}>
+          <Animated.View style={styles.header}>
             <SharedElement id={id}>
               <Image
                 style={styles.imageBackground}
-                source={{ uri: imageUri }}
+                source={{ uri: photo_url }}
                 resizeMode="cover"
               />
             </SharedElement>
@@ -157,7 +178,7 @@ const DetailScreen = ({ navigation, route }) => {
                   <TouchableOpacity
                     style={styles.buttonClose}
                     onPress={() => {
-                      Linking.openURL("tel:+123456789");
+                      Linking.openURL("tel:+" + phone_number);
                     }}
                   >
                     <Feather name="phone" size={28} color={textColor} />
@@ -167,8 +188,8 @@ const DetailScreen = ({ navigation, route }) => {
                     onPress={() => {
                       Linking.openURL(
                         Platform.OS === "android"
-                          ? `http://www.google.com/maps/place/${address}/@${coordinate.x},${coordinate.y},10z`
-                          : `http://maps.apple.com/?q=${address}&sll=${coordinate.x},${coordinate.y}&z=10`
+                          ? `http://www.google.com/maps/place/${address}/@${coordinate.longitude},${coordinate.latitude},10z`
+                          : `http://maps.apple.com/?q=${address}&sll=${coordinate.longitude},${coordinate.latitude}&z=10`
                       );
                     }}
                   >
@@ -177,74 +198,77 @@ const DetailScreen = ({ navigation, route }) => {
                 </View>
               </View>
             </View>
-          </View>
-          <View style={styles.servicesContainer}>
-            <ScrollView style={styles.scrollView}>
-              {services.map((service, serviceIndex) => (
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    let newServices = [];
-                    services.map((service, index) => {
-                      if (index === serviceIndex) {
-                        newServices.push({
-                          ...service,
-                          selected: !service.selected,
-                        });
-                      } else {
-                        newServices.push(service);
-                      }
-                    });
-                    if (newServices[serviceIndex].selected) {
-                      setFinalPrice(
-                        finalPrice + newServices[serviceIndex].price
-                      );
+          </Animated.View>
+        </PanGestureHandler>
+        <View style={styles.servicesContainer}>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={[styles.scrollView, finalPrice > 0 && { marginBottom: 80 }]}
+          >
+            {services.map((service, serviceIndex) => (
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  let newServices = [];
+                  services.map((service, index) => {
+                    if (index === serviceIndex) {
+                      newServices.push({
+                        ...service,
+                        selected: !service.selected,
+                      });
                     } else {
-                      setFinalPrice(
-                        finalPrice - newServices[serviceIndex].price
-                      );
+                      newServices.push(service);
                     }
-                    setServices(newServices);
-                  }}
-                  key={serviceIndex}
-                >
-                  <View style={styles.serviceContainer}>
-                    <View
-                      style={[
-                        styles.serviceContent,
-                        service.selected ? styles.serviceContentSelected : null,
-                      ]}
-                    >
-                      <Text style={styles.serviceText}>{service.name}</Text>
-                      <Text style={styles.serviceText}>
-                        {service.price.toLocaleString("pt-BR", {
-                          style: "currency",
-                          currency: "BRL",
-                        })}
-                      </Text>
-                    </View>
+                  });
+                  if (newServices[serviceIndex].selected) {
+                    setFinalPrice(
+                      Number(
+                        Number(finalPrice) +
+                          Number(newServices[serviceIndex].price)
+                      ).toFixed(2)
+                    );
+                  } else {
+                    setFinalPrice(
+                      Number(
+                        Number(finalPrice) -
+                          Number(newServices[serviceIndex].price)
+                      ).toFixed(2)
+                    );
+                  }
+                  setServices(newServices);
+                }}
+                key={serviceIndex}
+              >
+                <View style={styles.serviceContainer}>
+                  <View
+                    style={[
+                      styles.serviceContent,
+                      service.selected ? styles.serviceContentSelected : null,
+                    ]}
+                  >
+                    <Text style={styles.serviceText}>{service.name}</Text>
+                    <Text style={styles.serviceText}>
+                      {formatNumberToReal(service.price)}
+                    </Text>
                   </View>
-                </TouchableWithoutFeedback>
-              ))}
-            </ScrollView>
-            <TouchableHighlight
-              style={buttonVisible ? { display: "flex" } : { display: "none" }}
-              onPress={() => {
-                alert("Total: " + finalPrice);
-              }}
-            >
-              <View style={styles.button}>
-                <Text style={styles.buttonText}>Agendar</Text>
-                <Text style={styles.buttonText}>
-                  {finalPrice.toLocaleString("pt-BR", {
-                    style: "currency",
-                    currency: "BRL",
-                  })}
-                </Text>
-              </View>
-            </TouchableHighlight>
-          </View>
-        </Animated.View>
-      </PanGestureHandler>
+                </View>
+              </TouchableWithoutFeedback>
+            ))}
+          </ScrollView>
+          <TouchableHighlight
+            style={buttonVisible ? { display: "flex" } : { display: "none" }}
+            onPress={() => {
+              alert("Total: " + finalPrice);
+            }}
+          >
+            <View style={styles.button}>
+              <Text style={styles.buttonText}>Agendar</Text>
+              <Text style={styles.buttonText}>
+                {formatNumberToReal(finalPrice)}
+              </Text>
+            </View>
+          </TouchableHighlight>
+        </View>
+      </Animated.View>
     </View>
   );
 };
@@ -330,7 +354,7 @@ const styles = StyleSheet.create({
     height: 90,
     borderRadius: 9,
     marginHorizontal: 12,
-    marginTop: 12,
+    marginVertical: 6,
   },
   serviceContentSelected: {
     backgroundColor: tintColorDarker,
