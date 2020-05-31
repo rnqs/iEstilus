@@ -12,6 +12,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  ActivityIndicator,
 } from "react-native";
 import Animated, {
   Extrapolate,
@@ -35,6 +36,10 @@ import { PanGestureHandler, State } from "react-native-gesture-handler";
 import { SharedElement } from "react-navigation-shared-element";
 import { MaterialIcons, Feather } from "@expo/vector-icons";
 
+import formatNumberToReal from "../utils/formatNumberToReal";
+
+import Scheduling from "../components/Scheduling";
+
 import api from "../services/api";
 
 import {
@@ -56,9 +61,8 @@ const DetailScreen = ({ navigation, route }) => {
     photo_url,
     phone_number,
   } = route.params.establishment;
-  const [finalPrice, setFinalPrice] = useState(0);
-  const [buttonVisible, setButtonVisible] = useState(false);
   const [services, setServices] = useState([]);
+  const [selectedServices, setSelectedServices] = useState([]);
 
   const [
     translationX,
@@ -113,28 +117,12 @@ const DetailScreen = ({ navigation, route }) => {
     if (services.length === 0) {
       fetchServicesData();
     }
-    if (finalPrice > 0) {
-      setButtonVisible(true);
-    } else {
-      setButtonVisible(false);
-    }
-  }, [finalPrice]);
+  }, []);
 
   const fetchServicesData = async () => {
     const response = await api.get(`/establishments/${id}/services`);
 
     setServices(response.data);
-  };
-
-  const formatNumberToReal = (number) => {
-    let numberParts = String(number).split(".");
-    let start = numberParts[0];
-    let end = numberParts.length > 1 ? "," + numberParts[1] : "";
-    var rgx = /(\d+)(\d{3})/;
-    while (rgx.test(start)) {
-      start = start.replace(rgx, "$1" + "," + "$2");
-    }
-    return "R$ " + start + end;
   };
 
   return (
@@ -201,72 +189,72 @@ const DetailScreen = ({ navigation, route }) => {
           </Animated.View>
         </PanGestureHandler>
         <View style={styles.servicesContainer}>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={[styles.scrollView, finalPrice > 0 && { marginBottom: 80 }]}
-          >
-            {services.map((service, serviceIndex) => (
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  let newServices = [];
-                  services.map((service, index) => {
-                    if (index === serviceIndex) {
-                      newServices.push({
-                        ...service,
-                        selected: !service.selected,
-                      });
+          {services.length === 0 ? (
+            <ActivityIndicator
+              color={tintColor}
+              size={"large"}
+              style={{ marginVertical: "50%" }}
+            />
+          ) : (
+            <ScrollView
+              showsVerticalScrollIndicator={false}
+              style={styles.scrollView}
+            >
+              {services.map((service) => (
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    const isSelected =
+                      selectedServices.length !== 0 &&
+                      selectedServices.find(
+                        (selectedService) => selectedService === service
+                      );
+
+                    if (!isSelected) {
+                      setSelectedServices([...selectedServices, service]);
                     } else {
-                      newServices.push(service);
+                      setSelectedServices(
+                        selectedServices.filter(
+                          (selectedService) => selectedService !== service
+                        )
+                      );
                     }
-                  });
-                  if (newServices[serviceIndex].selected) {
-                    setFinalPrice(
-                      Number(
-                        Number(finalPrice) +
-                          Number(newServices[serviceIndex].price)
-                      ).toFixed(2)
-                    );
-                  } else {
-                    setFinalPrice(
-                      Number(
-                        Number(finalPrice) -
-                          Number(newServices[serviceIndex].price)
-                      ).toFixed(2)
-                    );
-                  }
-                  setServices(newServices);
-                }}
-                key={serviceIndex}
-              >
-                <View style={styles.serviceContainer}>
-                  <View
-                    style={[
-                      styles.serviceContent,
-                      service.selected ? styles.serviceContentSelected : null,
-                    ]}
-                  >
-                    <Text style={styles.serviceText}>{service.name}</Text>
-                    <Text style={styles.serviceText}>
-                      {formatNumberToReal(service.price)}
-                    </Text>
+                  }}
+                  key={service._id}
+                >
+                  <View style={styles.serviceContainer}>
+                    <View
+                      style={[
+                        styles.serviceContent,
+                        selectedServices.find(
+                          (selectedService) => selectedService === service
+                        ) && styles.serviceContentSelected,
+                      ]}
+                    >
+                      {service.photo_url && (
+                        <Image
+                          style={styles.serviceImage}
+                          source={{ uri: service.photo_url }}
+                          resizeMode="cover"
+                        />
+                      )}
+                      <Text
+                        style={[
+                          styles.serviceText,
+                          service.photo_url && { marginRight: "auto" },
+                        ]}
+                      >
+                        {service.name}
+                      </Text>
+                      <Text style={styles.serviceText}>
+                        {formatNumberToReal(service.price)}
+                      </Text>
+                    </View>
                   </View>
-                </View>
-              </TouchableWithoutFeedback>
-            ))}
-          </ScrollView>
-          <TouchableHighlight
-            style={buttonVisible ? { display: "flex" } : { display: "none" }}
-            onPress={() => {
-              alert("Total: " + finalPrice);
-            }}
-          >
-            <View style={styles.button}>
-              <Text style={styles.buttonText}>Agendar</Text>
-              <Text style={styles.buttonText}>
-                {formatNumberToReal(finalPrice)}
-              </Text>
-            </View>
-          </TouchableHighlight>
+                </TouchableWithoutFeedback>
+              ))}
+            </ScrollView>
+          )}
+          <Scheduling {...{ selectedServices }} />
         </View>
       </Animated.View>
     </View>
@@ -282,12 +270,12 @@ const styles = StyleSheet.create({
   imageBackground: {
     position: "absolute",
     width,
-    height: height / 2.11,
+    height: height / 2.4,
     zIndex: -1,
   },
   contentContainer: {
     top: 0,
-    height: height / 2.11,
+    height: height / 2.4,
     justifyContent: "space-between",
     zIndex: 2,
   },
@@ -349,7 +337,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    paddingHorizontal: 15,
     backgroundColor: backgroundColorLighter,
     height: 90,
     borderRadius: 9,
@@ -362,23 +349,15 @@ const styles = StyleSheet.create({
   serviceText: {
     fontFamily: "Montserrat-Bold",
     color: textColor,
+    marginHorizontal: 15,
     fontSize: 18,
   },
-  button: {
-    position: "absolute",
-    bottom: 0,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    alignItems: "center",
-    width,
-    height: 80,
-    backgroundColor: tintColor,
-  },
-  buttonText: {
-    fontFamily: "Montserrat-Bold",
-    color: textColor,
-    fontSize: 24,
+  serviceImage: {
+    borderBottomLeftRadius: 9,
+    borderTopLeftRadius: 9,
+    width: "25%",
+    height: "100%",
+    backgroundColor: backgroundColorDarker,
   },
 });
 

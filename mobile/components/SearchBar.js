@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  TextInput,
-  StyleSheet,
-  Dimensions,
-  TouchableOpacity,
-} from "react-native";
+import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
 
 import {
@@ -14,20 +8,23 @@ import {
   backgroundColorLighter,
 } from "../constants/colors";
 
-const SearchBar = () => (
-  <View style={styles.container}>
-    <TextInput
-      placeholder="Procure o que deseja"
-      placeholderTextColor={placeholderTextColor}
-      style={styles.textInput}
-    />
-    <TouchableOpacity style={[styles.touchableOpacity, { display: "none" }]}>
-      <MaterialIcons name="menu" color={textInputTextColor} size={32} />
-    </TouchableOpacity>
-  </View>
-);
-
-const { width } = Dimensions.get("window");
+const SearchBar = (props) => {
+  return (
+    <View style={styles.container}>
+      <TextInput
+        placeholder="Procure o que deseja"
+        placeholderTextColor={placeholderTextColor}
+        style={styles.textInput}
+        keyboardAppearance="dark"
+        keyboardType="web-search"
+        {...props}
+      />
+      <TouchableOpacity style={[styles.touchableOpacity, { display: "none" }]}>
+        <MaterialIcons name="menu" color={textInputTextColor} size={32} />
+      </TouchableOpacity>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -45,9 +42,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.34,
     shadowRadius: 6.27,
     elevation: 4,
+    zIndex: 1,
   },
   textInput: {
-    width: width - 78,
+    flex: 1,
     height: 50,
     color: textInputTextColor,
     fontFamily: "Montserrat-SemiBold",

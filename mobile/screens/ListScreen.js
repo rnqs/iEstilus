@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
+  Alert,
   View,
   StyleSheet,
   FlatList,
@@ -7,6 +8,7 @@ import {
   StatusBar,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import * as Location from "expo-location";
 
 import {
   tintColor,
@@ -24,13 +26,44 @@ const ListScreen = () => {
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
   const [refreshing, setRefreshing] = useState(false);
+  const [location, setLocation] = useState({});
+  const [textSearch, setTextSearch] = useState("");
 
   useEffect(() => {
+    askForPermissionAndGetCurrentLocation();
     fetchEstablishmentsData();
   }, []);
 
+  const askForPermissionAndGetCurrentLocation = async () => {
+    let { status } = await Location.requestPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert(
+        "Sua permissão é importante",
+        "Usamos sua localização para selecionar os estabelecimentos mais próximos.",
+        [
+          {
+            text: "Permitir",
+            onPress: () => {
+              askForPermissionAndGetCurrentLocation();
+            },
+          },
+          { text: "Cancelar", style: "cancel" },
+        ],
+        { cancelable: true }
+      );
+    }
+
+    let location = await Location.getCurrentPositionAsync({});
+    setLocation(location.coords);
+    fetchEstablishmentsData();
+  };
+
   const fetchEstablishmentsData = async () => {
     if (refreshing) {
+      return;
+    }
+
+    if (textSearch) {
       return;
     }
 
@@ -40,8 +73,13 @@ const ListScreen = () => {
 
     setRefreshing(true);
 
+    const { latitude, longitude } = location;
+
+    const params =
+      latitude && longitude ? { page, latitude, longitude } : { page };
+
     const response = await api.get("establishments", {
-      params: { page },
+      params,
     });
 
     setEstablishments([...establishments, ...response.data]);
@@ -55,9 +93,24 @@ const ListScreen = () => {
       return;
     }
 
+    askForPermissionAndGetCurrentLocation();
+
     setRefreshing(true);
 
-    const response = await api.get("establishments");
+    const { latitude, longitude } = location;
+
+    let params = {};
+
+    if (latitude && longitude) {
+      params.latitude = latitude;
+      params.longitude = longitude;
+    }
+
+    if (textSearch) {
+      params.q = textSearch;
+    }
+
+    const response = await api.get("establishments", { params });
 
     setEstablishments(response.data);
     setTotal(response.headers["x-total-count"]);
@@ -73,7 +126,11 @@ const ListScreen = () => {
         translucent={true}
       />
       <SafeAreaView>
-        <SearchBar />
+        <SearchBar
+          value={textSearch}
+          onChangeText={(text) => setTextSearch(text)}
+          onSubmitEditing={() => refreshEstablishmentsData()}
+        />
         <FlatList
           data={establishments}
           style={styles.flatList}
