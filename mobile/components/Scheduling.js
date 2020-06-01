@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Linking,
+  Platform,
   Animated,
   TextInput,
   StyleSheet,
@@ -160,9 +161,12 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
     setVerifyInputs(true);
     if (userName && scheduleDate) {
       Linking.openURL(
-        `https://wa.me/${phoneNumber}?text=Olá, sou o ${userName} e gostaria de agendar: ${selectedServices
-          .map((service) => service.name)
-          .join(", ")}. Em ${scheduleDate}`
+        (Platform.OS === "ios"
+          ? `https://wa.me/${phoneNumber}?`
+          : `whatsapp://send?phone=${phoneNumber}&`) +
+          `text=Olá, meu nome é ${userName} e gostaria de agendar ${selectedServices
+            .map((service) => service.name)
+            .join(", ")}, ${scheduleDate}`
       );
     }
   };
