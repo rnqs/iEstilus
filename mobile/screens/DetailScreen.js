@@ -60,6 +60,7 @@ const DetailScreen = ({ navigation, route }) => {
     coordinate,
     photo_url,
     phone_number,
+    whatsapp_available,
   } = route.params.establishment;
   const [services, setServices] = useState([]);
   const [selectedServices, setSelectedServices] = useState([]);
@@ -254,7 +255,11 @@ const DetailScreen = ({ navigation, route }) => {
               ))}
             </ScrollView>
           )}
-          <Scheduling {...{ selectedServices }} />
+          <Scheduling
+            phoneNumber={phone_number}
+            whatsappAvailable={whatsapp_available}
+            {...{ selectedServices }}
+          />
         </View>
       </Animated.View>
     </View>
@@ -270,12 +275,12 @@ const styles = StyleSheet.create({
   imageBackground: {
     position: "absolute",
     width,
-    height: height / 2.4,
+    height: height / 2.75,
     zIndex: -1,
   },
   contentContainer: {
     top: 0,
-    height: height / 2.4,
+    height: height / 2.75,
     justifyContent: "space-between",
     zIndex: 2,
   },

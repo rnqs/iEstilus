@@ -160,10 +160,11 @@ const ListScreen = () => {
                 coordinate: item.coordinate,
                 photo_url: item.photo_url,
                 phone_number: item.phone_number,
+                whatsapp_available: item.whatsapp_available,
               }}
             />
           )}
-          ListFooterComponent={<NewEstablishmentButton />}
+          ListFooterComponent={refreshing ? null : <NewEstablishmentButton />}
         />
         <NewEstablishmentButton />
       </SafeAreaView>

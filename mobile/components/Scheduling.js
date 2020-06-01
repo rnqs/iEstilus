@@ -1,12 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   View,
   Text,
+  Linking,
+  Animated,
   TextInput,
   StyleSheet,
+  TouchableOpacity,
   TouchableHighlight,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { MaterialCommunityIcons, Feather } from "@expo/vector-icons";
 
 import formatNumberToReal from "../utils/formatNumberToReal";
 
@@ -15,11 +18,28 @@ import {
   textColor,
   placeholderTextColor,
   textInputTextColor,
+  backgroundColorDarker,
   backgroundColorLighter,
 } from "../constants/colors";
 
-const Scheduling = ({ selectedServices }) => {
+const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
+  const [userName, setUserName] = useState("");
   const [totalPrice, setTotalPrice] = useState(0);
+  const [totalHeight, setTotalHeight] = useState(80);
+  const [showButton, setShowButton] = useState(false);
+  const [scheduleDate, setScheduleDate] = useState("");
+  const [inAnimation, setInAnimation] = useState(false);
+  const [chooseOption, setChooseOption] = useState(false);
+  const [showChooseOption, setShowChooseOption] = useState(false);
+  const [whatsappOptionSelected, setWhatsappOptionSelected] = useState(false);
+  const [showWhatsappOptionSelected, setShowWhatsappOptionSelected] = useState(
+    false
+  );
+
+  const buttonAnimation = useRef(new Animated.Value(-totalHeight)).current;
+  const whatsappOptionSelectedOpacity = useRef(new Animated.Value(0)).current;
+  const schedulingOptionsContainerOpacity = useRef(new Animated.Value(1))
+    .current;
 
   useEffect(() => {
     setTotalPrice(
@@ -29,19 +49,128 @@ const Scheduling = ({ selectedServices }) => {
         0
       )
     );
+
+    if (selectedServices.length !== 0) {
+      setShowButton(true);
+      setInAnimation(true);
+      Animated.timing(buttonAnimation, {
+        toValue: 0,
+        duration: 150,
+      }).start(() => {
+        setInAnimation(false);
+      });
+    } else {
+      setInAnimation(true);
+      Animated.timing(buttonAnimation, {
+        toValue: -totalHeight,
+        duration: 150,
+      }).start(() => {
+        setInAnimation(false);
+        setShowButton(false);
+      });
+    }
   }, [selectedServices]);
 
+  const handleChooseOptionAnimation = () => {
+    setChooseOption(!chooseOption);
+    if (!chooseOption) {
+      setTotalHeight(275);
+      setInAnimation(true);
+      setShowChooseOption(true);
+      Animated.timing(buttonAnimation, {
+        toValue: -194,
+        duration: 0,
+      }).start();
+      Animated.timing(buttonAnimation, {
+        toValue: 0,
+        duration: 150,
+      }).start(() => {
+        setInAnimation(false);
+      });
+    } else {
+      setTotalHeight(80);
+      setInAnimation(true);
+      Animated.timing(buttonAnimation, {
+        toValue: -194,
+        duration: 150,
+      }).start(() => {
+        setInAnimation(false);
+        Animated.timing(buttonAnimation, {
+          toValue: 0,
+          duration: 0,
+        }).start(() => {
+          setShowChooseOption(false);
+        });
+      });
+    }
+  };
+
+  const handleWhatsappOptionSelectedAnimation = () => {
+    setWhatsappOptionSelected(!whatsappOptionSelected);
+    if (!whatsappOptionSelected) {
+      setTotalHeight(382);
+      setInAnimation(true);
+      Animated.timing(buttonAnimation, {
+        toValue: -107,
+        duration: 0,
+      }).start();
+      setShowWhatsappOptionSelected(true);
+      Animated.timing(buttonAnimation, {
+        toValue: 0,
+        duration: 150,
+      }).start();
+      Animated.timing(whatsappOptionSelectedOpacity, {
+        toValue: 1,
+        duration: 150,
+      }).start(() => {
+        Animated.timing(schedulingOptionsContainerOpacity, {
+          toValue: 0,
+          duration: 0,
+        }).start(() => {
+          setInAnimation(false);
+        });
+      });
+    } else {
+      setTotalHeight(275);
+      setInAnimation(true);
+      Animated.timing(buttonAnimation, {
+        toValue: -107,
+        duration: 150,
+      }).start();
+      Animated.timing(whatsappOptionSelectedOpacity, {
+        toValue: 0,
+        duration: 150,
+      }).start(() => {
+        setShowWhatsappOptionSelected(false);
+        Animated.timing(buttonAnimation, {
+          toValue: 0,
+          duration: 0,
+        }).start();
+        Animated.timing(schedulingOptionsContainerOpacity, {
+          toValue: 1,
+          duration: 0,
+        }).start(() => setInAnimation(false));
+      });
+    }
+  };
+
   return (
-    <View style={styles.container}>
+    <Animated.View
+      style={[
+        styles.container,
+        {
+          bottom: buttonAnimation,
+          display: showButton ? "flex" : "none",
+          position: inAnimation ? "absolute" : "relative",
+        },
+      ]}
+    >
       <TouchableHighlight
-        style={
-          selectedServices.length !== 0
-            ? { display: "flex" }
-            : { display: "none" }
+        onPress={() =>
+          whatsappOptionSelected
+            ? handleWhatsappOptionSelectedAnimation()
+            : handleChooseOptionAnimation()
         }
-        onPress={() => {
-          alert("Total: " + totalPrice);
-        }}
       >
         <View style={styles.button}>
           <Text style={styles.buttonText}>Agendar</Text>
@@ -50,16 +179,106 @@ const Scheduling = ({ selectedServices }) => {
           </Text>
         </View>
       </TouchableHighlight>
-      <View style={styles.schedulingOptionsContainer}></View>
-    </View>
+      {showWhatsappOptionSelected ? (
+        <View
+          style={{
+            backgroundColor: backgroundColorDarker,
+          }}
+        >
+          <Animated.View
+            style={[
+              styles.whatsappOptionsSelectedContainer,
+              {
+                opacity: whatsappOptionSelectedOpacity,
+                display: showWhatsappOptionSelected ? "flex" : "none",
+              },
+            ]}
+          >
+            <Text style={[styles.text, { marginVertical: 20 }]}>
+              Só mais algumas informações:
+            </Text>
+            <TextInput
+              placeholder="Seu nome"
+              placeholderTextColor={placeholderTextColor}
+              style={styles.textInput}
+              keyboardAppearance="dark"
+              value={userName}
+              onChangeText={(text) => setUserName(text)}
+              onSubmitEditing={() => {}}
+            />
+            <TextInput
+              placeholder="Para quando o agendamento?"
+              placeholderTextColor={placeholderTextColor}
+              style={styles.textInput}
+              value={scheduleDate}
+              onPress={() => {}}
+            />
+            <View style={styles.navigationButtonsContainer}>
+              <TouchableOpacity
+                style={styles.navigationButton}
+                onPress={() => handleWhatsappOptionSelectedAnimation()}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-left"
+                  color={textColor}
+                  size={48}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={[
+                  styles.navigationButton,
+                  { backgroundColor: tintColor },
+                ]}
+                onPress={() => handleSendWhatsappMessage()}
+              >
+                <MaterialCommunityIcons
+                  name="chevron-right"
+                  color={textColor}
+                  size={48}
+                />
+              </TouchableOpacity>
+            </View>
+          </Animated.View>
+        </View>
+      ) : (
+        <Animated.View
+          style={[
+            styles.schedulingOptionsContainer,
+            {
+              display: showChooseOption ? "flex" : "none",
+              opacity: schedulingOptionsContainerOpacity,
+            },
+          ]}
+        >
+          {whatsappAvailable && (
+            <TouchableOpacity
+              style={[styles.optionButton, { backgroundColor: "#2E8631" }]}
+              onPress={() => handleWhatsappOptionSelectedAnimation()}
+            >
+              <MaterialCommunityIcons
+                name="whatsapp"
+                size={28}
+                color={textColor}
+              />
+              <Text style={styles.text}>Agendar por WhatsApp</Text>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            style={[styles.optionButton, { backgroundColor: "#1D5AB6" }]}
+            onPress={() => Linking.openURL("tel:+" + phoneNumber)}
+          >
+            <Feather name="phone" size={28} color={textColor} />
+            <Text style={styles.text}>Agendar por telefone</Text>
+          </TouchableOpacity>
+        </Animated.View>
+      )}
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
-  schedulingContainer: {
-    position: "absolute",
-    bottom: 0,
-    zIndex: 1,
+  container: {
+    width: "100%",
   },
   button: {
     flexDirection: "row",
@@ -74,6 +293,51 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-Bold",
     color: textColor,
     fontSize: 24,
+  },
+  schedulingOptionsContainer: {
+    backgroundColor: backgroundColorDarker,
+    paddingVertical: 12.5,
+  },
+  optionButton: {
+    height: 60,
+    marginHorizontal: 13,
+    marginVertical: 12.5,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 24,
+  },
+  text: {
+    fontFamily: "Montserrat-Bold",
+    color: textColor,
+    marginLeft: 28,
+    fontSize: 18,
+  },
+  whatsappOptionsSelectedContainer: {
+    backgroundColor: backgroundColorDarker,
+  },
+  textInput: {
+    height: 45,
+    marginHorizontal: 22,
+    marginVertical: 7.5,
+    color: textInputTextColor,
+    backgroundColor: backgroundColorLighter,
+    borderRadius: 12,
+    fontFamily: "Montserrat-SemiBold",
+    paddingLeft: 25,
+    fontSize: 20,
+  },
+  navigationButtonsContainer: {
+    marginTop: 12.5,
+    marginBottom: 25,
+    paddingHorizontal: 22,
+    justifyContent: "space-between",
+    flexDirection: "row",
+  },
+  navigationButton: {
+    backgroundColor: backgroundColorLighter,
+    padding: 15,
+    borderRadius: 25,
   },
 });
 
