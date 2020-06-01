@@ -78,6 +78,7 @@ export default function Edit() {
       setServices(
         response.data.services.map((service) => ({
           ...service,
+          photoUrl: service.photo_url,
           price: "R$ " + service.price.replace(".", ","),
         }))
       );
@@ -264,7 +265,20 @@ export default function Edit() {
               {
                 name: service.name,
                 photo_url: service.photoUrl,
-                price: service.price.substr(3).replace(",", "."),
+                price:
+                  service.price.length >= 8
+                    ? Number(
+                        service.price
+                          .substr(3)
+                          .replace(",", "")
+                          .substr(
+                            0,
+                            service.price.substr(3).replace(",", "").length - 2
+                          ) +
+                          "." +
+                          service.price.substr(3).replace(",", "").substr(-2)
+                      )
+                    : Number(service.price.substr(3).replace(",", ".")),
               },
               {
                 headers: {
@@ -278,7 +292,20 @@ export default function Edit() {
               {
                 name: service.name,
                 photo_url: service.photoUrl,
-                price: service.price.substr(3).replace(",", "."),
+                price:
+                  service.price.length >= 8
+                    ? Number(
+                        service.price
+                          .substr(3)
+                          .replace(",", "")
+                          .substr(
+                            0,
+                            service.price.substr(3).replace(",", "").length - 2
+                          ) +
+                          "." +
+                          service.price.substr(3).replace(",", "").substr(-2)
+                      )
+                    : Number(service.price.substr(3).replace(",", ".")),
               },
               {
                 headers: {
