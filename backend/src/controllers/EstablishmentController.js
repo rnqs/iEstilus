@@ -123,7 +123,9 @@ module.exports = {
           photo_url: photo_url || establishment.photo_url,
           phone_number: phone_number || establishment.phone_number,
           whatsapp_available:
-            whatsapp_available || establishment.whatsapp_available,
+            whatsapp_available === false || whatsapp_available === true
+              ? whatsapp_available
+              : establishment.whatsapp_available,
           address: address || establishment.address,
           coordinate: coordinate
             ? st.geomFromText(
