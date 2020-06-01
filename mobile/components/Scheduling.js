@@ -16,6 +16,7 @@ import formatNumberToReal from "../utils/formatNumberToReal";
 import {
   tintColor,
   textColor,
+  errorColor,
   placeholderTextColor,
   textInputTextColor,
   backgroundColorDarker,
@@ -29,6 +30,7 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
   const [showButton, setShowButton] = useState(false);
   const [scheduleDate, setScheduleDate] = useState("");
   const [inAnimation, setInAnimation] = useState(false);
+  const [verifyInputs, setVerifyInputs] = useState(false);
   const [chooseOption, setChooseOption] = useState(false);
   const [showChooseOption, setShowChooseOption] = useState(false);
   const [whatsappOptionSelected, setWhatsappOptionSelected] = useState(false);
@@ -154,6 +156,17 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
     }
   };
 
+  const handleSendWhatsappMessage = () => {
+    setVerifyInputs(true);
+    if (userName && scheduleDate) {
+      Linking.openURL(
+        `https://wa.me/${phoneNumber}?text=Olá, sou o ${userName} e gostaria de agendar: ${selectedServices
+          .map((service) => service.name)
+          .join(", ")}. Em ${scheduleDate}`
+      );
+    }
+  };
+
   return (
     <Animated.View
       style={[
@@ -200,18 +213,24 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
             <TextInput
               placeholder="Seu nome"
               placeholderTextColor={placeholderTextColor}
-              style={styles.textInput}
+              style={[
+                styles.textInput,
+                verifyInputs && !userName && styles.textInputError,
+              ]}
               keyboardAppearance="dark"
               value={userName}
               onChangeText={(text) => setUserName(text)}
-              onSubmitEditing={() => {}}
             />
             <TextInput
-              placeholder="Para quando o agendamento?"
+              placeholder="Quando?"
               placeholderTextColor={placeholderTextColor}
-              style={styles.textInput}
+              style={[
+                styles.textInput,
+                verifyInputs && !scheduleDate && styles.textInputError,
+              ]}
+              keyboardAppearance="dark"
               value={scheduleDate}
-              onPress={() => {}}
+              onChangeText={(text) => setScheduleDate(text)}
             />
             <View style={styles.navigationButtonsContainer}>
               <TouchableOpacity
@@ -326,6 +345,11 @@ const styles = StyleSheet.create({
     fontFamily: "Montserrat-SemiBold",
     paddingLeft: 25,
     fontSize: 20,
+  },
+  textInputError: {
+    borderColor: errorColor,
+    borderWidth: 3,
+    borderStyle: "solid",
   },
   navigationButtonsContainer: {
     marginTop: 12.5,
