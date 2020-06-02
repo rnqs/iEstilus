@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Linking,
+  Keyboard,
   Platform,
   Animated,
   TextInput,
@@ -34,6 +35,7 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
   const [verifyInputs, setVerifyInputs] = useState(false);
   const [chooseOption, setChooseOption] = useState(false);
   const [showChooseOption, setShowChooseOption] = useState(false);
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [whatsappOptionSelected, setWhatsappOptionSelected] = useState(false);
   const [showWhatsappOptionSelected, setShowWhatsappOptionSelected] = useState(
     false
@@ -72,6 +74,24 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
         setShowButton(false);
       });
     }
+
+    const keyboardDidShowListener = Keyboard.addListener(
+      "keyboardDidShow",
+      () => {
+        setKeyboardVisible(true); // or some other action
+      }
+    );
+    const keyboardDidHideListener = Keyboard.addListener(
+      "keyboardDidHide",
+      () => {
+        setKeyboardVisible(false); // or some other action
+      }
+    );
+
+    return () => {
+      keyboardDidHideListener.remove();
+      keyboardDidShowListener.remove();
+    };
   }, [selectedServices]);
 
   const handleChooseOptionAnimation = () => {
@@ -178,7 +198,8 @@ const Scheduling = ({ selectedServices, phoneNumber, whatsappAvailable }) => {
         {
           bottom: buttonAnimation,
           display: showButton ? "flex" : "none",
-          position: inAnimation ? "absolute" : "relative",
+          position: inAnimation || isKeyboardVisible ? "absolute" : "relative",
+          marginBottom: Platform.OS === "ios" && isKeyboardVisible ? 343 : 0,
         },
       ]}
     >
