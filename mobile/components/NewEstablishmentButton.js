@@ -1,5 +1,12 @@
 import React from "react";
-import { View, StyleSheet, TouchableOpacity, Text } from "react-native";
+import {
+  View,
+  StyleSheet,
+  TouchableOpacity,
+  Text,
+  Platform,
+  Linking,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
 import {
@@ -17,7 +24,9 @@ const NewEstablishmentButton = () => {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("NewEstablishment");
+          Platform.OS === "web"
+            ? Linking.openURL("https://iestilus.com/novo")
+            : navigation.navigate("NewEstablishment");
         }}
       >
         <Text style={styles.buttonText}>Adicione ele aqui</Text>

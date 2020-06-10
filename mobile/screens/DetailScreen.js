@@ -127,141 +127,153 @@ const DetailScreen = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={backgroundColor + "75"}
-        translucent={true}
-      />
-      <Animated.View
-        style={{
-          flex: 1,
-          transform: [{ translateX }, { translateY }, { scale }],
-          backgroundColor,
-        }}
-      >
-        <PanGestureHandler {...gestureHandler}>
-          <Animated.View style={styles.header}>
-            <SharedElement id={id}>
-              <Image
-                style={styles.imageBackground}
-                source={{ uri: photo_url }}
-                resizeMode="cover"
-              />
-            </SharedElement>
-            <View style={styles.contentContainer}>
-              <View style={styles.contentTop}>
-                <Text style={styles.name}>{name}</Text>
-                <TouchableOpacity
-                  style={styles.buttonClose}
-                  onPress={() => {
-                    navigation.navigate("List");
-                  }}
-                >
-                  <MaterialIcons name="close" size={32} color={textColor} />
-                </TouchableOpacity>
-              </View>
-              <View style={styles.contentBottom}>
-                <Text style={styles.description}>{description}</Text>
-                <View style={styles.containerIcons}>
+    <View style={styles.main}>
+      <View style={styles.container}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={backgroundColor + "75"}
+          translucent={true}
+        />
+        <Animated.View
+          style={{
+            flex: 1,
+            transform: [{ translateX }, { translateY }, { scale }],
+            backgroundColor,
+          }}
+        >
+          <PanGestureHandler {...gestureHandler}>
+            <Animated.View style={styles.header}>
+              {Platform.OS === "web" ? (
+                <View id={id}>
+                  <Image
+                    style={styles.imageBackground}
+                    source={{ uri: photo_url }}
+                    resizeMode="cover"
+                  />
+                </View>
+              ) : (
+                <SharedElement id={id}>
+                  <Image
+                    style={styles.imageBackground}
+                    source={{ uri: photo_url }}
+                    resizeMode="cover"
+                  />
+                </SharedElement>
+              )}
+              <View style={styles.contentContainer}>
+                <View style={styles.contentTop}>
+                  <Text style={styles.name}>{name}</Text>
                   <TouchableOpacity
                     style={styles.buttonClose}
                     onPress={() => {
-                      Linking.openURL("tel:+" + phone_number);
+                      navigation.navigate("List");
                     }}
                   >
-                    <Feather name="phone" size={28} color={textColor} />
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.buttonClose}
-                    onPress={() => {
-                      Linking.openURL(
-                        Platform.OS === "android"
-                          ? `http://www.google.com/maps/place/${address}/@${coordinate.longitude},${coordinate.latitude},10z`
-                          : `http://maps.apple.com/?q=${address}&sll=${coordinate.longitude},${coordinate.latitude}&z=10`
-                      );
-                    }}
-                  >
-                    <Feather name="map-pin" size={28} color={textColor} />
+                    <MaterialIcons name="close" size={32} color={textColor} />
                   </TouchableOpacity>
                 </View>
+                <View style={styles.contentBottom}>
+                  <Text style={styles.description}>{description}</Text>
+                  <View style={styles.containerIcons}>
+                    <TouchableOpacity
+                      style={styles.buttonClose}
+                      onPress={() => {
+                        Linking.openURL("tel:+" + phone_number);
+                      }}
+                    >
+                      <Feather name="phone" size={28} color={textColor} />
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.buttonClose}
+                      onPress={() => {
+                        Linking.openURL(
+                          Platform.OS === "android"
+                            ? `http://www.google.com/maps/place/${address}/@${coordinate.longitude},${coordinate.latitude},10z`
+                            : `http://maps.apple.com/?q=${address}&sll=${coordinate.longitude},${coordinate.latitude}&z=10`
+                        );
+                      }}
+                    >
+                      <Feather name="map-pin" size={28} color={textColor} />
+                    </TouchableOpacity>
+                  </View>
+                </View>
               </View>
-            </View>
-          </Animated.View>
-        </PanGestureHandler>
-        <View style={styles.servicesContainer}>
-          {services.length === 0 ? (
-            <ActivityIndicator
-              color={tintColor}
-              size={"large"}
-              style={{ marginVertical: "50%" }}
-            />
-          ) : (
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={styles.scrollView}
-            >
-              {services.map((service) => (
-                <TouchableWithoutFeedback
-                  onPress={() => {
-                    const isSelected =
-                      selectedServices.length !== 0 &&
-                      selectedServices.find(
-                        (selectedService) => selectedService === service
-                      );
-
-                    if (!isSelected) {
-                      setSelectedServices([...selectedServices, service]);
-                    } else {
-                      setSelectedServices(
-                        selectedServices.filter(
-                          (selectedService) => selectedService !== service
-                        )
-                      );
-                    }
-                  }}
-                  key={service._id}
-                >
-                  <View style={styles.serviceContainer}>
-                    <View
-                      style={[
-                        styles.serviceContent,
+            </Animated.View>
+          </PanGestureHandler>
+          <View style={styles.servicesContainer}>
+            {services.length === 0 ? (
+              <ActivityIndicator
+                color={tintColor}
+                size={"large"}
+                style={{ marginVertical: "50%" }}
+              />
+            ) : (
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={styles.scrollView}
+              >
+                {services.map((service) => (
+                  <TouchableWithoutFeedback
+                    onPress={() => {
+                      const isSelected =
+                        selectedServices.length !== 0 &&
                         selectedServices.find(
                           (selectedService) => selectedService === service
-                        ) && styles.serviceContentSelected,
-                      ]}
-                    >
-                      {service.photo_url && (
-                        <Image
-                          style={styles.serviceImage}
-                          source={{ uri: service.photo_url }}
-                          resizeMode="cover"
-                        />
-                      )}
-                      <Text
+                        );
+
+                      if (!isSelected) {
+                        setSelectedServices([...selectedServices, service]);
+                      } else {
+                        setSelectedServices(
+                          selectedServices.filter(
+                            (selectedService) => selectedService !== service
+                          )
+                        );
+                      }
+                    }}
+                    key={service._id}
+                  >
+                    <View style={styles.serviceContainer}>
+                      <View
                         style={[
-                          styles.serviceText,
-                          service.photo_url && { marginRight: "auto" },
+                          styles.serviceContent,
+                          selectedServices.find(
+                            (selectedService) => selectedService === service
+                          ) && styles.serviceContentSelected,
                         ]}
                       >
-                        {service.name}
-                      </Text>
-                      <Text style={styles.serviceText}>
-                        {formatNumberToReal(service.price)}
-                      </Text>
+                        {service.photo_url && (
+                          <Image
+                            style={styles.serviceImage}
+                            source={{ uri: service.photo_url }}
+                            resizeMode="cover"
+                          />
+                        )}
+                        <Text
+                          style={[
+                            styles.serviceText,
+                            service.photo_url && { marginRight: "auto" },
+                          ]}
+                        >
+                          {service.name}
+                        </Text>
+                        <Text style={styles.serviceText}>
+                          {formatNumberToReal(service.price)}
+                        </Text>
+                      </View>
                     </View>
-                  </View>
-                </TouchableWithoutFeedback>
-              ))}
-            </ScrollView>
-          )}
-          <Scheduling
-            phoneNumber={phone_number}
-            whatsappAvailable={whatsapp_available}
-            {...{ selectedServices }}
-          />
-        </View>
-      </Animated.View>
+                  </TouchableWithoutFeedback>
+                ))}
+              </ScrollView>
+            )}
+            <Scheduling
+              phoneNumber={phone_number}
+              whatsappAvailable={whatsapp_available}
+              {...{ selectedServices }}
+            />
+          </View>
+        </Animated.View>
+      </View>
     </View>
   );
 };
@@ -269,12 +281,18 @@ const DetailScreen = ({ navigation, route }) => {
 const { width, height } = Dimensions.get("window");
 
 const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: "center",
+  },
   container: {
     flex: 1,
+    width: "100%",
+    maxWidth: 614,
   },
   imageBackground: {
     position: "absolute",
-    width,
+    width: "100%",
     height: height / 2.75,
     zIndex: -1,
   },
@@ -299,7 +317,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   description: {
-    maxWidth: width - 44,
+    width: width > 614 ? 562 : width - 52,
     paddingLeft: 16,
     alignSelf: "center",
     fontFamily: "Montserrat-SemiBold",

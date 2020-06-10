@@ -6,6 +6,8 @@ import {
   FlatList,
   RefreshControl,
   StatusBar,
+  Dimensions,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import * as Location from "expo-location";
@@ -119,66 +121,77 @@ const ListScreen = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <StatusBar
-        barStyle="light-content"
-        backgroundColor={"transparent"}
-        translucent={true}
-      />
-      <SafeAreaView>
-        <SearchBar
-          value={textSearch}
-          onChangeText={(text) => setTextSearch(text)}
-          onSubmitEditing={() => refreshEstablishmentsData()}
+    <View style={styles.main}>
+      <View style={styles.container}>
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={"transparent"}
+          translucent={true}
         />
-        <FlatList
-          data={establishments}
-          style={styles.flatList}
-          keyExtractor={(establishment) => String(establishment._id)}
-          showsVerticalScrollIndicator={false}
-          onEndReached={fetchEstablishmentsData}
-          onEndReachedThreshold={0.2}
-          onRefresh={refreshEstablishmentsData}
-          refreshing={refreshing}
-          refreshControl={
-            <RefreshControl
-              refreshing={refreshing}
-              onRefresh={refreshEstablishmentsData}
-              progressBackgroundColor={backgroundColorDarker}
-              colors={[tintColor]}
-              tintColor={tintColor}
-              progressViewOffset={67}
-            />
-          }
-          renderItem={({ item }) => (
-            <ListItem
-              establishment={{
-                id: String(item._id),
-                name: item.name,
-                description: item.description,
-                address: item.address,
-                coordinate: item.coordinate,
-                photo_url: item.photo_url,
-                phone_number: item.phone_number,
-                whatsapp_available: item.whatsapp_available,
-              }}
-            />
-          )}
-          ListFooterComponent={refreshing ? null : <NewEstablishmentButton />}
-        />
-        <NewEstablishmentButton />
-      </SafeAreaView>
+        <SafeAreaView>
+          <SearchBar
+            value={textSearch}
+            onChangeText={(text) => setTextSearch(text)}
+            onSubmitEditing={() => refreshEstablishmentsData()}
+          />
+          <FlatList
+            data={establishments}
+            style={styles.flatList}
+            keyExtractor={(establishment) => String(establishment._id)}
+            showsVerticalScrollIndicator={false}
+            onEndReached={fetchEstablishmentsData}
+            onEndReachedThreshold={0.2}
+            onRefresh={refreshEstablishmentsData}
+            refreshing={refreshing}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={refreshEstablishmentsData}
+                progressBackgroundColor={backgroundColorDarker}
+                colors={[tintColor]}
+                tintColor={tintColor}
+                progressViewOffset={67}
+              />
+            }
+            renderItem={({ item }) => (
+              <ListItem
+                establishment={{
+                  id: String(item._id),
+                  name: item.name,
+                  description: item.description,
+                  address: item.address,
+                  coordinate: item.coordinate,
+                  photo_url: item.photo_url,
+                  phone_number: item.phone_number,
+                  whatsapp_available: item.whatsapp_available,
+                }}
+              />
+            )}
+            ListFooterComponent={refreshing ? null : <NewEstablishmentButton />}
+          />
+          <NewEstablishmentButton />
+        </SafeAreaView>
+      </View>
     </View>
   );
 };
 
+const { height } = Dimensions.get("window");
+
 const styles = StyleSheet.create({
+  main: {
+    flex: 1,
+    alignItems: "center",
+    backgroundColor,
+  },
   container: {
     flex: 1,
+    width: "100%",
+    maxWidth: 614,
     backgroundColor,
   },
   flatList: {
-    height: "100%",
+    height: Platform.OS === "web" ? height : "100%",
     zIndex: -1,
     top: -48,
     paddingTop: 48,

@@ -1,14 +1,17 @@
 import React from "react";
-import { Platform } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createSharedElementStackNavigator } from "react-navigation-shared-element";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useFonts } from "@use-expo/font";
-import { AppLoading } from "expo";
+import { AppLoading, Linking } from "expo";
+
+const prefix = Linking.makeUrl("/");
 
 import ListScreen from "./screens/ListScreen";
 import DetailScreen from "./screens/DetailScreen";
 import NewEstablishmentScreen from "./screens/NewEstablishmentScreen";
+
+import WebHeader from "./components/WebHeader";
 
 const Stack = createSharedElementStackNavigator();
 
@@ -19,13 +22,22 @@ const App = () => {
     "Montserrat-Bold": require("./assets/fonts/Montserrat-Bold.ttf"),
   });
 
+  const linking = {
+    prefixes: [prefix],
+    config: {
+      List: "list",
+      Detail: "detail",
+    },
+  };
+
   if (!fontsLoaded) {
     return <AppLoading />;
   }
 
   return (
     <SafeAreaProvider>
-      <NavigationContainer>
+      <WebHeader />
+      <NavigationContainer linking={linking} fallback={<AppLoading />}>
         <Stack.Navigator initialRouteName="List" headerMode="none" mode="modal">
           <Stack.Screen name="List" component={ListScreen} />
           <Stack.Screen

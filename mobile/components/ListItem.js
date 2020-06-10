@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
   Dimensions,
+  Platform,
 } from "react-native";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { SharedElement } from "react-navigation-shared-element";
@@ -48,13 +49,23 @@ const ListItem = ({ establishment }) => {
           </View>
         </TouchableWithoutFeedback>
       </View>
-      <SharedElement id={id} style={styles.imageContainer}>
-        <Image
-          style={[styles.imageBackground, { opacity }]}
-          source={{ uri: photo_url }}
-          resizeMode="cover"
-        />
-      </SharedElement>
+      {Platform.OS === "web" ? (
+        <View id={id} style={styles.imageContainer}>
+          <Image
+            style={[styles.imageBackground, { opacity }]}
+            source={{ uri: photo_url }}
+            resizeMode="cover"
+          />
+        </View>
+      ) : (
+        <SharedElement id={id} style={styles.imageContainer}>
+          <Image
+            style={[styles.imageBackground, { opacity }]}
+            source={{ uri: photo_url }}
+            resizeMode="cover"
+          />
+        </SharedElement>
+      )}
     </View>
   );
 };
@@ -85,6 +96,7 @@ const styles = StyleSheet.create({
   },
   imageBackground: {
     width: width - 24,
+    maxWidth: 590,
     height: 240,
     borderRadius: 9,
   },
