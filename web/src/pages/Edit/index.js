@@ -608,6 +608,7 @@ export default function Edit() {
                           "div.service"
                         );
                         setInputError(true);
+                        // eslint-disable-next-line array-callback-return
                         indexOfUnfilledFields.map((index) => {
                           serviceDivs[index].classList.add("error");
                         });
