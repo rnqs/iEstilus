@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-section.edit {
+#edit {
     display: block !important;
     width: 100vw;
     height: 100%;
@@ -8,7 +8,7 @@ section.edit {
     /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
 }
 
-section.edit .content {
+#edit .content {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -18,14 +18,14 @@ section.edit .content {
 }
 
 @media screen and (max-width: 1300px) {
-    section.edit .content {
+    #edit .content {
         height: 100vh;
         width: 100vw;
     }
 }
 
 @media screen and (min-width: 1300px) {
-    section.edit .content {
+    #edit .content {
         width: 50vw;
         height: 100vh;
 
@@ -34,7 +34,7 @@ section.edit .content {
     }
 }
 
-section.edit .content .title-container h1 {
+#edit .content .title-container h1 {
     color: var(--main-text-color);
     text-align: center;
     font-style: normal;
@@ -44,7 +44,7 @@ section.edit .content .title-container h1 {
     letter-spacing: -0.03em;
 }
 
-section.edit .content .input-container h3 {
+#edit .content .input-container h3 {
     color: var(--main-text-color);
     font-style: normal;
     font-weight: 600;
@@ -53,16 +53,16 @@ section.edit .content .input-container h3 {
     letter-spacing: -0.03em;
 }
 
-section.edit .content .input-container,
-section.edit .content .submit-container {
+#edit .content .input-container,
+#edit .content .submit-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-section.edit .content .input-container input.input,
-section.edit .content .input-container textarea,
-section.edit .content .input-container .image-container {
+#edit .content .input-container input.input,
+#edit .content .input-container textarea,
+#edit .content .input-container .image-container {
     width: 95vw;
     max-width: 400px;
     height: 50px;
@@ -84,28 +84,28 @@ section.edit .content .input-container .image-container {
     transition-duration: 200ms;
 }
 
-section.edit .content .input-container input.input:focus,
-section.edit .content .input-container textarea:focus {
+#edit .content .input-container input.input:focus,
+#edit .content .input-container textarea:focus {
     border: 3px solid var(--main-color);
 
     transition-duration: 200ms
 }
 
-section.edit .content .input-container textarea {
+#edit .content .input-container textarea {
     height: 100px;
     padding: 13px 25px;
 
     resize: none;
 }
 
-section.edit .content .input-container .image-container {
+#edit .content .input-container .image-container {
     display: flex;
     border: none;
     height: 100px;
     padding: 0;
 }
 
-section.edit .content .input-container .image-container .image-preview {
+#edit .content .input-container .image-container .image-preview {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -120,7 +120,7 @@ section.edit .content .input-container .image-container .image-preview {
     border-radius: 9px 0 0 9px;
 }
 
-section.edit .content .input-container .image-container .side p {
+#edit .content .input-container .image-container .side p {
     width: 220px;
     margin: 11px 25px 0 25px;
 
@@ -131,11 +131,11 @@ section.edit .content .input-container .image-container .side p {
     letter-spacing: -0.03em;
 }
 
-section.edit .content .input-container input.upload-photo {
+#edit .content .input-container input.upload-photo {
     display: none;
 }
 
-section.edit .content .input-container .image-container .side label {
+#edit .content .input-container .image-container .side label {
     display: block;
     width: 220px;
     height: 35px;
@@ -155,12 +155,12 @@ section.edit .content .input-container .image-container .side label {
     transition-duration: 200ms;
 }
 
-section.edit .content .input-container .phone-input {
+#edit .content .input-container .phone-input {
     position: relative;
     height: 75px;
 }
 
-section.edit .content .input-container .phone-input span {
+#edit .content .input-container .phone-input span {
     display: block;
     width: 70px;
     height: 16px;
@@ -177,21 +177,21 @@ section.edit .content .input-container .phone-input span {
     letter-spacing: -0.03em;
 }
 
-section.edit .content .input-container .phone-input .switch {
+#edit .content .input-container .phone-input .switch {
     position: absolute !important;
     top: 23px;
     right: 40px;
 }
 
-section.edit .content .input-container .address-input {
+#edit .content .input-container .address-input {
     position: relative;
 }
 
-section.edit .content .input-container .address-input input {
+#edit .content .input-container .address-input input {
     padding-right: 65px;
 }
 
-section.edit .content .input-container .address-input .pinIcon {
+#edit .content .input-container .address-input .pinIcon {
     position: absolute !important;
     right: 0;
     margin: 13px 25px;
@@ -200,17 +200,17 @@ section.edit .content .input-container .address-input .pinIcon {
     color: var(--input-text-color);
 }
 
-section.edit .content .submit-container button:first-child {
+#edit .content .submit-container button:first-child {
     margin-bottom: 15px;
 
     border: 3px solid var(--err-color);
 }
 
-section.edit .content .submit-container button:first-child:hover {
+#edit .content .submit-container button:first-child:hover {
     background: var(--err-color)
 }
 
-section.edit .content .submit-container button {
+#edit .content .submit-container button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -233,14 +233,14 @@ section.edit .content .submit-container button {
     transition-duration: 200ms;
 }
 
-section.edit .content .submit-container button:hover,
-section.edit .content .input-container .image-container label:hover {
+#edit .content .submit-container button:hover,
+#edit .content .input-container .image-container label:hover {
     background: var(--main-color);
 
     transition-duration: 200ms;
 }
 
-section.edit .content .input-container .services-input {
+#edit .content .input-container .services-input {
     width: 95vw;
     max-width: 400px;
     height: 200px;
@@ -259,28 +259,28 @@ section.edit .content .input-container .services-input {
     transition-duration: 200ms;
 }
 
-section.edit .content .input-container .services-input span {
+#edit .content .input-container .services-input span {
     display: block;
     margin: 13px 20px;
 }
 
-section.edit .content .input-container .services-input .services-container {
+#edit .content .input-container .services-input .services-container {
     max-height: 142px;
 
     overflow-y: scroll;
 }
 
-section.edit .content .input-container .services-input .services-container .add-button {
+#edit .content .input-container .services-input .services-container .add-button {
     display: flex;
     justify-content: center;
     margin-top: 5px;
 }
 
-section.edit .content .input-container .services-input .services-container .add-button svg {
+#edit .content .input-container .services-input .services-container .add-button svg {
     cursor: pointer;
 }
 
-section.edit .content .input-container .services-input .services-container .service {
+#edit .content .input-container .services-input .services-container .service {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -301,30 +301,30 @@ section.edit .content .input-container .services-input .services-container .serv
     transition-duration: 200ms
 }
 
-section.edit .content .input-container .services-input .services-container .error,
-section.edit .content .input-container .image-container .side label.error,
-section.edit .content .input-container .address-input .error,
-section.edit .content .input-container input.error,
-section.edit .content .input-container .error {
+#edit .content .input-container .services-input .services-container .error,
+#edit .content .input-container .image-container .side label.error,
+#edit .content .input-container .address-input .error,
+#edit .content .input-container input.error,
+#edit .content .input-container .error {
     border: 3px solid var(--err-color);
 
     transition-duration: 200ms
 }
 
-section.edit .content .input-container .image-container .side {
+#edit .content .input-container .image-container .side {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
 
-section.edit .content .input-container .image-container .side label.error:hover {
+#edit .content .input-container .image-container .side label.error:hover {
     border: 3px solid var(--main-color);
     background-color: var(--main-color);
 
     transition-duration: 200ms
 }
 
-section.edit .content .input-container .services-input .services-container .service input {
+#edit .content .input-container .services-input .services-container .service input {
     flex: 1;
 
     background: transparent;
@@ -333,7 +333,7 @@ section.edit .content .input-container .services-input .services-container .serv
     color: var(--input-text-color);
 }
 
-section.edit .content .input-container .services-input .services-container .service input.price {
+#edit .content .input-container .services-input .services-container .service input.price {
     max-width: 80px;
 
     text-align: end;

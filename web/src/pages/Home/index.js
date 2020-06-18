@@ -29,11 +29,16 @@ export default function Home() {
   }
 
   return (
-    <section className="home">
+    <section id="home">
       <div className="content">
         <Header
           links={[
-            { text: "Baixe o app", onClick: () => {} },
+            {
+              text: "Usar o app",
+              onClick: () => {
+                window.location.assign("https://app.iestilus.com/");
+              },
+            },
             { text: "Faça Login", onClick: () => navigateTo("/login") },
           ]}
           button={{
@@ -42,17 +47,21 @@ export default function Home() {
           }}
         />
 
-        <h1>
-          Facilite a busca e agendamento para seu salão,{" "}
-          <span onClick={() => navigateTo("/cadastro")}>
-            cadastre hoje mesmo e receba novos clientes.
-          </span>
-        </h1>
-        <h2>
-          Está buscando pelo serviço perfeito?{" "}
-          <span>Baixe já o app para seu celular.</span>
-        </h2>
-        <h1 className="light">Como funciona?</h1>
+        <div className="image-background-container">
+          <h1>Facilitamos a busca e agendamento de serviços de estética.</h1>
+          <div className="buttons">
+            <button onClick={() => navigateTo("/cadastro")}>
+              Cadastre seu salão hoje mesmo
+            </button>
+            <button
+              onClick={() => {
+                window.location.assign("https://app.iestilus.com/");
+              }}
+            >
+              Buscar um serviço
+            </button>
+          </div>
+        </div>
       </div>
     </section>
   );

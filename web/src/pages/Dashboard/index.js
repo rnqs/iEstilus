@@ -82,7 +82,7 @@ export default function Home() {
   };
 
   return (
-    <section className="dashboard">
+    <section id="dashboard">
       <div className="content">
         <Header
           links={[{ text: "Fazer logout", onClick: () => logOut() }]}

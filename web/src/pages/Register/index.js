@@ -82,7 +82,7 @@ export default function Register() {
   };
 
   return (
-    <section className="register">
+    <section id="register">
       <div className="content">
         <div className="title-container">
           <h1>Cadastre-se</h1>

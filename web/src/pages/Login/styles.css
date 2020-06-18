@@ -1,13 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
 
-section.login {
+#login {
     width: 100vw;
     height: 100vh;
 
     /* filter: drop-shadow(60px 0px 60px rgba(0, 0, 0, 0.5)); */
 }
 
-section.login .content {
+#login .content {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -16,14 +16,14 @@ section.login .content {
 }
 
 @media screen and (max-width: 1300px) {
-    section.login .content {
+    #login .content {
         height: 100vh;
         width: 100vw;
     }
 }
 
 @media screen and (min-width: 1300px) {
-    section.login .content {
+    #login .content {
         width: 50vw;
         height: 100vh;
 
@@ -32,7 +32,7 @@ section.login .content {
     }
 }
 
-section.login .content .title-container h1 {
+#login .content .title-container h1 {
     color: var(--main-text-color);
     text-align: center;
     font-style: normal;
@@ -42,7 +42,7 @@ section.login .content .title-container h1 {
     letter-spacing: -0.03em;
 }
 
-section.login .content .input-container h3 {
+#login .content .input-container h3 {
     color: var(--main-text-color);
     font-style: normal;
     font-weight: 600;
@@ -51,25 +51,25 @@ section.login .content .input-container h3 {
     letter-spacing: -0.03em;
 }
 
-section.login .content .svg-container,
-section.login .content .input-container,
-section.login .content .submit-container {
+#login .content .svg-container,
+#login .content .input-container,
+#login .content .submit-container {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-section.login .content .svg-container img {
+#login .content .svg-container img {
     height: 15vh;
 }
 
 @media screen and (max-height: 750px) {
-    section.login .content .svg-container img {
+    #login .content .svg-container img {
         display: none;
     }
 }
 
-section.login .content .input-container input {
+#login .content .input-container input {
     width: 95vw;
     max-width: 400px;
     height: 50px;
@@ -91,20 +91,20 @@ section.login .content .input-container input {
     transition-duration: 200ms;
 }
 
-section.login .content .input-container input:focus {
+#login .content .input-container input:focus {
     border: 3px solid var(--main-color);
 
     transition-duration: 200ms
 }
 
-section.login .content .input-container input.error,
-section.login .content .input-container input.error:focus {
+#login .content .input-container input.error,
+#login .content .input-container input.error:focus {
     border: 3px solid var(--err-color);
 
     transition-duration: 200ms
 }
 
-section.login .content .input-container button.google-login {
+#login .content .input-container button.google-login {
     display: flex;
     align-items: center;
     height: 50px;
@@ -124,11 +124,11 @@ section.login .content .input-container button.google-login {
     line-height: 20px;
 }
 
-section.login .content .input-container button.google-login img {
+#login .content .input-container button.google-login img {
     margin-right: 24px;
 }
 
-section.login .content .input-container span {
+#login .content .input-container span {
     color: var(--main-color);
     margin-top: 25px;
     cursor: pointer;
@@ -136,13 +136,13 @@ section.login .content .input-container span {
     transition-duration: 200ms;
 }
 
-section.login .content .input-container span:hover {
+#login .content .input-container span:hover {
     text-decoration: underline;
 
     transition-duration: 200ms;
 }
 
-section.login .content .submit-container button {
+#login .content .submit-container button {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -165,7 +165,7 @@ section.login .content .submit-container button {
     transition-duration: 200ms;
 }
 
-section.login .content .submit-container button:hover {
+#login .content .submit-container button:hover {
     background: var(--main-color);
 
     transition-duration: 200ms;

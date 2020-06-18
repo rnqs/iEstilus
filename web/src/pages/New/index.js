@@ -212,7 +212,7 @@ export default function New() {
 
   return (
     <div>
-      <section className="new">
+      <section id="new">
         <div className="content">
           <div className="title-container">
             <h1>Novo salão</h1>

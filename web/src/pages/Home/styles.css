@@ -1,4 +1,4 @@
-section.home {
+#home {
     width: 100vw;
     height: 100%;
 
@@ -8,23 +8,22 @@ section.home {
     /* filter: drop-shadow(-60px 0px 60px rgba(0, 0, 0, 0.5)); */
 }
 
-section.home .content {
+#home .content {
     display: flex;
     flex-direction: column;
-    min-height: 200vh;
 
     background: var(--main-bg-color);
 }
 
 @media screen and (max-width: 1300px) {
-    section.home .content {
+    #home .content {
         height: 100vh;
         width: 100vw;
     }
 }
 
 @media screen and (min-width: 1300px) {
-    section.home .content {
+    #home .content {
         width: 67vw;
         height: 100vh;
 
@@ -33,33 +32,100 @@ section.home .content {
     }
 }
 
-section.home .content h1 {
+#home .content .image-background-container {
+    height: 75vh;
+}
+
+@media screen and (max-width: 1299px) {
+    #home .content .image-background-container {
+        background-image:
+            radial-gradient(ellipse closest-side, rgba(36, 38, 45, 0.75), var(--main-bg-color)),
+            url(../../assets/background.png);
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: cover;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+}
+
+#home .content .image-background-container h1 {
     color: var(--main-text-color);
-    font-size: 2rem;
-    text-align: center;
+    font-size: 2em;
 
-    margin: 15vh 25px;
-    margin-bottom: 0;
+    margin: 0 25px;
+    margin-bottom: 2.5vh;
 }
 
-section.home .content h2 {
-    color: var(--input-text-color);
-    font-size: 1.2rem;
-    text-align: center;
-
-    margin: 2vh 10px;
-    margin-bottom: 20vh;
+#home .content .image-background-container .buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
 }
 
-section.home .content h1 span,
-section.home .content h2 span {
+@media screen and (max-width: 860px) {
+    #home .content .image-background-container .buttons {
+        grid-template-columns: none;
+    }
+}
+
+@media screen and (min-width: 1300px) {
+    #home .content .image-background-container .buttons {
+        padding-left: 35px;
+        padding-right: 5px;
+    }
+}
+
+#home .content .image-background-container .buttons button {
+    cursor: pointer;
+    background: transparent;
+    padding: 10px 20px;
+    margin: 10px 20px;
+    border: 3px solid #F6A821;
+    border-radius: 9px;
+
+    color: #EEEEEE;
+    font-weight: 600;
+    font-size: 1.4em;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+
+    transition-duration: 200ms
+}
+
+#home .content .image-background-container .buttons button:hover {
+    background: #F6A821;
+
+    transition-duration: 200ms
+}
+
+@media screen and (min-width: 1300px) {
+
+    #home .content .image-background-container h1,
+    #home .content .image-background-container h2 {
+        text-align: center;
+    }
+
+    #home .content .image-background-container h1 {
+        margin: 15vh 10vw;
+        margin-bottom: 2.5vh;
+    }
+
+    #home .content .image-background-container h2 {
+        margin: 2vh 10vw;
+    }
+}
+
+#home .content .image-background-container h1 span,
+#home .content .image-background-container h2 span {
     cursor: pointer;
 
     transition: ease-in-out 200ms;
 }
 
-section.home .content h1 span:hover,
-section.home .content h2 span:hover {
+#home .content .image-background-container h1 span:hover,
+#home .content .image-background-container h2 span:hover {
     color: var(--main-color);
 
     transition: ease-in-out 200ms;

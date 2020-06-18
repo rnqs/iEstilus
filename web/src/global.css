@@ -12,16 +12,36 @@
   --err-color: #E82929;
 }
 
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--main-bg-color);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #ffffff5b;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #ffffff9a;
+}
+
 * {
   margin: 0;
   padding: 0;
   outline: 0;
   box-sizing: border-box;
+
+  -webkit-font-smoothing: antialiased;
 }
 
 html,
 body,
 #root {
+  background: var(--below-bg-color);
   min-width: 100%;
   overflow-x: hidden;
 }

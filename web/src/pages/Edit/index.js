@@ -337,7 +337,7 @@ export default function Edit() {
 
   return (
     <div>
-      <section className="edit">
+      <section id="edit">
         <div className="content">
           <div className="title-container">
             <h1>Editar salão</h1>
