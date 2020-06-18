@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport"
-    content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover">
+    content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1.00001,viewport-fit=cover" />
   <title>App iEstilus | Busque e agende serviços de estética</title>
   <style>
     ::-webkit-scrollbar {
@@ -81,6 +81,24 @@
   </style>
   <script src="/pace/pace.min.js"></script>
   <link href="/pace/pace.css" rel="stylesheet" />
+  <link rel="icon" href="/favicon.ico">
 </head>
+
+<body>
+  <noscript>
+    <form action="" style="background-color:#fff;position:fixed;top:0;left:0;right:0;bottom:0;z-index:9999">
+      <div style="font-size:18px;font-family:Helvetica,sans-serif;line-height:24px;margin:10%;width:80%">
+        <p>Oh no! It looks like JavaScript is not enabled in your browser.</p>
+        <p style="margin:20px 0"><button type="submit"
+            style="background-color:#f6a821;border-radius:100px;border:none;box-shadow:none;color:#fff;cursor:pointer;font-weight:700;line-height:20px;padding:6px 16px">Reload</button>
+        </p>
+      </div>
+    </form>
+  </noscript>
+
+  <div id="root"></div>
+
+  <!-- Webpack JS chunk -->
+</body>
 
 </html>
