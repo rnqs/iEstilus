@@ -40,7 +40,7 @@
     #home .content .image-background-container {
         background-image:
             radial-gradient(ellipse closest-side, rgba(36, 38, 45, 0.75), var(--main-bg-color)),
-            url(../../assets/background.png);
+            url(../../assets/background.webp);
         background-repeat: no-repeat;
         background-position: center center;
         background-size: cover;

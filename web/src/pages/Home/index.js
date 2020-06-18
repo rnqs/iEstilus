@@ -8,7 +8,7 @@ export default function Home() {
   const [navigating, setNavigating] = useState(true);
 
   useEffect(() => {
-    document.title = "iEstilus";
+    document.title = "iEstilus | Busca e agendamento de serviços de estética";
 
     setTimeout(() => {
       setNavigating(false);

@@ -98,7 +98,7 @@ main {
   width: 100vw;
   min-height: 100vh;
 
-  background-image: url(./assets/background.png);
+  background-image: url(./assets/background.webp);
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;
