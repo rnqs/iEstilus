@@ -13,4 +13,6 @@ const config = {
 
 const firebaseApp = firebase.initializeApp(config);
 
+firebase.analytics(firebaseApp);
+
 export default firebaseApp;
