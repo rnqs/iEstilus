@@ -25,7 +25,7 @@ const NewEstablishmentButton = () => {
         style={styles.button}
         onPress={() => {
           Platform.OS === "web"
-            ? Linking.openURL("https://iestilus.com/novo")
+            ? Linking.openURL("https://iestilus.com/cadastro")
             : navigation.navigate("NewEstablishment");
         }}
       >
