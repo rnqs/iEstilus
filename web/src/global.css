@@ -10,6 +10,8 @@
   --success-color: #29E85E;
   --alert-color: #E8B329;
   --err-color: #E82929;
+
+  --main-background-image: url(./assets/background.webp);
 }
 
 ::-webkit-scrollbar {
@@ -98,7 +100,7 @@ main {
   width: 100vw;
   min-height: 100vh;
 
-  background-image: url(./assets/background.webp);
+  background-image: var(--main-background-image);
   background-repeat: no-repeat;
   background-position: center center;
   background-attachment: fixed;

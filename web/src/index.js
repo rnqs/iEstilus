@@ -3,6 +3,14 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 
+import { detect } from "detect-browser";
+
+const browser = detect();
+
+if (browser.name === "safari" && Number(browser.version.split(".")[0]) < 14) {
+  require("./safari.css");
+}
+
 ReactDOM.render(
   <React.StrictMode>
     <App />

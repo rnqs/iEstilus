@@ -87,8 +87,8 @@ export default function Home() {
         <Header
           links={[{ text: "Fazer logout", onClick: () => logOut() }]}
           button={{
-            text: "Baixar o app",
-            onClick: () => navigateTo("/cadastro"),
+            text: "Usar o app",
+            onClick: () => window.location.assign("https://app.iestilus.com/"),
           }}
         />
 
