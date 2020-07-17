@@ -129,9 +129,8 @@ export default function New() {
   const verifyAddressAndGetLatitudeAndLongitude = async () => {
     try {
       if (address) {
-        const response = await bingMapsApi.get(`/`, {
+        const response = await bingMapsApi.get(`/${address}`, {
           params: {
-            addressLine: address,
             maxResults: 1,
             key: apiKey,
           },
