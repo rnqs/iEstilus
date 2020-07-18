@@ -104,6 +104,11 @@ export default function New() {
   const addInputError = (id) => {
     setInputError(true);
     document.querySelector("#" + id).classList.add("error");
+
+    if (id === "address")
+      document
+        .querySelector(".address-input-error-message")
+        .classList.add("active");
   };
 
   const removeInputError = (id) => {
@@ -351,6 +356,9 @@ export default function New() {
                   getCurrentLocation();
                 }}
               />
+              <div className="address-input-error-message">
+                Exemplo: <b>Nome da rua, numero, cidade</b>
+              </div>
             </div>
             <div className="services-input">
               <span>Serviços</span>
