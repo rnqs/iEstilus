@@ -7,7 +7,7 @@ import { detect } from "detect-browser";
 
 const browser = detect();
 
-if (browser.name === "safari" && Number(browser.version.split(".")[0]) < 14) {
+if (browser?.name === "safari" && Number(browser.version.split(".")[0]) < 14) {
   require("./safari.css");
 }
 
