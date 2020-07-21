@@ -5,7 +5,7 @@ import { useHistory } from "react-router-dom";
 import "./styles.css";
 
 import getFirebaseIdToken from "../../utils/getFirebaseIdToken";
-import firebaseAuth from "../../utils/firebaseAuth.js";
+import firebaseAuth from "../../utils/firebaseAuth";
 import api from "../../services/api";
 
 import Header from "../../components/Header";
