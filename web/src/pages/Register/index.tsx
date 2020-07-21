@@ -131,7 +131,7 @@ export default function Register() {
         <div className="submit-container">
           <button
             onClick={() =>
-              firebaseCreateUserWithEmailAndPassword(email, password)
+              vPass && firebaseCreateUserWithEmailAndPassword(email, password)
             }
           >
             Enviar
