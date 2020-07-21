@@ -3,17 +3,17 @@ import isAValidURL from "../../utils/isAValidURL";
 
 import "./styles.css";
 
-interface props {
+interface Props {
   display: boolean;
   setDisplayed: (display: boolean) => void;
   submit: () => void;
-  values: values[];
-  edit: boolean;
+  values: Value[];
+  edit?: boolean;
 }
 
-interface values {
+interface Value {
   key: string;
-  index: number;
+  index?: number;
   value: string | boolean | object;
 }
 
@@ -23,7 +23,7 @@ export default function ConfirmationModal({
   submit,
   values,
   edit,
-}: props) {
+}: Props) {
   return (
     <div className={display ? "confirmation-modal" : "confirmation-modal-hide"}>
       <section>
@@ -49,16 +49,16 @@ export default function ConfirmationModal({
                         value.value ? (
                           "Sim"
                         ) : (
-                          "Não"
-                        )
+                            "Não"
+                          )
                       ) : isAValidURL(value.value) ? (
                         <img
                           src={value.value}
                           alt={`Imagem do estabelecimento "${values[0].value}"`}
                         />
                       ) : (
-                        value.value
-                      )}
+                            value.value
+                          )}
                     </span>
                   </div>
                   {values.length !== value.index && (

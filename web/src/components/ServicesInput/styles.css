@@ -1,0 +1,85 @@
+#services-input {
+  width: 95vw;
+  max-width: 400px;
+  height: 200px;
+  padding: 0 4px;
+
+  background: var(--input-bg-color);
+  border-radius: 10px;
+
+  color: var(--input-text-color);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.03em;
+
+  transition-duration: 200ms;
+}
+
+#services-input span {
+  display: block;
+  margin: 13px 20px;
+}
+
+#services-input .services-container {
+  max-height: 142px;
+
+  overflow-y: auto;
+}
+
+#services-input .services-container .add-button {
+  display: flex;
+  justify-content: center;
+  margin-top: 5px;
+}
+
+#services-input .services-container .add-button svg {
+  cursor: pointer;
+}
+
+#services-input .services-container .service {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 35px;
+  margin: 0 4px 5px 4px;
+  padding: 0 20px;
+
+  background: var(--below-bg-color);
+  border: 3px solid var(--below-bg-color);
+  border-radius: 10px;
+
+  color: var(--input-text-color);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  letter-spacing: -0.03em;
+
+  transition-duration: 200ms
+}
+
+#services-input .services-container .error {
+  border: 3px solid var(--err-color);
+
+  transition-duration: 200ms
+}
+
+#services-input .services-container .service input {
+  flex: 1;
+
+  background: transparent;
+  border: none;
+  line-height: 1;
+  color: var(--input-text-color);
+}
+
+#services-input .services-container .service input.price {
+  max-width: 80px;
+
+  text-align: end;
+}
+
+#services-input .services-container .service input.upload-photo {
+  display: none;
+}

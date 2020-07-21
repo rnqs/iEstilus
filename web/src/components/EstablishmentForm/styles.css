@@ -1,0 +1,37 @@
+#establishment-form .input-container,
+#establishment-form .submit-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+}
+
+#establishment-form .submit-container button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 95vw;
+  max-width: 400px;
+  height: 50px;
+
+  cursor: pointer;
+  background: transparent;
+  border: 3px solid var(--main-color);
+  border-radius: 9px;
+
+  color: var(--main-text-color);
+  font-style: normal;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 29px;
+  letter-spacing: -0.03em;
+
+  transition-duration: 200ms;
+}
+
+#establishment-form .submit-container button:hover,
+#establishment-form .input-container .image-container label:hover {
+  background: var(--main-color);
+
+  transition-duration: 200ms;
+}

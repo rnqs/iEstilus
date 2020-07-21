@@ -14,14 +14,21 @@ export interface Establishment {
   name: string;
   description: string;
   photo_url: string;
-  phone: string;
-  whatsAppAvailable: boolean;
+  phone_number: string;
+  whatsapp_available: boolean;
   address: string;
   services: Service[];
+  coordinate: LatLng;
 }
 
 export interface Service {
+  _id: number;
   name: string;
   price: number;
   photo_url?: string;
+}
+
+export interface LatLng {
+  latitude: number;
+  longitude: number;
 }

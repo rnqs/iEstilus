@@ -1,0 +1,42 @@
+#input-component input,
+#input-component textarea {
+  width: 95vw;
+  max-width: 400px;
+  height: 50px;
+  padding: 0 25px;
+  margin-bottom: 25px;
+  box-sizing: border-box;
+
+  background: var(--input-bg-color);
+  border: 3px solid var(--input-bg-color);
+  border-radius: 10px;
+
+  color: var(--input-text-color);
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: -0.03em;
+
+  transition-duration: 200ms;
+}
+
+#input-component input:focus,
+#input-component textarea:focus {
+  border: 3px solid var(--main-color);
+
+  transition-duration: 200ms
+}
+
+#input-component textarea {
+  height: 100px;
+  padding: 13px 25px;
+
+  resize: none;
+}
+
+#input-component .error {
+  border: 3px solid var(--err-color);
+
+  transition-duration: 200ms
+}
