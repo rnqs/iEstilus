@@ -4,7 +4,11 @@ import Lottie from "react-lottie";
 import animationData from "../../assets/lf30_editor_aWKfgA.json";
 import "./styles.css";
 
-export default function DropModal({ display }) {
+interface props {
+  display: boolean;
+}
+
+export default function DropModal({ display }: props) {
   const defaultOptions = {
     loop: true,
     autoplay: true,
@@ -17,12 +21,9 @@ export default function DropModal({ display }) {
   return (
     <div className={display ? "drop-modal" : "drop-modal-hide"}>
       <section>
-        <Lottie
-          className="svg"
-          options={defaultOptions}
-          height={400}
-          width={400}
-        />
+        <div className="svg">
+          <Lottie options={defaultOptions} height={400} width={400} />
+        </div>
         <h1>Arraste e solte</h1>
         <h2>Solte a imagem para fazer upload</h2>
       </section>

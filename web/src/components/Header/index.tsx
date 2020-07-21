@@ -6,18 +6,29 @@ import "./styles.css";
 
 import iEstilusLogo from "../../assets/logo.svg";
 
-export default function Header({ links, button }) {
+interface props {
+  links: item[];
+  button: item;
+}
+
+interface item {
+  text: string;
+  onClick: () => void;
+}
+
+export default function Header({ links, button }: props) {
   const [menuOpened, setMenuOpened] = useState(false);
 
   return (
     <nav className={menuOpened ? "header header-opened" : "header"}>
       <div className="nav-container">
         <img src={iEstilusLogo} alt="iEstilus Logo" />
-        <Icon
-          icon={menuOpened ? closeIcon : barIcon}
-          className="menu-open-close-icon"
-          onClick={() => setMenuOpened(!menuOpened)}
-        />
+        <div className="icon" onClick={() => setMenuOpened(!menuOpened)}>
+          <Icon
+            icon={menuOpened ? closeIcon : barIcon}
+            className="menu-open-close-icon"
+          />
+        </div>
       </div>
 
       <div

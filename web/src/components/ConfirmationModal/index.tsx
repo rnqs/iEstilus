@@ -1,6 +1,21 @@
 import React from "react";
+import isAValidURL from "../../utils/isAValidURL";
 
 import "./styles.css";
+
+interface props {
+  display: boolean;
+  setDisplayed: (display: boolean) => void;
+  submit: () => void;
+  values: values[];
+  edit: boolean;
+}
+
+interface values {
+  key: string;
+  index: number;
+  value: string | boolean | object;
+}
 
 export default function ConfirmationModal({
   display,
@@ -8,20 +23,7 @@ export default function ConfirmationModal({
   submit,
   values,
   edit,
-}) {
-  const validURL = (str) => {
-    var pattern = new RegExp(
-      "^(https?:\\/\\/)?" +
-        "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" +
-        "((\\d{1,3}\\.){3}\\d{1,3}))" +
-        "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" +
-        "(\\?[;&a-z\\d%_.~+=-]*)?" +
-        "(\\#[-a-z\\d_]*)?$",
-      "i"
-    );
-    return !!pattern.test(str);
-  };
-
+}: props) {
   return (
     <div className={display ? "confirmation-modal" : "confirmation-modal-hide"}>
       <section>
@@ -49,7 +51,7 @@ export default function ConfirmationModal({
                         ) : (
                           "Não"
                         )
-                      ) : validURL(value.value) ? (
+                      ) : isAValidURL(value.value) ? (
                         <img
                           src={value.value}
                           alt={`Imagem do estabelecimento "${values[0].value}"`}
