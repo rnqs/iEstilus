@@ -13,7 +13,7 @@ import registerSvg from "../../assets/login-register.svg";
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [vPass, setVPass] = useState(null);
+  const [vPass, setVPass] = useState<boolean>();
 
   useEffect(() => {
     document.title = "iEstilus | Cadastro";
@@ -23,7 +23,7 @@ export default function Register() {
 
   let history = useHistory();
 
-  const createUserOnApi = async (jwt) => {
+  const createUserOnApi = async (jwt: string) => {
     try {
       await api.post("/managers", {}, { headers: { authentication: jwt } });
 
@@ -35,12 +35,18 @@ export default function Register() {
 
   const redirect = () => history.push("/gerenciar");
 
-  const firebaseCreateUserWithEmailAndPassword = (email, password) => {
+  const firebaseCreateUserWithEmailAndPassword = (
+    email: string,
+    password: string
+  ) => {
     firebaseAuth
       .createUserWithEmailAndPassword(email, password)
       .then(
         async (authData) => {
-          authData.user.sendEmailVerification();
+          authData.user?.sendEmailVerification();
+
+          if (authData.user === null) return;
+
           const idToken = await authData.user.getIdToken();
 
           createUserOnApi(idToken);
@@ -65,17 +71,16 @@ export default function Register() {
     firebaseAuth
       .signInWithPopup(provider)
       .then(async (result) => {
+        if (result.user === null) return;
+
         const idToken = await result.user.getIdToken();
 
         createUserOnApi(idToken);
       })
       .catch(function (error) {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
         console.error(errorCode, errorMessage, email, credential);
       });

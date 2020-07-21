@@ -17,7 +17,7 @@ export default function Home() {
 
   let history = useHistory();
 
-  function navigateTo(pathname) {
+  function navigateTo(pathname: string) {
     if (!navigating) {
       history.push({
         pathname,

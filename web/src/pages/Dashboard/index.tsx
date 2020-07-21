@@ -6,14 +6,14 @@ import "./styles.css";
 
 import getFirebaseIdToken from "../../utils/getFirebaseIdToken";
 import firebaseAuth from "../../utils/firebaseAuth";
-import api from "../../services/api";
+import api, { Establishment } from "../../services/api";
 
 import Header from "../../components/Header";
 
 export default function Home() {
   const [navigating, setNavigating] = useState(true);
   const [greetings, setGreetings] = useState("");
-  const [establishments, setEstablishments] = useState([]);
+  const [establishments, setEstablishments] = useState<Establishment[]>([]);
   const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Home() {
     setEstablishments(response.data);
   };
 
-  const navigateTo = (pathname) => {
+  const navigateTo = (pathname: string) => {
     if (!navigating) {
       history.push({
         pathname,
@@ -67,7 +67,7 @@ export default function Home() {
   const logOut = () => {
     firebaseAuth
       .signOut()
-      .then(
+      .then(() =>
         history.push({
           pathname: "/login",
           state: { transition: "slide-left", duration: 2000 },
@@ -99,7 +99,7 @@ export default function Home() {
             <SkeletonLoader
               width="calc(100% - 40px)"
               background="var(--input-bg-color)"
-              height={150}
+              height="150px"
               style={{ margin: 20, maxWidth: 540, borderRadius: 10 }}
             />
           )}

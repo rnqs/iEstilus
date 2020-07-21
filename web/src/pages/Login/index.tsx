@@ -23,19 +23,22 @@ export default function Login() {
 
   const provider = new firebase.auth.GoogleAuthProvider();
 
-  const firebaseSignInWithEmailAndPassword = (email, password) => {
+  const firebaseSignInWithEmailAndPassword = (
+    email: string,
+    password: string
+  ) => {
     firebaseAuth
       .signInWithEmailAndPassword(email, password)
-      .then(function (result) {
+      .then(function () {
         redirect();
       })
       .catch(function (error) {
         const errorCode = error.code;
 
-        document.querySelector("input.password").classList.add("error");
+        document.querySelector("input.password")?.classList.add("error");
 
         if (errorCode !== "auth/wrong-password") {
-          document.querySelector("input.email").classList.add("error");
+          document.querySelector("input.email")?.classList.add("error");
         }
       });
   };
@@ -44,23 +47,22 @@ export default function Login() {
     firebaseAuth
       .signInWithPopup(provider)
       .then(async (result) => {
+        if (result.user === null) return;
+
         const idToken = await result.user.getIdToken();
 
         createUserOnApi(idToken);
       })
       .catch(function (error) {
-        // Handle Errors here.
         const errorCode = error.code;
         const errorMessage = error.message;
-        // The email of the user's account used.
         const email = error.email;
-        // The firebase.auth.AuthCredential type that was used.
         const credential = error.credential;
         console.error(errorCode, errorMessage, email, credential);
       });
   };
 
-  const createUserOnApi = async (jwt) => {
+  const createUserOnApi = async (jwt: string) => {
     try {
       await api.post("/managers", {}, { headers: { authentication: jwt } });
 
@@ -72,7 +74,7 @@ export default function Login() {
 
   const firebaseForgetPassword = () => {
     if (!email) {
-      setEmail(prompt("Qual o email da sua conta?", "Email"));
+      setEmail(prompt("Qual o email da sua conta?", "Email") || "");
       if (!email) {
         alert("Algo deu errado\nTente novamente");
         return;
@@ -82,7 +84,7 @@ export default function Login() {
       .sendPasswordResetEmail(email)
       .then(function () {
         alert(
-          "Email de recuperação enviado com sucesso\nVerifeque tambem na caixa de spans"
+          "Email de recuperação enviado com sucesso\nVerifique também na caixa de spans"
         );
       })
       .catch(function (error) {
