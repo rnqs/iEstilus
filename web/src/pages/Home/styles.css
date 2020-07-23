@@ -13,6 +13,8 @@
     flex-direction: column;
 
     background: var(--main-bg-color);
+
+    z-index: 1;
 }
 
 @media screen and (max-width: 1300px) {
@@ -32,56 +34,65 @@
     }
 }
 
-#home .content .image-background-container {
-    height: 75vh;
-}
+#home .content .container {
+    height: 100%;
 
-@media screen and (max-width: 1299px) {
-    #home .content .image-background-container {
-        background-image:
-            radial-gradient(ellipse closest-side, rgba(36, 38, 45, 0.75), var(--main-bg-color)),
-            var(--main-background-image);
-        background-repeat: no-repeat;
-        background-position: center center;
-        background-size: cover;
-
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-}
-
-#home .content .image-background-container h1 {
-    color: var(--main-text-color);
-    font-size: 2em;
-
-    margin: 0 25px;
-    margin-bottom: 2.5vh;
-}
-
-#home .content .image-background-container .buttons {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto auto 1fr auto;
 }
 
-@media screen and (max-width: 860px) {
-    #home .content .image-background-container .buttons {
-        grid-template-columns: none;
-    }
+#home .content .container h1 {
+    color: var(--main-text-color);
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    letter-spacing: -0.03em;
+    margin: 0 25px;
+    margin-top: 42px;
+    margin-bottom: 14px;
 }
 
-@media screen and (min-width: 1300px) {
-    #home .content .image-background-container .buttons {
-        padding-left: 35px;
-        padding-right: 5px;
-    }
+#home .content .container p {
+    color: var(--secondary-text-color);
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 18px;
+
+    letter-spacing: -0.03em;
+    margin: 0 25px;
 }
 
-#home .content .image-background-container .buttons button {
+#home .content .container .image {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 60%;
+    background: var(--app-preview-image);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position-y: 95%;
+
+    mix-blend-mode: normal;
+    box-shadow: inset 0px -173px 150px #2A2D35;
+
+    z-index: -1;
+}
+
+#home .content .container .buttons {
+    bottom: 0;
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+    margin-bottom: 22px;
+    z-index: 2;
+}
+
+#home .content .container .buttons button,
+#home .content .container .buttons button.main:hover {
     cursor: pointer;
     background: transparent;
-    padding: 10px 20px;
-    margin: 10px 20px;
+    padding: 10px;
+    margin: 10px 25px;
     border: 3px solid #F6A821;
     border-radius: 9px;
 
@@ -94,43 +105,130 @@
     transition-duration: 200ms
 }
 
-#home .content .image-background-container .buttons button:hover {
+#home .content .container .buttons button:hover,
+#home .content .container .buttons button.main {
     background: #F6A821;
 
     transition-duration: 200ms
 }
 
+@media only screen and (min-width: 550px) {
+    #home .content .container h1 {
+        font-size: 34px;
+        line-height: 39px;
+    }
+
+    #home .content .container p {
+        font-size: 16px;
+        line-height: 20px;
+    }
+}
+
+@media only screen and (min-width: 861px) {
+    #home .content .container {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-bottom: calc(56px + 5%);
+    }
+
+    #home .content .container h1 {
+        font-size: 36px;
+        line-height: 41px;
+    }
+
+    #home .content .container p {
+        width: 60%;
+        font-size: 18px;
+        line-height: 22px;
+        margin-bottom: 15px;
+    }
+
+    #home .content .container .image {
+        position: fixed;
+        bottom: -5%;
+        right: -55px;
+        width: 45%;
+        height: 65%;
+        background: var(--app-preview-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position-y: 95%;
+
+        mix-blend-mode: normal;
+        box-shadow: inset -120px -200px 200px #2A2D35;
+        transform: rotate(-6.5deg);
+
+        z-index: -1;
+    }
+
+    #home .content .container .buttons button {
+        width: 60%;
+    }
+}
+
 @media screen and (min-width: 1300px) {
+    #home .content .container {
+        height: 100%;
 
-    #home .content .image-background-container h1,
-    #home .content .image-background-container h2 {
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 6vw;
     }
 
-    #home .content .image-background-container h1 {
-        margin: 15vh 10vw;
-        margin-bottom: 2.5vh;
+    #home .content .container h1 {
+        font-size: 36px;
+        line-height: 41px;
     }
 
-    #home .content .image-background-container h2 {
-        margin: 2vh 10vw;
+    #home .content .container p {
+        width: calc(60% - 6vw);
+        font-size: 18px;
+        line-height: 22px;
+        margin-bottom: 15px;
+    }
+
+    #home .content .container .image {
+        position: fixed;
+        bottom: -10%;
+        right: calc(-125px + -6%);
+        width: 55%;
+        height: 75%;
+        background: var(--app-preview-image);
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position-y: 95%;
+
+        mix-blend-mode: normal;
+        box-shadow: inset -120px -200px 200px #2A2D35;
+        transform: rotate(-6.5deg);
+
+        z-index: -1;
+    }
+
+    #home .content .container .buttons button {
+        width: calc(60% - 6vw);
     }
 }
 
-#home .content .image-background-container h1 span,
-#home .content .image-background-container h2 span {
-    cursor: pointer;
+@media screen and (min-height: 880px) {
+    #home .content .container {
+        height: 100%;
 
-    transition: ease-in-out 200ms;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin-left: 6vw;
+        margin-top: -10vh;
+    }
 }
 
-#home .content .image-background-container h1 span:hover,
-#home .content .image-background-container h2 span:hover {
-    color: var(--main-color);
-
-    transition: ease-in-out 200ms;
-}
-
-.light {
-    font-weight: 500;
+#home.slide-left-exit-active .content .container .image,
+#home.slide-right-enter-active .content .container .image {
+    position: absolute !important;
 }

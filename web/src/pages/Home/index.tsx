@@ -46,19 +46,22 @@ export default function Home() {
             onClick: () => navigateTo("/cadastro"),
           }}
         />
-
-        <div className="image-background-container">
-          <h1>Facilitamos a busca e agendamento de serviços de estética.</h1>
+        <div className="container">
+          <h1>A melhor forma de encontrar o serviço de estética ideal</h1>
+          <p>O iEstilus aproxima clientes, salões de beleza e barbearias, facilitando a busca, comparação e agendamento de serviço de estética.</p>
+          <span></span>
+          <div className="image" />
           <div className="buttons">
-            <button onClick={() => navigateTo("/cadastro")}>
-              Cadastre seu salão hoje mesmo
-            </button>
             <button
+              className="main"
               onClick={() => {
                 window.location.assign("https://app.iestilus.com/");
               }}
             >
-              Buscar um serviço
+              Busque um serviço
+            </button>
+            <button onClick={() => navigateTo("/cadastro")}>
+              Cadastre seu salão hoje mesmo
             </button>
           </div>
         </div>

@@ -5,13 +5,15 @@
   --main-bg-color: #2A2D35;
   --input-bg-color: #3b3d46;
   --below-bg-color: #24262D;
-  --main-text-color: #EEEEEE;
+  --main-text-color: #ffffff;
+  --secondary-text-color: #D2D2D2;
   --input-text-color: #C9C9C9;
   --success-color: #29E85E;
   --alert-color: #E8B329;
   --err-color: #E82929;
 
   --main-background-image: url(./assets/background.webp);
+  --app-preview-image: url(./assets/app-preview.webp);
 }
 
 ::-webkit-scrollbar {
