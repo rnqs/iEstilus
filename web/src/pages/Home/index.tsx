@@ -6,6 +6,7 @@ import Header from "../../components/Header";
 
 export default function Home() {
   const [navigating, setNavigating] = useState(true);
+  const [menuOpened, setMenuOpened] = useState(false);
 
   useEffect(() => {
     document.title = "iEstilus | Busca e agendamento de serviços de estética";
@@ -45,12 +46,13 @@ export default function Home() {
             text: "Cadastre seu salão",
             onClick: () => navigateTo("/cadastro"),
           }}
+          menuStatus={setMenuOpened}
         />
         <div className="container">
           <h1>A melhor forma de encontrar o serviço de estética ideal</h1>
           <p>O iEstilus aproxima clientes, salões de beleza e barbearias, facilitando a busca, comparação e agendamento de serviço de estética.</p>
           <span></span>
-          <div className="image" />
+          <div className={`image ${menuOpened && 'invisible'}`} />
           <div className="buttons">
             <button
               className="main"

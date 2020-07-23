@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Icon } from "@iconify/react";
 import barIcon from "@iconify/icons-fe/bar";
 import closeIcon from "@iconify/icons-fe/close";
@@ -9,6 +9,7 @@ import iEstilusLogo from "../../assets/logo.svg";
 interface props {
   links: item[];
   button: item;
+  menuStatus?: (menuOpened: boolean) => void
 }
 
 interface item {
@@ -16,8 +17,12 @@ interface item {
   onClick: () => void;
 }
 
-export default function Header({ links, button }: props) {
+export default function Header({ links, button, menuStatus }: props) {
   const [menuOpened, setMenuOpened] = useState(false);
+
+  useEffect(() => {
+    if (menuStatus) menuStatus(menuOpened)
+  }, [menuOpened, menuStatus])
 
   return (
     <nav className={menuOpened ? "header header-opened" : "header"}>
