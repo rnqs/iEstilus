@@ -81,13 +81,15 @@
     transition: all ease-out 100ms;
 }
 
-#home .content .container .image.invisible {
-    position: fixed;
-    bottom: -200px;
+@media only screen and (max-width: 860px) {
+    #home .content .container .image.invisible {
+        position: fixed;
+        bottom: -200px;
 
-    opacity: 0;
+        opacity: 0;
 
-    transition: all ease-out 300ms;
+        transition: all ease-out 300ms;
+    }
 }
 
 #home .content .container .buttons {
