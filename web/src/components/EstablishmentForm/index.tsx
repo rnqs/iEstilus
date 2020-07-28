@@ -14,7 +14,7 @@ import './styles.css';
 
 interface Props {
   formData: Establishment;
-  deleteEstablishment?: () => void;
+  deleteEstablishment?: Function;
   setInputError: (inputError: boolean) => void;
   setFormData: (formData: Establishment) => void;
   setConfirmationModalVisibility: (confirmationModalVisibility: boolean) => void;
@@ -56,6 +56,7 @@ const EstablishmentForm: React.FC<Props> = ({
   const [latitude, setLatitude] = useState(formData.latitude);
   const [longitude, setLongitude] = useState(formData.longitude);
   const [services, setServices] = useState(formData.services);
+  const [isDeleteEstablishment, setIsDeleteEstablishment] = useState(false);
 
   useEffect(() => {
     setFormData({
@@ -174,6 +175,8 @@ const EstablishmentForm: React.FC<Props> = ({
       onSubmit={async (e) => {
         e.preventDefault();
 
+        if (isDeleteEstablishment) return;
+
         const success = await verifyAddressAndGetLatitudeAndLongitude();
         validateData();
         let indexOfUnfilledFields = getIndexOfUnfilledFields(services);
@@ -242,7 +245,11 @@ const EstablishmentForm: React.FC<Props> = ({
         />
       </div>
       <div className="submit-container">
-        {deleteEstablishment && <button onClick={() => deleteEstablishment()}>Excluir Salão</button>}
+        {deleteEstablishment && <button className="delete" onClick={async () => {
+          setIsDeleteEstablishment(true);
+          const canceled = await deleteEstablishment();
+          if (canceled === true) setIsDeleteEstablishment(false);
+        }}>Excluir Salão</button>}
         <button type="submit">Enviar</button>
       </div>
     </form>

@@ -35,3 +35,16 @@
 
   transition-duration: 200ms;
 }
+
+#establishment-form .submit-container button.delete {
+  border: 3px solid var(--err-color);
+  margin-bottom: 20px;
+
+  transition-duration: 200ms
+}
+
+#establishment-form .submit-container button.delete:hover {
+  background: var(--err-color);
+
+  transition-duration: 200ms
+}

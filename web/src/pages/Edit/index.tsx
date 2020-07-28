@@ -120,7 +120,7 @@ export default function Edit() {
       window.confirm(
         `Você tem certeza que deseja excluir o salão "${formData.name}" permanentemente?`
       )
-    )
+    ) {
       try {
         await api.delete("/establishments/" + establishmentId, {
           headers: { authentication: idToken },
@@ -130,6 +130,9 @@ export default function Edit() {
       } catch (error) {
         navigateTo("/gerenciar");
       }
+    } else {
+      return true
+    }
   };
 
   function navigateTo(pathname: string) {
