@@ -21,14 +21,14 @@
 
 <p align="center">:iphone: App para busca e agendamento de serviços de estética</p>
 
-<img width="76%" src="./.github/web.png"><img style='float: right' width="23%" src="./.github/mobile.gif">
+<img width="76%" src="./.github/web.png"><img style='float: right' width="22.99%" src="./.github/mobile.gif">
 
 <p align="center">
- <a href="#-executar">Executar</a> •
- <a href="#-design">Design</a> •
- <a href="#-tecnologias">Tecnologias</a> •
- <a href="#-deploy">Deploy</a> •
- <a href="#-licença">Licença</a>
+ <a href="#computer-executar">Executar</a> •
+ <a href="#art-design">Design</a> •
+ <a href="#book-tecnologias">Tecnologias</a> •
+ <a href="#rocket-deploy">Deploy</a> •
+ <a href="#memo-licença">Licença</a>
 </p>
 
 ## :computer: Executar
