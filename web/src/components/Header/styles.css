@@ -5,6 +5,8 @@ div.nav-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
+
+    z-index: 3;
 }
 
 @media screen and (max-width: 860px) {
